@@ -1,9 +1,6 @@
 package com.softtechno.tasktracker.db
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 
 @Dao
 interface TaskValuesDao {
@@ -16,5 +13,11 @@ interface TaskValuesDao {
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertTaskValue(taskValue: TaskValue)
+
+    @Query("DELETE FROM TaskValue")
+    suspend fun deleteAll()
+
+    @Delete(entity = TaskValue::class)
+    suspend fun deleteTaskValue(taskValue: TaskValue)
 
 }
