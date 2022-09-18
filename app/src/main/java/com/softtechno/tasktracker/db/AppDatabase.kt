@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import androidx.sqlite.db.SupportSQLiteDatabase
 
-@Database(entities = [TaskEntity::class, TaskValue::class], version = 1)
+@Database(entities = [TaskEntity::class, TaskValue::class], exportSchema = false, version = 1)
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
 

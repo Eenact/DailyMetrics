@@ -4,6 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.softtechno.tasktracker.enums.EntityType
+import com.softtechno.tasktracker.enums.Units
 
 @Entity
 class TaskEntity (
@@ -12,6 +13,10 @@ class TaskEntity (
 
     @ColumnInfo(name = "type") val type: EntityType,
 
-    @PrimaryKey(autoGenerate = true) val id: Int? = null
+    @ColumnInfo(name = "unit") val unit: Units,
+
+    @ColumnInfo(name = "color") val color: Int,
+
+    @PrimaryKey(autoGenerate = true) val id: Int = 0
 
 )

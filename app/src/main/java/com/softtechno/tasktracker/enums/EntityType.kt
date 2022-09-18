@@ -11,4 +11,14 @@ enum class EntityType(private val entity: String) {
     override fun toString(): String {
         return entity
     }
+
+    companion object {
+        fun fromString(entity: String): EntityType {
+            return when (entity) {
+                YesNo.entity -> YesNo
+                Number.entity -> Number
+                else -> StartEndDate
+            }
+        }
+    }
 }
