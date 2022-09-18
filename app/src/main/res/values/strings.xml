@@ -11,4 +11,13 @@
     <string name="task_header_type">Type</string>
     <string name="task_header_unit">Unit</string>
     <string name="task_header_color">Color</string>
+
+    <string name="entry_number_title">Number</string>
+
+    <string name="entry_start_date_title">From</string>
+    <string name="entry_end_date_title">To</string>
+    <string name="entry_date_title">Date</string>
+    <string name="entry_time_title">Time</string>
+    <string name="entry_now_btn">Now</string>
+    <string name="entry_event_title">Event date</string>
 </resources>
