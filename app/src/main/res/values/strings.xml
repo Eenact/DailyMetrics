@@ -15,11 +15,20 @@
     <string name="task_header_color">Color</string>
 
     <string name="entry_number_title">Number</string>
+    <string name="entry_yesno_title">Yes / No</string>
 
     <string name="entry_start_date_title">From</string>
     <string name="entry_end_date_title">To</string>
     <string name="entry_date_title">Date</string>
     <string name="entry_time_title">Time</string>
     <string name="entry_now_btn">Now</string>
-    <string name="entry_event_title">Event date</string>
+    <string name="entry_event_date_time_title">Event date time</string>
+
+    <string name="entry_date_picker_dialog_title">Select date</string>
+    <string name="entry_time_picker_dialog_title">Select time</string>
+
+    <array name="yes_no_array">
+        <item>Yes</item>
+        <item>No</item>
+    </array>
 </resources>

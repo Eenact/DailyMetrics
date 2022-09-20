@@ -1,17 +1,16 @@
 package com.softtechno.tasktracker.viewmodels
 
 import android.content.Context
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.softtechno.tasktracker.db.TaskEntity
 import com.softtechno.tasktracker.db.TaskRepository
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
 class TaskEntityViewModel(private val repository: TaskRepository): ViewModel() {
 
-    val allEntries: Flow<List<TaskEntity>> = repository.getAllTaskEntities()
+    val selectedItem = MutableLiveData<TaskEntity>()
+
+    val allEntries: LiveData<List<TaskEntity>> = repository.getAllTaskEntities().asLiveData()
 
     fun insert(entity: TaskEntity) = viewModelScope.launch {
         repository.insertTaskEntity(entity)
@@ -23,6 +22,10 @@ class TaskEntityViewModel(private val repository: TaskRepository): ViewModel() {
 
     fun delete(entity: TaskEntity) = viewModelScope.launch {
         repository.deleteTaskEntity(entity)
+    }
+
+    fun setSelectedItem(itemIndex: Int) {
+        selectedItem.value = allEntries.value?.get(itemIndex)
     }
 }
 

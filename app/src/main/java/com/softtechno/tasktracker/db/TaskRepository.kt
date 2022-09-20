@@ -1,25 +1,20 @@
 package com.softtechno.tasktracker.db
 
 import android.content.Context
-import androidx.lifecycle.LiveData
 import kotlinx.coroutines.flow.Flow
 
 class TaskRepository {
 
     private val database: AppDatabase
 
-    constructor(db: AppDatabase) {
-        database = db
-    }
-
     constructor(context: Context) {
         database = AppDatabase.getDatabase(context)
     }
 
     // TaskValue functions
-    fun getAllTaskValues(): LiveData<List<TaskValue>> = database.taskValuesDao().getAll()
+    fun getAllTaskValues(): Flow<List<TaskValue>> = database.taskValuesDao().getAll()
 
-    fun getAllTaskValuesBetween(start: Long, end: Long): LiveData<List<TaskValue>> = database.taskValuesDao().getTaskBetween(startTime = start, endTime = end)
+    fun getAllTaskValuesBetween(start: Long, end: Long): Flow<List<TaskValue>> = database.taskValuesDao().getTaskBetween(startTime = start, endTime = end)
 
     suspend fun insertTaskValue(taskValue: TaskValue) = database.taskValuesDao().insertTaskValue(taskValue)
 

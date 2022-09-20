@@ -42,13 +42,15 @@
                 style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:hint="@string/entry_yesno_title"
                 android:visibility="gone">
 
                 <AutoCompleteTextView
                     android:id="@+id/entry_yesno_edittext"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="none" />
+                    android:inputType="none"
+                    app:simpleItems="@array/yes_no_array"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -114,7 +116,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 android:hint="@string/entry_time_title"
-                app:layout_constraintEnd_toStartOf="@+id/entry_from_now"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/entry_from_date_input_layout"
                 app:layout_constraintTop_toBottomOf="@+id/entry_from_title_textview">
 
@@ -125,16 +127,6 @@
                     android:inputType="none" />
 
             </com.google.android.material.textfield.TextInputLayout>
-
-            <Button
-                android:id="@+id/entry_from_now"
-                style="@style/Widget.Material3.Button.TextButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/entry_now_btn"
-                app:layout_constraintBaseline_toBaselineOf="@+id/entry_from_time_input_layout"
-                app:layout_constraintEnd_toEndOf="parent" />
-
 
             <!--To -->
             <com.google.android.material.textview.MaterialTextView
@@ -173,7 +165,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 android:hint="@string/entry_time_title"
-                app:layout_constraintEnd_toStartOf="@+id/entry_to_now"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/entry_to_date_input_layout"
                 app:layout_constraintTop_toBottomOf="@+id/entry_to_title_textview">
 
@@ -185,14 +177,6 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
-            <Button
-                android:id="@+id/entry_to_now"
-                style="@style/Widget.Material3.Button.TextButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/entry_now_btn"
-                app:layout_constraintBaseline_toBaselineOf="@+id/entry_to_time_input_layout"
-                app:layout_constraintEnd_toEndOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <!-- Event date -->
@@ -210,7 +194,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="@string/entry_event_title"
+                android:text="@string/entry_event_date_time_title"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -241,7 +225,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 android:hint="@string/entry_time_title"
-                app:layout_constraintEnd_toStartOf="@+id/entry_event_now"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/entry_event_date_input_layout"
                 app:layout_constraintTop_toBottomOf="@+id/entry_event_title_textview">
 
@@ -253,14 +237,6 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
-            <Button
-                android:id="@+id/entry_event_now"
-                style="@style/Widget.Material3.Button.TextButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/entry_now_btn"
-                app:layout_constraintBaseline_toBaselineOf="@+id/entry_event_time_input_layout"
-                app:layout_constraintEnd_toEndOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
