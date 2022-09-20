@@ -12,6 +12,7 @@ import android.view.Menu
 import android.view.MenuItem
 import com.softtechno.tasktracker.R
 import com.softtechno.tasktracker.databinding.ActivityMainBinding
+import com.softtechno.tasktracker.gui.fragments.TaskEntryDialogFragment
 
 class MainActivity : AppCompatActivity() {
 
@@ -32,9 +33,12 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
 
         binding.fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAnchorView(R.id.fab)
-                .setAction("Action", null).show()
+            val taskEntryDialogFragment = TaskEntryDialogFragment()
+//            if (isLargeDisplay) {
+//                taskEntryDialogFragment.show(supportFragmentManager, "TaskEntryDialog")
+//            }
+            findNavController(R.id.nav_host_fragment_content_main).navigate(R.id.action_DashboardFragment_to_TaskEntryFragment)
+            supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_close)
         }
     }
 

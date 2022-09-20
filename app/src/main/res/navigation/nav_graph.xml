@@ -14,6 +14,10 @@
         <action
             android:id="@+id/action_DashboardFragment_to_TaskFragment"
             app:destination="@id/TaskFragment" />
+
+        <action
+            android:id="@+id/action_DashboardFragment_to_TaskEntryFragment"
+            app:destination="@id/TaskEntryFragment"/>
     </fragment>
     <fragment
         android:id="@+id/TaskFragment"
@@ -24,5 +28,17 @@
         <action
             android:id="@+id/action_TaskFragment_to_DashboardFragment"
             app:destination="@id/DashboardFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/TaskEntryFragment"
+        android:name="com.softtechno.tasktracker.gui.fragments.TaskEntryDialogFragment"
+        android:label="@string/task_entry_fragment_label"
+        tools:layout="@layout/fragment_entry">
+
+        <action
+            android:id="@+id/action_TaskEntryFragment_to_DashboardFragment"
+            app:destination="@id/DashboardFragment"/>
+
     </fragment>
 </navigation>
