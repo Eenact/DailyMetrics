@@ -12,10 +12,12 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
+import com.google.android.material.textfield.TextInputLayout
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
 import com.softtechno.tasktracker.R
 import com.softtechno.tasktracker.databinding.FragmentEntryBinding
+import com.softtechno.tasktracker.db.TaskValue
 import com.softtechno.tasktracker.enums.EntityType
 import com.softtechno.tasktracker.viewmodels.TaskEntityViewModel
 import com.softtechno.tasktracker.viewmodels.TaskEntityViewModelFactory
@@ -27,6 +29,9 @@ import java.util.*
 
 class TaskEntryDialogFragment : DialogFragment() {
 
+
+    private val DEBUG: Boolean = false
+    private val TAG: String = TaskEntryDialogFragment::class.java.name
 
     private var _binding: FragmentEntryBinding? = null
     private val mTaskValuesModel: TaskValueViewModel by activityViewModels {
@@ -51,7 +56,9 @@ class TaskEntryDialogFragment : DialogFragment() {
         initViews()
 
         mTaskEntityModel.allEntries.observe(viewLifecycleOwner) { taskEntities ->
-            (binding.entryNameEdittext as? MaterialAutoCompleteTextView)?.setSimpleItems(taskEntities.map { it.name }.toTypedArray())
+            (binding.entryNameEdittext as? MaterialAutoCompleteTextView)?.setSimpleItems(
+                taskEntities.map { it.name }.toTypedArray()
+            )
         }
 
         return binding.root
@@ -70,8 +77,25 @@ class TaskEntryDialogFragment : DialogFragment() {
 
         menuHost.addMenuProvider(object : MenuProvider {
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-                return when(menuItem.itemId) {
+                return when (menuItem.itemId) {
                     R.id.action_save -> {
+                        val value: Long? = if (mTaskEntityModel.selectedItem.value?.type == EntityType.Number) {
+                            binding.entryNumberEdittext.text.toString().toLongOrNull()
+                        }
+                        else {
+                            mTaskValuesModel.taskEnteredValue.value
+                        }
+
+                        mTaskValuesModel.insert(
+                            TaskValue(mTaskValuesModel.taskEntryDate.value ?: return invalidValue(binding.entryEventTitleTextview, R.string.error_invalid_date_time),
+                                mTaskEntityModel.selectedItem.value?.id ?: return invalidValue(binding.entryNameEdittext, R.string.error_invalid_field_name),
+                                value ?: return when (mTaskEntityModel.selectedItem.value?.type) {
+                                    EntityType.Number -> invalidValue(binding.entryNumberInputLayout)
+                                    else -> invalidValue(binding.entryYesnoInputLayout)
+                                }
+                            )
+                        )
+
                         dismiss()
                         findNavController().navigate(R.id.action_TaskEntryFragment_to_DashboardFragment)
                         true
@@ -91,6 +115,18 @@ class TaskEntryDialogFragment : DialogFragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun invalidValue(view: View, message: Int): Boolean {
+        Snackbar.make(view, message, Snackbar.LENGTH_SHORT)
+            .setAnchorView(binding.root)
+            .show()
+        return false
+    }
+
+    private fun invalidValue(inputLayout: TextInputLayout): Boolean {
+        inputLayout.error = getString(R.string.error_field_required)
+        return false
     }
 
     private fun showItems(view: View) {
@@ -137,12 +173,21 @@ class TaskEntryDialogFragment : DialogFragment() {
         }
 
         binding.entryYesnoEdittext.setOnItemClickListener { _, _, i, _ ->
-            Log.d("EUMAMUS", "Item selected: $i")
-            mTaskValuesModel.taskEnteredValue.value = when(i) {
+
+            binding.entryYesnoInputLayout.error = null
+            mTaskValuesModel.taskEnteredValue.value = when (i) {
                 0 -> 1
                 1 -> 0
-                else -> 0
+                else -> null
             }
+
+            if (DEBUG) {
+                Log.d(TAG, "YesNo Item selected: $i")
+            }
+        }
+        binding.entryNumberEdittext.setOnKeyListener { _, _, _ ->
+            binding.entryNumberInputLayout.error = null
+            false
         }
 
         val calendar = Calendar.getInstance()
@@ -192,7 +237,9 @@ class TaskEntryDialogFragment : DialogFragment() {
 
                 binding.entryEventDateEdittext.setText(dateFormatter.format(dateNow.time))
 
-                Log.d("EUMAMUS", "Picked Date: ${it}")
+                if (DEBUG) {
+                    Log.d(TAG, "Picked Date: ${it}")
+                }
             }
             datePicker.show(requireActivity().supportFragmentManager, "event_date")
         }
@@ -209,8 +256,12 @@ class TaskEntryDialogFragment : DialogFragment() {
                 .setInputMode(MaterialTimePicker.INPUT_MODE_CLOCK)
                 .setMinute(savedTimeCalendar.get(Calendar.MINUTE))
                 .setTitleText(R.string.entry_time_picker_dialog_title)
-                .setTimeFormat(if(is24Hour) TimeFormat.CLOCK_24H else TimeFormat.CLOCK_12H)
-                .setHour(if(is24Hour) savedTimeCalendar.get(Calendar.HOUR_OF_DAY) else savedTimeCalendar.get(Calendar.HOUR))
+                .setTimeFormat(if (is24Hour) TimeFormat.CLOCK_24H else TimeFormat.CLOCK_12H)
+                .setHour(
+                    if (is24Hour) savedTimeCalendar.get(Calendar.HOUR_OF_DAY) else savedTimeCalendar.get(
+                        Calendar.HOUR
+                    )
+                )
                 .build()
             timePicker.addOnPositiveButtonClickListener {
 
@@ -220,11 +271,16 @@ class TaskEntryDialogFragment : DialogFragment() {
                 timeNow.set(Calendar.MINUTE, timePicker.minute)
                 timeNow.set(Calendar.SECOND, 0)
                 timeNow.set(Calendar.MILLISECOND, 0)
-                Log.d("EUMAMUS", "Picked Time: ${timeNow.timeInMillis}, Hour: ${timePicker.hour}, Min: ${timePicker.minute}")
 
                 mTaskValuesModel.taskEntryTime.value = timeNow.timeInMillis
                 binding.entryEventTimeEdittext.setText(timeFormatter.format(timeNow.time))
 
+                if (DEBUG) {
+                    Log.d(
+                        TAG,
+                        "Picked Time: ${timeNow.timeInMillis}, Hour: ${timePicker.hour}, Min: ${timePicker.minute}"
+                    )
+                }
             }
             timePicker.show(requireActivity().supportFragmentManager, "event_time")
         }
@@ -237,7 +293,9 @@ class TaskEntryDialogFragment : DialogFragment() {
             .setInputMode(MaterialDatePicker.INPUT_MODE_CALENDAR)
             .build()
         datePicker.addOnPositiveButtonClickListener {
-            Log.d("EUMAMUS", "Picked Date: ${it.first} - ${it.second}")
+            if (DEBUG) {
+                Log.d(TAG, "Picked Date: ${it.first} - ${it.second}")
+            }
         }
         datePicker.show(requireActivity().supportFragmentManager, "to_from_date_picker")
     }

@@ -27,6 +27,10 @@
     <string name="entry_date_picker_dialog_title">Select date</string>
     <string name="entry_time_picker_dialog_title">Select time</string>
 
+    <string name="error_field_required">Value required</string>
+    <string name="error_invalid_date_time">Invalid date/time found</string>
+    <string name="error_invalid_field_name">Invalid field name detected</string>
+
     <array name="yes_no_array">
         <item>Yes</item>
         <item>No</item>
