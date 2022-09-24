@@ -2,6 +2,7 @@ package com.softtechno.tasktracker.viewmodels
 
 import android.content.Context
 import androidx.lifecycle.*
+import com.softtechno.tasktracker.db.TaskEntity
 import com.softtechno.tasktracker.db.TaskRepository
 import com.softtechno.tasktracker.db.TaskValue
 import kotlinx.coroutines.flow.Flow
@@ -14,9 +15,11 @@ class TaskValueViewModel(private val repository: TaskRepository): ViewModel() {
     val taskEntryDate = MutableLiveData<Long>()
     val taskEnteredValue = MutableLiveData<Long>()
 
-    val allValues: LiveData<List<TaskValue>> = repository.getAllTaskValues().asLiveData()
+    val allValues: LiveData<Map<TaskEntity, List<TaskValue>>> = repository.getAllTaskValues().asLiveData()
 
-    fun getValues(startTime: Long, endTime: Long): LiveData<List<TaskValue>> = repository.getAllTaskValuesBetween(startTime, endTime).asLiveData()
+    fun getTaskValues(taskId: Int): LiveData<List<TaskValue>> = repository.getAllTask(taskId).asLiveData()
+
+    fun getValues(taskId: Int, startTime: Long, endTime: Long): LiveData<Map<TaskEntity, List<TaskValue>>> = repository.getAllTaskValuesBetween(taskId, startTime, endTime).asLiveData()
 
     fun insert(value: TaskValue) = viewModelScope.launch {
         repository.insertTaskValue(value)

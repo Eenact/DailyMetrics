@@ -12,6 +12,8 @@ class TaskEntityViewModel(private val repository: TaskRepository): ViewModel() {
 
     val allEntries: LiveData<List<TaskEntity>> = repository.getAllTaskEntities().asLiveData()
 
+    suspend fun get(taskId: Int) = repository.getTaskEntity(taskId)
+
     fun insert(entity: TaskEntity) = viewModelScope.launch {
         repository.insertTaskEntity(entity)
     }
