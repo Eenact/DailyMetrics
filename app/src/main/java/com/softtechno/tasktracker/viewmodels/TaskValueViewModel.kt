@@ -15,7 +15,7 @@ class TaskValueViewModel(private val repository: TaskRepository): ViewModel() {
     val taskEntryDate = MutableLiveData<Long>()
     val taskEnteredValue = MutableLiveData<Long>()
 
-    val allValues: LiveData<Map<TaskEntity, List<TaskValue>>> = repository.getAllTaskValues().asLiveData()
+    val allValues: LiveData<Map<TaskEntity, TaskValue>> = repository.getAllTaskValues().asLiveData()
 
     fun getTaskValues(taskId: Int): LiveData<List<TaskValue>> = repository.getAllTask(taskId).asLiveData()
 

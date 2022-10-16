@@ -6,8 +6,8 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface TaskValuesDao {
 
-    @Query("SELECT * FROM TaskEntity JOIN TaskValue ON TaskEntity.id = TaskValue.task_id")
-    fun getAll(): Flow<Map<TaskEntity, List<TaskValue>>>
+    @Query("SELECT * FROM TaskEntity JOIN TaskValue ON TaskEntity.id = TaskValue.task_id ORDER BY TaskEntity.id")
+    fun getAll(): Flow<Map<TaskEntity, TaskValue>>
 
     @Query("SELECT * FROM TaskEntity JOIN TaskValue ON TaskEntity.id = TaskValue.task_id WHERE TaskEntity.id = :taskId AND time >= :startTime AND time <= :endTime")
     fun getTaskBetween(taskId: Int, startTime: Long, endTime: Long): Flow<Map<TaskEntity, List<TaskValue>>>

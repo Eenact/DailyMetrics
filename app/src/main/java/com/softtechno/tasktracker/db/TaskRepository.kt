@@ -12,7 +12,7 @@ class TaskRepository {
     }
 
     // TaskValue functions
-    fun getAllTaskValues(): Flow<Map<TaskEntity, List<TaskValue>>> = database.taskValuesDao().getAll()
+    fun getAllTaskValues(): Flow<Map<TaskEntity, TaskValue>> = database.taskValuesDao().getAll()
 
     fun getAllTaskValuesBetween(taskId: Int, start: Long, end: Long): Flow<Map<TaskEntity, List<TaskValue>>> = database.taskValuesDao().getTaskBetween(taskId, startTime = start, endTime = end)
 
