@@ -88,7 +88,7 @@ class DashboardFragment : Fragment() {
         val endTime = calendar.timeInMillis
 
         // Change the time axis values
-        setTimeAxisValues(calendar, selection)
+        setTimeAxisLabels(calendar, selection)
 
         var maxYAxis: Long = -1
         var taskId: TaskEntity? = null
@@ -150,7 +150,7 @@ class DashboardFragment : Fragment() {
         return lineDataSet
     }
 
-    private fun setTimeAxisValues(selectedCalendar: Calendar, selection: AxisXTypes) {
+    private fun setTimeAxisLabels(selectedCalendar: Calendar, selection: AxisXTypes) {
 
         mAxisXLabels = AxisUtils.getTimeAxisLabels(selectedCalendar, selection, requireContext())
 
@@ -203,7 +203,7 @@ class DashboardFragment : Fragment() {
         leftAxis.textColor = ColorTemplate.getHoloBlue()
         leftAxis.setDrawGridLines(true)
         leftAxis.isGranularityEnabled = true
-        leftAxis.axisMinimum = -1f
+        leftAxis.axisMinimum = -0.2f
         leftAxis.granularity = 1f
 //        leftAxis.axisMaximum = 170f
 //        leftAxis.yOffset = -9f

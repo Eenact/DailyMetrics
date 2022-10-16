@@ -19,26 +19,26 @@ class AxisUtils {
             when (selection) {
 
                 AxisXTypes.Day -> {
-                    for (day in 1..24) {
+                    for (day in 1..12) {
                         weekLabelMap[selectedCalendar.get(Calendar.HOUR_OF_DAY)] =
                             DateTimeUtils.axisLabelDay(
                                 selectedCalendar.get(
                                     Calendar.HOUR_OF_DAY
                                 )
                             )
-                        selectedCalendar.add(Calendar.HOUR_OF_DAY, 1)
+                        selectedCalendar.add(Calendar.HOUR_OF_DAY, 2)
                     }
                 }
 
                 AxisXTypes.Week -> {
                     for (day in 1..7) {
-                        weekLabelMap[selectedCalendar.get(Calendar.DAY_OF_WEEK)] =
+                        selectedCalendar.add(Calendar.DAY_OF_YEAR, 1)
+                        weekLabelMap[selectedCalendar.get(Calendar.DAY_OF_YEAR)] =
                             DateTimeUtils.axisLabelWeek(
                                 selectedCalendar.get(
                                     Calendar.DAY_OF_WEEK
                                 ), context
                             )
-                        selectedCalendar.add(Calendar.DAY_OF_WEEK, 1)
                     }
                 }
 
@@ -79,7 +79,7 @@ class AxisUtils {
 
             return when (selection) {
                 AxisXTypes.Day -> calendar.get(Calendar.HOUR_OF_DAY)
-                AxisXTypes.Week -> calendar.get(Calendar.DAY_OF_WEEK)
+                AxisXTypes.Week -> calendar.get(Calendar.DAY_OF_YEAR)
                 AxisXTypes.Month -> calendar.get(Calendar.DAY_OF_MONTH)
                 AxisXTypes.Year -> calendar.get(Calendar.MONTH)
             }.toFloat()
