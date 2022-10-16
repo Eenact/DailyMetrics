@@ -1,18 +1,16 @@
 package com.softtechno.tasktracker.gui
 
 import android.os.Bundle
-import com.google.android.material.snackbar.Snackbar
+import android.view.Menu
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
-import android.view.Menu
-import android.view.MenuItem
 import com.softtechno.tasktracker.R
 import com.softtechno.tasktracker.databinding.ActivityMainBinding
-import com.softtechno.tasktracker.gui.fragments.TaskEntryDialogFragment
 
 class MainActivity : AppCompatActivity() {
 
@@ -32,14 +30,6 @@ class MainActivity : AppCompatActivity() {
         appBarConfiguration = AppBarConfiguration(navController.graph)
         setupActionBarWithNavController(navController, appBarConfiguration)
 
-        binding.fab.setOnClickListener { view ->
-            val taskEntryDialogFragment = TaskEntryDialogFragment()
-//            if (isLargeDisplay) {
-//                taskEntryDialogFragment.show(supportFragmentManager, "TaskEntryDialog")
-//            }
-            findNavController(R.id.nav_host_fragment_content_main).navigate(R.id.action_DashboardFragment_to_TaskEntryFragment)
-            supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_close)
-        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

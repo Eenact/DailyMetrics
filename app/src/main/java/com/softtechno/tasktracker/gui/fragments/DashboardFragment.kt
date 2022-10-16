@@ -7,6 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.NavOptions
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.components.Legend.LegendForm
 import com.github.mikephil.charting.components.XAxis
@@ -17,6 +20,7 @@ import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.ValueFormatter
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import com.github.mikephil.charting.utils.ColorTemplate
+import com.softtechno.tasktracker.R
 import com.softtechno.tasktracker.databinding.FragmentDashboardBinding
 import com.softtechno.tasktracker.db.TaskEntity
 import com.softtechno.tasktracker.db.TaskValue
@@ -52,7 +56,18 @@ class DashboardFragment : Fragment() {
 
         _binding = FragmentDashboardBinding.inflate(inflater, container, false)
 
-        init()
+        initChartView()
+
+        binding.buttonInsertEntry.setOnClickListener {
+//            val taskEntryDialogFragment = TaskEntryDialogFragment()
+//            if (isLargeDisplay) {
+//                taskEntryDialogFragment.show(supportFragmentManager, "TaskEntryDialog")
+//            }
+            findNavController().navigate(R.id.action_DashboardFragment_to_TaskEntryFragment, null,
+            navOptions = NavOptions)
+            activity?.actionBar?.setHomeAsUpIndicator(R.drawable.ic_close)
+            //supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_close)
+        }
 
         return binding.root
 
@@ -166,7 +181,7 @@ class DashboardFragment : Fragment() {
         xAxis.setLabelCount(mAxisXLabels.size, true)
     }
 
-    private fun init() {
+    private fun initChartView() {
 
         // no description text
         binding.chartView.description.isEnabled = false
