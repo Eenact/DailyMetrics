@@ -63,8 +63,7 @@ class DashboardFragment : Fragment() {
 //            if (isLargeDisplay) {
 //                taskEntryDialogFragment.show(supportFragmentManager, "TaskEntryDialog")
 //            }
-            findNavController().navigate(R.id.action_DashboardFragment_to_TaskEntryFragment, null,
-            navOptions = NavOptions)
+            findNavController().navigate(R.id.action_DashboardFragment_to_TaskEntryFragment)
             activity?.actionBar?.setHomeAsUpIndicator(R.drawable.ic_close)
             //supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_close)
         }
