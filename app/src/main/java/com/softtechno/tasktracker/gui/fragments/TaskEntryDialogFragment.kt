@@ -53,8 +53,6 @@ class TaskEntryDialogFragment : DialogFragment() {
 
         _binding = FragmentEntryBinding.inflate(inflater, container, false)
 
-        initViews()
-
         mTaskEntityModel.allEntries.observe(viewLifecycleOwner) { taskEntities ->
             (binding.entryNameEdittext as? MaterialAutoCompleteTextView)?.setSimpleItems(
                 taskEntities.map { it.name }.toTypedArray()
@@ -75,20 +73,36 @@ class TaskEntryDialogFragment : DialogFragment() {
 
         val menuHost: MenuHost = requireActivity()
 
+        initViews()
+
         menuHost.addMenuProvider(object : MenuProvider {
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                 return when (menuItem.itemId) {
                     R.id.action_save -> {
-                        val value: Long? = if (mTaskEntityModel.selectedItem.value?.type == EntityType.Number) {
-                            binding.entryNumberEdittext.text.toString().toLongOrNull()
-                        }
-                        else {
-                            mTaskValuesModel.taskEnteredValue.value
+                        val value: Long? =
+                            if (mTaskEntityModel.selectedItem.value?.type == EntityType.Number) {
+                                binding.entryNumberEdittext.text.toString().toLongOrNull()
+                            } else {
+                                mTaskValuesModel.taskEnteredValue.value
+                            }
+
+                        if (DEBUG) {
+                            Log.d(
+                                TAG,
+                                "save = Time: ${mTaskValuesModel.taskEntryDateTime.value}, task_id: ${mTaskEntityModel.selectedItem.value}, Value: $value"
+                            )
                         }
 
                         mTaskValuesModel.insert(
-                            TaskValue(mTaskValuesModel.taskEntryDate.value ?: return invalidValue(binding.entryEventTitleTextview, R.string.error_invalid_date_time),
-                                mTaskEntityModel.selectedItem.value?.id ?: return invalidValue(binding.entryNameEdittext, R.string.error_invalid_field_name),
+                            TaskValue(
+                                mTaskValuesModel.taskEntryDateTime.value ?: return invalidValue(
+                                    binding.entryEventTitleTextview,
+                                    R.string.error_invalid_date_time
+                                ),
+                                mTaskEntityModel.selectedItem.value?.id ?: return invalidValue(
+                                    binding.entryNameEdittext,
+                                    R.string.error_invalid_field_name
+                                ),
                                 value ?: return when (mTaskEntityModel.selectedItem.value?.type) {
                                     EntityType.Number -> invalidValue(binding.entryNumberInputLayout)
                                     else -> invalidValue(binding.entryYesnoInputLayout)
@@ -198,8 +212,7 @@ class TaskEntryDialogFragment : DialogFragment() {
         val timeFormatter = SimpleDateFormat.getTimeInstance()
         val currentTime = timeFormatter.format(calendar.time)
 
-        mTaskValuesModel.taskEntryDate.value = calendar.timeInMillis
-        mTaskValuesModel.taskEntryTime.value = calendar.timeInMillis
+        mTaskValuesModel.taskEntryDateTime.value = calendar.timeInMillis
 
         // From date
         binding.entryFromDateEdittext.setText(currentDate)
@@ -219,12 +232,12 @@ class TaskEntryDialogFragment : DialogFragment() {
             val datePicker = MaterialDatePicker.Builder.datePicker()
                 .setTitleText(R.string.entry_date_picker_dialog_title)
                 .setInputMode(MaterialDatePicker.INPUT_MODE_CALENDAR)
-                .setSelection(mTaskValuesModel.taskEntryDate.value)
+                .setSelection(mTaskValuesModel.taskEntryDateTime.value)
                 .build()
             datePicker.addOnPositiveButtonClickListener {
 
                 val setTime = Calendar.getInstance()
-                setTime.timeInMillis = mTaskValuesModel.taskEntryTime.value!!
+                setTime.timeInMillis = mTaskValuesModel.taskEntryDateTime.value!!
 
                 val dateNow = Calendar.getInstance()
                 dateNow.timeInMillis = it
@@ -233,7 +246,7 @@ class TaskEntryDialogFragment : DialogFragment() {
                 dateNow.set(Calendar.SECOND, 0)
                 dateNow.set(Calendar.MILLISECOND, 0)
 
-                mTaskValuesModel.taskEntryDate.value = dateNow.timeInMillis
+                mTaskValuesModel.taskEntryDateTime.value = dateNow.timeInMillis
 
                 binding.entryEventDateEdittext.setText(dateFormatter.format(dateNow.time))
 
@@ -250,7 +263,7 @@ class TaskEntryDialogFragment : DialogFragment() {
         binding.entryEventTimeEdittext.setOnClickListener {
 
             val savedTimeCalendar = Calendar.getInstance()
-            savedTimeCalendar.timeInMillis = mTaskValuesModel.taskEntryTime.value!!
+            savedTimeCalendar.timeInMillis = mTaskValuesModel.taskEntryDateTime.value!!
 
             val timePicker = MaterialTimePicker.Builder()
                 .setInputMode(MaterialTimePicker.INPUT_MODE_CLOCK)
@@ -266,13 +279,13 @@ class TaskEntryDialogFragment : DialogFragment() {
             timePicker.addOnPositiveButtonClickListener {
 
                 val timeNow = Calendar.getInstance()
-                timeNow.timeInMillis = mTaskValuesModel.taskEntryDate.value!!
+                timeNow.timeInMillis = mTaskValuesModel.taskEntryDateTime.value!!
                 timeNow.set(Calendar.HOUR_OF_DAY, timePicker.hour)
                 timeNow.set(Calendar.MINUTE, timePicker.minute)
                 timeNow.set(Calendar.SECOND, 0)
                 timeNow.set(Calendar.MILLISECOND, 0)
 
-                mTaskValuesModel.taskEntryTime.value = timeNow.timeInMillis
+                mTaskValuesModel.taskEntryDateTime.value = timeNow.timeInMillis
                 binding.entryEventTimeEdittext.setText(timeFormatter.format(timeNow.time))
 
                 if (DEBUG) {
