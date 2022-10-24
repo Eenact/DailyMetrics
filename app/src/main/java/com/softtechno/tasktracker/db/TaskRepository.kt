@@ -29,6 +29,8 @@ class TaskRepository {
 
     suspend fun getTaskEntity(taskId: Int): TaskEntity = database.taskEntitiesDao().get(taskId)
 
+    suspend fun containTask(taskName: String): Boolean = database.taskEntitiesDao().containTask(taskName)
+
     suspend fun insertTaskEntity(taskEntity: TaskEntity) = database.taskEntitiesDao().insertEntity(taskEntity)
 
     suspend fun updateTaskEntity(taskEntity: TaskEntity) = database.taskEntitiesDao().updateEntity(taskEntity)

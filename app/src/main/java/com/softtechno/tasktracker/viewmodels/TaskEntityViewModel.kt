@@ -8,6 +8,7 @@ import kotlinx.coroutines.launch
 
 class TaskEntityViewModel(private val repository: TaskRepository): ViewModel() {
 
+    var insertSuccessful = MutableLiveData<Boolean>()
     val selectedItem = MutableLiveData<TaskEntity>()
 
     val allEntries: LiveData<List<TaskEntity>> = repository.getAllTaskEntities().asLiveData()
@@ -15,7 +16,13 @@ class TaskEntityViewModel(private val repository: TaskRepository): ViewModel() {
     suspend fun get(taskId: Int) = repository.getTaskEntity(taskId)
 
     fun insert(entity: TaskEntity) = viewModelScope.launch {
-        repository.insertTaskEntity(entity)
+        if (repository.containTask(entity.name)) {
+            insertSuccessful.value = false
+        }
+        else {
+            repository.insertTaskEntity(entity)
+            insertSuccessful.value = true
+        }
     }
 
     fun update(entity: TaskEntity) = viewModelScope.launch {

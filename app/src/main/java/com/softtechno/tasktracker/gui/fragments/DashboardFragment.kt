@@ -5,11 +5,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.navigation.NavOptions
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
+import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.components.Legend.LegendForm
 import com.github.mikephil.charting.components.XAxis
@@ -38,7 +38,7 @@ import kotlin.math.max
 class DashboardFragment : Fragment() {
 
     private var mAxisXLabels: Map<Int, String> = mapOf()
-    private var mAxisXSelection: AxisXTypes = AxisXTypes.Week
+    private var mAxisXSelection: AxisXTypes = AxisXTypes.Day
 
     private var _binding: FragmentDashboardBinding? = null
     private val mTaskValuesModel: TaskValueViewModel by activityViewModels {
@@ -58,6 +58,20 @@ class DashboardFragment : Fragment() {
 
         initChartView()
 
+        binding.toggleButtons.check(binding.dayToggleButton.id)
+        binding.toggleButtons.addOnButtonCheckedListener { _, checkedId, isChecked ->
+            if (!isChecked) {
+                return@addOnButtonCheckedListener
+            }
+            mAxisXSelection = when(checkedId) {
+                R.id.dayToggleButton -> AxisXTypes.Day
+                R.id.weekToggleButton -> AxisXTypes.Week
+                R.id.monthToggleButton -> AxisXTypes.Month
+                else -> AxisXTypes.Year
+            }
+            mTaskValuesModel.allValues.value?.let { constructGraph(it, mAxisXSelection) }
+        }
+
         binding.buttonInsertEntry.setOnClickListener {
 //            val taskEntryDialogFragment = TaskEntryDialogFragment()
 //            if (isLargeDisplay) {
@@ -65,7 +79,7 @@ class DashboardFragment : Fragment() {
 //            }
             findNavController().navigate(R.id.action_DashboardFragment_to_TaskEntryFragment)
             activity?.actionBar?.setHomeAsUpIndicator(R.drawable.ic_close)
-            //supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_close)
+            (activity as AppCompatActivity).supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_close)
         }
 
         return binding.root
@@ -87,17 +101,17 @@ class DashboardFragment : Fragment() {
 
     private fun constructGraph(entries: Map<TaskEntity, TaskValue>, selection: AxisXTypes) {
 
-        val calendar = Calendar.getInstance()
-        calendar.set(Calendar.MILLISECOND, 0)
-        calendar.set(Calendar.SECOND, 0)
-        calendar.set(Calendar.MINUTE, 0)
-        calendar.set(Calendar.HOUR_OF_DAY, 0)
-        when (selection) {
-            AxisXTypes.Week -> calendar.add(Calendar.WEEK_OF_YEAR, -1)
-            AxisXTypes.Month -> calendar.add(Calendar.MONTH, -1)
-            AxisXTypes.Year -> calendar.add(Calendar.YEAR, -1)
-            AxisXTypes.Day -> {}
+        if(entries.isEmpty()) {
+            return
         }
+
+        val calendar = Calendar.getInstance()
+        calendar.add(when (selection) {
+            AxisXTypes.Week -> Calendar.WEEK_OF_YEAR
+            AxisXTypes.Month -> Calendar.MONTH
+            AxisXTypes.Year -> Calendar.YEAR
+            AxisXTypes.Day -> Calendar.DAY_OF_YEAR
+        }, -1)
 
         val endTime = calendar.timeInMillis
 
@@ -144,7 +158,8 @@ class DashboardFragment : Fragment() {
 
         binding.chartView.data = lineData
         binding.chartView.axisLeft.axisMaximum = maxYAxis.toFloat() + 1.0F
-        binding.chartView.notifyDataSetChanged()
+        binding.chartView.animateX(500, Easing.Linear)
+        binding.chartView.invalidate()
 
     }
 

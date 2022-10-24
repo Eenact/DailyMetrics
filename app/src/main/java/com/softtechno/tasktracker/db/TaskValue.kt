@@ -17,7 +17,7 @@ class TaskValue (
 
     @PrimaryKey val time: Long,
 
-    @ColumnInfo(name = "task_id", index = true) val task_id: Int,
+    @ColumnInfo(name = "task_id", index = true) val task_id: Long,
 
     @ColumnInfo(name = "value") val value: Long
 

@@ -9,6 +9,8 @@ import androidx.core.view.MenuProvider
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.datepicker.CalendarConstraints
+import com.google.android.material.datepicker.DateValidatorPointBackward
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
@@ -28,7 +30,6 @@ import java.util.*
 
 
 class TaskEntryDialogFragment : DialogFragment() {
-
 
     private val DEBUG: Boolean = false
     private val TAG: String = TaskEntryDialogFragment::class.java.name
@@ -233,6 +234,9 @@ class TaskEntryDialogFragment : DialogFragment() {
                 .setTitleText(R.string.entry_date_picker_dialog_title)
                 .setInputMode(MaterialDatePicker.INPUT_MODE_CALENDAR)
                 .setSelection(mTaskValuesModel.taskEntryDateTime.value)
+                .setCalendarConstraints(CalendarConstraints.Builder()
+                    .setValidator(DateValidatorPointBackward.now())
+                    .build())
                 .build()
             datePicker.addOnPositiveButtonClickListener {
 
@@ -251,7 +255,7 @@ class TaskEntryDialogFragment : DialogFragment() {
                 binding.entryEventDateEdittext.setText(dateFormatter.format(dateNow.time))
 
                 if (DEBUG) {
-                    Log.d(TAG, "Picked Date: ${it}")
+                    Log.d(TAG, "Picked Date: $it")
                 }
             }
             datePicker.show(requireActivity().supportFragmentManager, "event_date")

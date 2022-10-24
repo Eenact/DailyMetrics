@@ -11,8 +11,7 @@ import kotlinx.coroutines.launch
 class TaskValueViewModel(private val repository: TaskRepository): ViewModel() {
 
     val taskEnteredId = MutableLiveData<Int>()
-    val taskEntryTime = MutableLiveData<Long>()
-    val taskEntryDate = MutableLiveData<Long>()
+    val taskEntryDateTime = MutableLiveData<Long>()
     val taskEnteredValue = MutableLiveData<Long>()
 
     val allValues: LiveData<Map<TaskEntity, TaskValue>> = repository.getAllTaskValues().asLiveData()

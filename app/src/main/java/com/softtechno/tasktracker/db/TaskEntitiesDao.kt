@@ -12,13 +12,16 @@ interface TaskEntitiesDao {
     @Query("SELECT * FROM TaskEntity WHERE id = :taskId")
     suspend fun get(taskId: Int): TaskEntity
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Query("SELECT EXISTS(SELECT * FROM TaskEntity WHERE name = :taskName)")
+    suspend fun containTask(taskName: String): Boolean
+
+    @Insert(onConflict = OnConflictStrategy.ABORT)
     suspend fun insertEntity(entity: TaskEntity)
 
     @Update(entity = TaskEntity::class)
-    suspend fun updateEntity(entity: TaskEntity)
+    suspend fun updateEntity(vararg entity: TaskEntity)
 
     @Delete(entity = TaskEntity::class)
-    suspend fun deleteEntity(entity: TaskEntity)
+    suspend fun deleteEntity(vararg entity: TaskEntity)
 
 }

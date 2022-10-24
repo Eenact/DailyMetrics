@@ -9,8 +9,8 @@
 
     <string name="add">Add</string>
 
-    <string name="task_header_name">Name</string>
-    <string name="task_header_type">Type</string>
+    <string name="task_header_name">Name *</string>
+    <string name="task_header_type">Type *</string>
     <string name="task_header_unit">Unit</string>
     <string name="task_header_color">Color</string>
 
@@ -30,6 +30,7 @@
     <string name="error_field_required">Value required</string>
     <string name="error_invalid_date_time">Invalid date/time found</string>
     <string name="error_invalid_field_name">Invalid field name detected</string>
+    <string name="error_already_exists">Task already exists.</string>
 
     <array name="yes_no_array">
         <item>Yes</item>

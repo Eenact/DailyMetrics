@@ -16,19 +16,64 @@
                     android:layout_height="match_parent"
                     android:padding="24dp">
 
-                        <com.google.android.material.card.MaterialCardView
+                        <!-- Days selection toggle button -->
+                        <com.google.android.material.button.MaterialButtonToggleGroup
+                            app:singleSelection="true"
+                            android:id="@+id/toggleButtons"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                                <Button
+                                    android:id="@+id/dayToggleButton"
+                                    style="@style/Widget.App.Button.OutlinedButton.IconOnly"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:text="@string/toggle_day_button" />
+
+                                <Button
+                                    android:id="@+id/weekToggleButton"
+                                    style="@style/Widget.App.Button.OutlinedButton.IconOnly"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:text="@string/toggle_week_button" />
+
+                                <Button
+                                    android:id="@+id/monthToggleButton"
+                                    style="@style/Widget.App.Button.OutlinedButton.IconOnly"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:text="@string/toggle_month_button" />
+
+                                <Button
+                                    android:id="@+id/yearToggleButton"
+                                    style="@style/Widget.App.Button.OutlinedButton.IconOnly"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:text="@string/toggle_year_button" />
+                        </com.google.android.material.button.MaterialButtonToggleGroup>
+
+                        <!-- Dashboard chart view -->
+                        <com.google.android.material.card.MaterialCardView
                             style="?attr/materialCardViewElevatedStyle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="16dp"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" >
+                            app:layout_constraintTop_toBottomOf="@+id/toggleButtons">
 
                                 <com.github.mikephil.charting.charts.LineChart
+                                    android:id="@+id/chart_view"
                                     android:layout_width="match_parent"
-                                    android:layout_height="300dp"
-                                    android:id="@+id/chart_view"/>
+                                    android:layout_height="300dp" />
 
                         </com.google.android.material.card.MaterialCardView>
 

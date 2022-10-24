@@ -20,13 +20,13 @@ class AxisUtils {
 
                 AxisXTypes.Day -> {
                     for (day in 1..12) {
-                        weekLabelMap[selectedCalendar.get(Calendar.HOUR_OF_DAY)] =
+                        selectedCalendar.add(Calendar.HOUR_OF_DAY, 2)
+                        weekLabelMap[selectedCalendar.get(Calendar.DAY_OF_YEAR) * 100 + selectedCalendar.get(Calendar.HOUR_OF_DAY)] =
                             DateTimeUtils.axisLabelDay(
                                 selectedCalendar.get(
                                     Calendar.HOUR_OF_DAY
                                 )
                             )
-                        selectedCalendar.add(Calendar.HOUR_OF_DAY, 2)
                     }
                 }
 
@@ -43,26 +43,30 @@ class AxisUtils {
                 }
 
                 AxisXTypes.Month -> {
-                    /*for (day in 1..7) {
-                        weekLabelMap[selectedCalendar.get(Calendar.DAY_OF_MONTH)] =
+                    val now = Calendar.getInstance()
+                    for (day in 1..15) {
+                        selectedCalendar.add(Calendar.DAY_OF_YEAR, 2)
+                        if (selectedCalendar > now) {
+                            break
+                        }
+                        weekLabelMap[selectedCalendar.get(Calendar.DAY_OF_YEAR)] =
                             DateTimeUtils.axisLabelMonth(
                                 selectedCalendar.get(
                                     Calendar.DAY_OF_MONTH
                                 )
                             )
-                        selectedCalendar.add(Calendar.DAY_OF_MONTH, 1)
-                    }*/
+                    }
                 }
 
                 AxisXTypes.Year -> {
                     for (day in 1..12) {
+                        selectedCalendar.add(Calendar.MONTH, 1)
                         weekLabelMap[selectedCalendar.get(Calendar.MONTH)] =
-                            DateTimeUtils.axisLabelWeek(
+                            DateTimeUtils.axisLabelYear(
                                 selectedCalendar.get(
                                     Calendar.MONTH
                                 ), context
                             )
-                        selectedCalendar.add(Calendar.MONTH, 1)
                     }
                 }
 
@@ -78,9 +82,9 @@ class AxisUtils {
             calendar.timeInMillis = time
 
             return when (selection) {
-                AxisXTypes.Day -> calendar.get(Calendar.HOUR_OF_DAY)
+                AxisXTypes.Day -> ((calendar.get(Calendar.DAY_OF_YEAR) * 100) + calendar.get(Calendar.HOUR_OF_DAY))
                 AxisXTypes.Week -> calendar.get(Calendar.DAY_OF_YEAR)
-                AxisXTypes.Month -> calendar.get(Calendar.DAY_OF_MONTH)
+                AxisXTypes.Month -> calendar.get(Calendar.DAY_OF_YEAR)
                 AxisXTypes.Year -> calendar.get(Calendar.MONTH)
             }.toFloat()
 
