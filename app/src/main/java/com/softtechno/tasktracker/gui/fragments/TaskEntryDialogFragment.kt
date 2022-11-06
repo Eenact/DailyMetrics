@@ -107,7 +107,8 @@ class TaskEntryDialogFragment : DialogFragment() {
                                 value ?: return when (mTaskEntityModel.selectedItem.value?.type) {
                                     EntityType.Number -> invalidValue(binding.entryNumberInputLayout)
                                     else -> invalidValue(binding.entryYesnoInputLayout)
-                                }
+                                },
+                                binding.entryCommentEdittext.text.toString()
                             )
                         )
 
@@ -174,6 +175,7 @@ class TaskEntryDialogFragment : DialogFragment() {
                     .show()
             }
         }
+        binding.entryCommentInputLayout.visibility = View.VISIBLE
 
     }
 

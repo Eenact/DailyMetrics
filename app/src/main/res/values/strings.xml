@@ -16,6 +16,7 @@
 
     <string name="entry_number_title">Number</string>
     <string name="entry_yesno_title">Yes / No</string>
+    <string name="entry_comment_title">Comment</string>
 
     <string name="entry_start_date_title">From</string>
     <string name="entry_end_date_title">To</string>

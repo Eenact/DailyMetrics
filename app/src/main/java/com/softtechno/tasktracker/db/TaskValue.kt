@@ -19,6 +19,8 @@ class TaskValue (
 
     @ColumnInfo(name = "task_id", index = true) val task_id: Long,
 
-    @ColumnInfo(name = "value") val value: Long
+    @ColumnInfo(name = "value") val value: Long,
+
+    @ColumnInfo(name = "comments") val comments: String = ""
 
 )
