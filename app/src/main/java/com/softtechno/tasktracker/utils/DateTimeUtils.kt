@@ -21,6 +21,10 @@ class DateTimeUtils {
             return "${hour}h"
         }
 
+        fun axisLabelDate(day: Int, month: Int): String {
+            return "$day/$month"
+        }
+
         fun axisLabelWeek(day: Int, context: Context): String {
 
             return when (day) {

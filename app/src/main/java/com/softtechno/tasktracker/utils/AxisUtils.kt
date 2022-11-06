@@ -14,59 +14,83 @@ class AxisUtils {
             context: Context
         ): Map<Int, String> {
 
+            val countLabels = getGranularity(selection)
             val weekLabelMap: MutableMap<Int, String> = mutableMapOf()
 
             when (selection) {
 
                 AxisXTypes.Day -> {
-                    for (day in 1..12) {
-                        selectedCalendar.add(Calendar.HOUR_OF_DAY, 2)
-                        weekLabelMap[selectedCalendar.get(Calendar.DAY_OF_YEAR) * 100 + selectedCalendar.get(Calendar.HOUR_OF_DAY)] =
+                    selectedCalendar.set(Calendar.HOUR_OF_DAY, 0)
+                    for (day in 1..countLabels) {
+                        weekLabelMap[selectedCalendar.get(Calendar.DAY_OF_YEAR) * 100 + selectedCalendar.get(
+                            Calendar.HOUR_OF_DAY
+                        )] =
                             DateTimeUtils.axisLabelDay(
                                 selectedCalendar.get(
                                     Calendar.HOUR_OF_DAY
                                 )
                             )
+                        selectedCalendar.add(Calendar.HOUR_OF_DAY, 2)
                     }
                 }
 
                 AxisXTypes.Week -> {
-                    for (day in 1..7) {
-                        selectedCalendar.add(Calendar.DAY_OF_YEAR, 1)
+                    for (day in 1..countLabels) {
                         weekLabelMap[selectedCalendar.get(Calendar.DAY_OF_YEAR)] =
-                            DateTimeUtils.axisLabelWeek(
+                            DateTimeUtils.axisLabelDate(
                                 selectedCalendar.get(
-                                    Calendar.DAY_OF_WEEK
-                                ), context
+                                    Calendar.DAY_OF_MONTH
+                                ),
+                                selectedCalendar.get(
+                                    Calendar.MONTH
+                                )
                             )
+                        selectedCalendar.add(Calendar.DAY_OF_YEAR, -2)
                     }
                 }
 
                 AxisXTypes.Month -> {
-                    val now = Calendar.getInstance()
-                    for (day in 1..15) {
-                        selectedCalendar.add(Calendar.DAY_OF_YEAR, 2)
-                        if (selectedCalendar > now) {
-                            break
-                        }
+                    for (day in 1..countLabels) {
                         weekLabelMap[selectedCalendar.get(Calendar.DAY_OF_YEAR)] =
-                            DateTimeUtils.axisLabelMonth(
+                            DateTimeUtils.axisLabelDate(
                                 selectedCalendar.get(
                                     Calendar.DAY_OF_MONTH
+                                ),
+                                selectedCalendar.get(
+                                    Calendar.MONTH
                                 )
                             )
+                        selectedCalendar.add(Calendar.DAY_OF_YEAR, -6)
                     }
                 }
 
-                AxisXTypes.Year -> {
-                    for (day in 1..12) {
-                        selectedCalendar.add(Calendar.MONTH, 1)
-                        weekLabelMap[selectedCalendar.get(Calendar.MONTH)] =
-                            DateTimeUtils.axisLabelYear(
+                AxisXTypes.ThreeMonths -> {
+                    for (day in 1..countLabels) {
+                        weekLabelMap[selectedCalendar.get(Calendar.DAY_OF_YEAR)] =
+                            DateTimeUtils.axisLabelDate(
+                                selectedCalendar.get(
+                                    Calendar.DAY_OF_MONTH
+                                ),
                                 selectedCalendar.get(
                                     Calendar.MONTH
-                                ), context
+                                )
                             )
+                        selectedCalendar.add(Calendar.DAY_OF_YEAR, -18)
+                    }
+                }
+
+                AxisXTypes.SixMonths -> {
+                    for (day in 1..countLabels) {
+                        weekLabelMap[selectedCalendar.get(Calendar.DAY_OF_YEAR)] =
+                            DateTimeUtils.axisLabelDate(
+                                selectedCalendar.get(
+                                    Calendar.DAY_OF_MONTH
+                                ),
+                                selectedCalendar.get(
+                                    Calendar.MONTH
+                                )
+                            )
+                        selectedCalendar.add(Calendar.DAY_OF_YEAR, -36)
                     }
                 }
 
@@ -76,16 +100,29 @@ class AxisUtils {
 
         }
 
+        fun getGranularity(selection: AxisXTypes): Int {
+            return when (selection) {
+                AxisXTypes.Day -> 24 / 2
+                AxisXTypes.Week -> 4
+                AxisXTypes.Month -> 5
+                AxisXTypes.ThreeMonths -> 5
+                AxisXTypes.SixMonths -> 5
+            }
+        }
+
         fun getTimeAxisValue(time: Long, selection: AxisXTypes): Float {
 
             val calendar = Calendar.getInstance()
             calendar.timeInMillis = time
 
             return when (selection) {
-                AxisXTypes.Day -> ((calendar.get(Calendar.DAY_OF_YEAR) * 100) + calendar.get(Calendar.HOUR_OF_DAY))
+                AxisXTypes.Day -> ((calendar.get(Calendar.DAY_OF_YEAR) * 100) + calendar.get(
+                    Calendar.HOUR_OF_DAY
+                ))
                 AxisXTypes.Week -> calendar.get(Calendar.DAY_OF_YEAR)
                 AxisXTypes.Month -> calendar.get(Calendar.DAY_OF_YEAR)
-                AxisXTypes.Year -> calendar.get(Calendar.MONTH)
+                AxisXTypes.ThreeMonths -> calendar.get(Calendar.DAY_OF_YEAR)
+                AxisXTypes.SixMonths -> calendar.get(Calendar.DAY_OF_YEAR)
             }.toFloat()
 
         }

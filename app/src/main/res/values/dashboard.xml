@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="toggle_day_button">24h</string>
-    <string name="toggle_week_button">1W</string>
-    <string name="toggle_month_button">1M</string>
-    <string name="toggle_3_month_button">3M</string>
-    <string name="toggle_year_button">1Y</string>
+    <string name="toggle_day_button">1D</string>
+    <string name="toggle_7_days_button">1W</string>
+    <string name="toggle_30_days_button">1M</string>
+    <string name="toggle_90_days_button">3M</string>
+    <string name="toggle_180_days_button">6M</string>
 
     <string name="short_saturday">Sat</string>
     <string name="short_sunday">Sun</string>

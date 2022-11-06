@@ -38,7 +38,8 @@ import kotlin.math.max
 class DashboardFragment : Fragment() {
 
     private var mAxisXLabels: Map<Int, String> = mapOf()
-    private var mAxisXSelection: AxisXTypes = AxisXTypes.Day
+    private var mAxisXSelection: AxisXTypes = AxisXTypes.Week
+    private var mDashboardCalendar: Calendar = Calendar.getInstance()
 
     private var _binding: FragmentDashboardBinding? = null
     private val mTaskValuesModel: TaskValueViewModel by activityViewModels {
@@ -58,18 +59,19 @@ class DashboardFragment : Fragment() {
 
         initChartView()
 
-        binding.toggleButtons.check(binding.dayToggleButton.id)
+        binding.toggleButtons.check(binding.weekToggleButton.id)
         binding.toggleButtons.addOnButtonCheckedListener { _, checkedId, isChecked ->
             if (!isChecked) {
                 return@addOnButtonCheckedListener
             }
-            mAxisXSelection = when(checkedId) {
+            mAxisXSelection = when (checkedId) {
                 R.id.dayToggleButton -> AxisXTypes.Day
                 R.id.weekToggleButton -> AxisXTypes.Week
                 R.id.monthToggleButton -> AxisXTypes.Month
-                else -> AxisXTypes.Year
+                R.id.days90ToggleButton -> AxisXTypes.ThreeMonths
+                else -> AxisXTypes.SixMonths
             }
-            mTaskValuesModel.allValues.value?.let { constructGraph(it, mAxisXSelection) }
+            mTaskValuesModel.allValues.value?.let { constructGraph(it, mAxisXSelection, -1, true) }
         }
 
         binding.buttonInsertEntry.setOnClickListener {
@@ -82,6 +84,13 @@ class DashboardFragment : Fragment() {
             (activity as AppCompatActivity).supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_close)
         }
 
+        binding.leftArrowButton.setOnClickListener {
+            mTaskValuesModel.allValues.value?.let { constructGraph(it, mAxisXSelection, -1, false) }
+        }
+        binding.rightArrowButton.setOnClickListener {
+            mTaskValuesModel.allValues.value?.let { constructGraph(it, mAxisXSelection, 1, false) }
+        }
+
         return binding.root
 
     }
@@ -90,7 +99,7 @@ class DashboardFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         mTaskValuesModel.allValues.observe(viewLifecycleOwner) { entries ->
-            constructGraph(entries, mAxisXSelection)
+            constructGraph(entries, mAxisXSelection, -1, true)
         }
     }
 
@@ -99,24 +108,45 @@ class DashboardFragment : Fragment() {
         _binding = null
     }
 
-    private fun constructGraph(entries: Map<TaskEntity, TaskValue>, selection: AxisXTypes) {
+    private fun constructGraph(
+        entries: Map<TaskEntity, TaskValue>,
+        selection: AxisXTypes,
+        paging: Int,
+        shouldResetPage: Boolean
+    ) {
 
-        if(entries.isEmpty()) {
+        if (entries.isEmpty()) {
             return
         }
 
-        val calendar = Calendar.getInstance()
-        calendar.add(when (selection) {
-            AxisXTypes.Week -> Calendar.WEEK_OF_YEAR
-            AxisXTypes.Month -> Calendar.MONTH
-            AxisXTypes.Year -> Calendar.YEAR
-            AxisXTypes.Day -> Calendar.DAY_OF_YEAR
-        }, -1)
-
-        val endTime = calendar.timeInMillis
+        if (shouldResetPage) {
+            mDashboardCalendar = Calendar.getInstance()
+        }
 
         // Change the time axis values
-        setTimeAxisLabels(calendar, selection)
+        setTimeAxisLabels(mDashboardCalendar.clone() as Calendar, selection)
+
+        mDashboardCalendar.add(
+            Calendar.DAY_OF_YEAR,
+            (when (selection) {
+                AxisXTypes.Day -> 0
+                AxisXTypes.Week -> 7
+                AxisXTypes.Month -> 30
+                AxisXTypes.ThreeMonths -> 90
+                AxisXTypes.SixMonths -> 180
+            } * paging)
+        )
+
+        if (selection == AxisXTypes.Day) {
+            mDashboardCalendar.set(Calendar.HOUR_OF_DAY, 0)
+        } else {
+            mDashboardCalendar.set(
+                Calendar.HOUR_OF_DAY,
+                Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
+            )
+        }
+
+        val endTime = mDashboardCalendar.timeInMillis
 
         var maxYAxis: Long = -1
         var taskId: TaskEntity? = null
@@ -190,9 +220,10 @@ class DashboardFragment : Fragment() {
                     ?: mAxisXLabels.values.toList()[value.toInt() % mAxisXLabels.size]
             }
         }
-        xAxis.axisMinimum = mAxisXLabels.keys.min().toFloat()
-        xAxis.axisMaximum = mAxisXLabels.keys.max().toFloat()
+        xAxis.axisMinimum = (mAxisXLabels.keys.minOrNull() ?: 0).toFloat()
+        xAxis.axisMaximum = (mAxisXLabels.keys.maxOrNull() ?: 0).toFloat()
         xAxis.setLabelCount(mAxisXLabels.size, true)
+        xAxis.granularity = AxisUtils.getGranularity(selection).toFloat()
     }
 
     private fun initChartView() {
