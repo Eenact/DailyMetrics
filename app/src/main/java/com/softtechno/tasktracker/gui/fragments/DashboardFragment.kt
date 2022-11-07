@@ -9,6 +9,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.components.Legend.LegendForm
@@ -21,6 +23,8 @@ import com.github.mikephil.charting.formatter.ValueFormatter
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import com.github.mikephil.charting.utils.ColorTemplate
 import com.softtechno.tasktracker.R
+import com.softtechno.tasktracker.adapter.DashboardListAdapter
+import com.softtechno.tasktracker.adapter.DashboardListData
 import com.softtechno.tasktracker.databinding.FragmentDashboardBinding
 import com.softtechno.tasktracker.db.TaskEntity
 import com.softtechno.tasktracker.db.TaskValue
@@ -28,6 +32,9 @@ import com.softtechno.tasktracker.enums.AxisXTypes
 import com.softtechno.tasktracker.utils.AxisUtils
 import com.softtechno.tasktracker.viewmodels.TaskValueViewModel
 import com.softtechno.tasktracker.viewmodels.TaskViewViewModelFactory
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import java.util.*
 import kotlin.math.max
 
@@ -40,6 +47,8 @@ class DashboardFragment : Fragment() {
     private var mAxisXLabels: Map<Int, String> = mapOf()
     private var mAxisXSelection: AxisXTypes = AxisXTypes.Week
     private var mDashboardCalendar: Calendar = Calendar.getInstance()
+
+    private var mRecyclerListAdapter: DashboardListAdapter? = null
 
     private var _binding: FragmentDashboardBinding? = null
     private val mTaskValuesModel: TaskValueViewModel by activityViewModels {
@@ -91,6 +100,19 @@ class DashboardFragment : Fragment() {
             mTaskValuesModel.allValues.value?.let { constructGraph(it, mAxisXSelection, 1, false) }
         }
 
+        val linearLayoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        mRecyclerListAdapter = DashboardListAdapter(mutableListOf())
+        binding.dashboardRecyclerView.adapter = mRecyclerListAdapter
+        binding.dashboardRecyclerView.layoutManager = linearLayoutManager
+        binding.dashboardRecyclerView.addItemDecoration(
+            DividerItemDecoration(
+                requireContext(),
+                linearLayoutManager.orientation
+            )
+        )
+
+
         return binding.root
 
     }
@@ -100,12 +122,46 @@ class DashboardFragment : Fragment() {
 
         mTaskValuesModel.allValues.observe(viewLifecycleOwner) { entries ->
             constructGraph(entries, mAxisXSelection, -1, true)
+            runBlocking {
+                launch(Dispatchers.Default) {
+
+                    updateListViewAsync(entries)
+                }
+            }
         }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun updateListViewAsync(entries: Map<TaskEntity, TaskValue>) {
+
+        val dateValues = mutableMapOf<Long, MutableList<DashboardListData>>()
+        for (entityKey in entries.keys) {
+
+            val entityValue = entries[entityKey]
+            val calendar = Calendar.getInstance()
+            calendar.timeInMillis = entityValue?.time ?: continue
+
+            val date =
+                "${calendar[Calendar.YEAR]}.${calendar[Calendar.MONTH]}.${calendar[Calendar.DAY_OF_MONTH]}"
+            val time: Long =
+                ((calendar[Calendar.YEAR] * 100 + calendar[Calendar.MONTH]) * 100 + calendar[Calendar.DAY_OF_MONTH]).toLong()
+            if (dateValues[time] != null) {
+                dateValues[time]?.add(DashboardListData(false, null, entityValue, entityKey))
+            } else {
+                val entryList = mutableListOf<DashboardListData>()
+                entryList.add(DashboardListData(true, date, null, null))
+                entryList.add(DashboardListData(false, null, entityValue, entityKey))
+                dateValues[time] = entryList
+            }
+
+        }
+
+        mRecyclerListAdapter?.updateItems(dateValues.toSortedMap(compareByDescending { it }).values.flatten())
+        binding.dashboardRecyclerView.invalidate()
     }
 
     private fun constructGraph(

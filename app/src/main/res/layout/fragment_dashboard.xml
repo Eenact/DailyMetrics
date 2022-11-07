@@ -70,11 +70,12 @@
 
             <!-- Dashboard chart view -->
             <com.google.android.material.card.MaterialCardView
+                android:id="@+id/dashboardMainChart"
                 style="?attr/materialCardViewElevatedStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/dashboardRecyclerView"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/toggleButtons">
@@ -87,30 +88,40 @@
                     <com.github.mikephil.charting.charts.LineChart
                         android:id="@+id/chart_view"
                         android:layout_width="match_parent"
-                        android:layout_height="300dp"/>
+                        android:layout_height="260dp" />
 
                     <Button
                         android:id="@+id/leftArrowButton"
                         style="?attr/materialIconButtonStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        app:icon="@drawable/ic_left_arrow"
-                        android:layout_centerVertical="true"
                         android:layout_alignParentLeft="true"
-                        android:visibility="gone"/>
+                        android:layout_centerVertical="true"
+                        android:visibility="gone"
+                        app:icon="@drawable/ic_left_arrow" />
 
                     <Button
                         android:id="@+id/rightArrowButton"
                         style="?attr/materialIconButtonStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        app:icon="@drawable/ic_right_arrow"
-                        android:layout_centerVertical="true"
                         android:layout_alignParentRight="true"
-                        android:visibility="gone" />
+                        android:layout_centerVertical="true"
+                        android:visibility="gone"
+                        app:icon="@drawable/ic_right_arrow" />
 
                 </RelativeLayout>
             </com.google.android.material.card.MaterialCardView>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/dashboardRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/dashboardMainChart" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
