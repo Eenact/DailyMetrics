@@ -3,5 +3,5 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
-    <color name="full_screen_dialog_background">#fffffbfe</color>
+    <color name="device_theme_color">#fffffbfe</color>
 </resources>

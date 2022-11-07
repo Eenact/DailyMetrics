@@ -299,7 +299,7 @@ class DashboardFragment : Fragment() {
         binding.chartView.isHighlightPerDragEnabled = true
 
         // set an alternative background color
-        binding.chartView.setBackgroundColor(Color.WHITE)
+        binding.chartView.setBackgroundColor(resources.getColor(R.color.device_theme_color))
 
         // get the legend (only possible after setting data)
         binding.chartView.legend.isEnabled = true

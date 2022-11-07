@@ -1,5 +1,6 @@
 package com.softtechno.tasktracker.adapter
 
+import android.graphics.Typeface
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.softtechno.tasktracker.R
 import com.softtechno.tasktracker.db.TaskEntity
 import com.softtechno.tasktracker.db.TaskValue
+import com.softtechno.tasktracker.enums.Units
 
 data class DashboardListData(
     val isHeader: Boolean,
@@ -46,11 +48,18 @@ class DashboardListAdapter(private var dataSet: MutableList<DashboardListData>) 
         val data = dataSet[position]
         if (data.isHeader) {
             holder.name.text = data.headerString
+            holder.name.typeface = Typeface.DEFAULT_BOLD
         } else {
             holder.name.text = data.entity?.name
-            holder.unit.text = data.entity?.unit?.name ?: ""
             holder.value.text = data.entryValue?.value.toString()
-            holder.comment.text = data.entryValue?.comments ?: ""
+            if (data.entity?.unit != null && data.entity.unit != Units.Other) {
+                holder.unit.visibility = View.VISIBLE
+                holder.unit.text = data.entity.unit.name
+            }
+            if (!data.entryValue?.comments.isNullOrEmpty()) {
+                holder.comment.visibility = View.VISIBLE
+                holder.comment.text = data.entryValue?.comments ?: ""
+            }
         }
 
     }
