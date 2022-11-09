@@ -146,7 +146,7 @@ class DashboardFragment : Fragment() {
             calendar.timeInMillis = entityValue?.time ?: continue
 
             val date =
-                "${calendar[Calendar.YEAR]}.${calendar[Calendar.MONTH]}.${calendar[Calendar.DAY_OF_MONTH]}"
+                "${calendar[Calendar.YEAR]}.${calendar[Calendar.MONTH]+1}.${calendar[Calendar.DAY_OF_MONTH]}"
             val time: Long =
                 ((calendar[Calendar.YEAR] * 100 + calendar[Calendar.MONTH]) * 100 + calendar[Calendar.DAY_OF_MONTH]).toLong()
             if (dateValues[time] != null) {

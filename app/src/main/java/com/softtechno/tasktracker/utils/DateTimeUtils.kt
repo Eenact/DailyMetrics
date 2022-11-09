@@ -22,7 +22,7 @@ class DateTimeUtils {
         }
 
         fun axisLabelDate(day: Int, month: Int): String {
-            return "$day/$month"
+            return "$day/${month+1}"
         }
 
         fun axisLabelWeek(day: Int, context: Context): String {

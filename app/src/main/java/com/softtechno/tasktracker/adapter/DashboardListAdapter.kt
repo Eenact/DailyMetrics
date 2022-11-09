@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.softtechno.tasktracker.R
 import com.softtechno.tasktracker.db.TaskEntity
 import com.softtechno.tasktracker.db.TaskValue
+import com.softtechno.tasktracker.enums.EntityType
 import com.softtechno.tasktracker.enums.Units
 
 data class DashboardListData(
@@ -51,7 +52,10 @@ class DashboardListAdapter(private var dataSet: MutableList<DashboardListData>) 
             holder.name.typeface = Typeface.DEFAULT_BOLD
         } else {
             holder.name.text = data.entity?.name
-            holder.value.text = data.entryValue?.value.toString()
+            holder.value.text = when(data.entity?.type) {
+                EntityType.YesNo -> if ((data.entryValue?.value?.toInt() ?: 0) == 1) "True" else "False"
+                else -> data.entryValue?.value.toString()
+            }
             if (data.entity?.unit != null && data.entity.unit != Units.Other) {
                 holder.unit.visibility = View.VISIBLE
                 holder.unit.text = data.entity.unit.name
