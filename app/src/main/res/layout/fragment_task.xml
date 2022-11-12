@@ -15,32 +15,32 @@
             android:id="@+id/task_name_input_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/task_header_name"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
+            android:hint="@string/task_header_name"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/task_name_edittext"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/task_name_edittext"
-                android:inputType="textCapSentences"/>
+                android:inputType="textCapSentences" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/task_type_input_layout"
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/task_header_type"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
+            android:hint="@string/task_header_type"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/task_name_input_layout"
-            style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
+            app:layout_constraintTop_toBottomOf="@+id/task_name_input_layout">
 
             <AutoCompleteTextView
                 android:id="@+id/task_type_edittext"
@@ -52,15 +52,16 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/task_units_input_layout"
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/task_header_unit"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
+            android:enabled="false"
+            android:hint="@string/task_header_unit"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/task_type_input_layout"
-            style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
+            app:layout_constraintTop_toBottomOf="@+id/task_type_input_layout">
 
             <AutoCompleteTextView
                 android:id="@+id/task_units_edittext"
@@ -71,28 +72,39 @@
         </com.google.android.material.textfield.TextInputLayout>
 
 
-        <!--<Button
-            android:layout_width="wrap_content"
+        <Button
+            android:id="@+id/task_color_input_button"
+            style="@style/Widget.Material3.Button.OutlinedButton.Icon"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
+            android:gravity="start"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp"
             android:text="@string/task_header_color"
-            app:icon="@color/black"
-            app:layout_constraintStart_toStartOf="parent"
-            style="@style/Widget.Material3.Button.TextButton.Icon"
-            app:layout_constraintTop_toBottomOf="@+id/task_units_input_layout" />
--->
-
-        <Button
-            android:text="@string/add"
-            android:id="@+id/button_add"
-            android:layout_marginTop="16dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:textAppearance="?attr/textAppearanceBodyLarge"
+            android:textColor="?attr/colorOnSurfaceVariant"
+            app:icon="@color/legend_red"
+            app:iconGravity="end"
+            app:iconSize="20dp"
+            app:iconTint="@color/legend_red"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/task_units_input_layout" />
+            app:layout_constraintTop_toBottomOf="@+id/task_units_input_layout"
+            app:shapeAppearance="?attr/shapeAppearanceSmallComponent"
+            app:strokeColor="?attr/colorOutline" />
+
+        <Button
+            android:id="@+id/button_add"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/add"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/task_color_input_button" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>

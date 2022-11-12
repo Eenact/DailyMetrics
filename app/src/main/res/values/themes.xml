@@ -1,4 +1,4 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <!-- Base application theme. -->
     <style name="Base.Theme.TaskTracker" parent="Theme.Material3.Light.NoActionBar">
         <!-- Customize your light theme here. -->
@@ -35,5 +35,14 @@
         <item name="android:minWidth">24dp</item>
         <item name="android:minHeight">24dp</item>
         <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="ThemeOverlay.App.MaterialAlertDialog" parent="ThemeOverlay.Material3.MaterialAlertDialog">
+        <item name="buttonBarPositiveButtonStyle">@style/Widget.App.Button</item>
+        <item name="buttonBarNegativeButtonStyle">@style/Widget.App.Button</item>
+    </style>
+
+    <style name="Widget.App.Button" parent="Widget.Material3.Button.TextButton.Dialog">
+        <item name="android:textColor">@color/button_text</item>
     </style>
 </resources>

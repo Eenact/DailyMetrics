@@ -4,6 +4,7 @@ import android.graphics.Typeface
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.softtechno.tasktracker.R
@@ -11,6 +12,8 @@ import com.softtechno.tasktracker.db.TaskEntity
 import com.softtechno.tasktracker.db.TaskValue
 import com.softtechno.tasktracker.enums.EntityType
 import com.softtechno.tasktracker.enums.Units
+import java.text.DateFormat
+import java.text.SimpleDateFormat
 
 data class DashboardListData(
     val isHeader: Boolean,
@@ -22,18 +25,23 @@ data class DashboardListData(
 class DashboardListAdapter(private var dataSet: MutableList<DashboardListData>) :
     RecyclerView.Adapter<DashboardListAdapter.ViewHolder>() {
 
+    private val dateFormatter: DateFormat = SimpleDateFormat.getDateInstance()
+    private val timeFormatter: DateFormat = SimpleDateFormat.getTimeInstance()
+
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
+        val time: TextView
         val name: TextView
-        val unit: TextView
         val value: TextView
         val comment: TextView
+        val itemsLayout: LinearLayout
 
         init {
+            time = view.findViewById(R.id.itemDate)
             name = view.findViewById(R.id.itemName)
-            unit = view.findViewById(R.id.itemUnit)
             value = view.findViewById(R.id.itemValue)
             comment = view.findViewById(R.id.itemComment)
+            itemsLayout = view.findViewById(R.id.itemLayout)
         }
 
     }
@@ -48,18 +56,30 @@ class DashboardListAdapter(private var dataSet: MutableList<DashboardListData>) 
 
         val data = dataSet[position]
         if (data.isHeader) {
-            holder.name.text = data.headerString
-            holder.name.typeface = Typeface.DEFAULT_BOLD
+            holder.time.text = data.headerString
+            holder.time.typeface = Typeface.DEFAULT_BOLD
+            holder.itemsLayout.visibility = View.GONE
         } else {
+
+            // Set date time
+            val date = dateFormatter.format(data.entryValue?.time)
+            val time = timeFormatter.format(data.entryValue?.time)
+            holder.time.text =
+                holder.time.resources.getString(R.string.dashboard_item_placeholder, date, time)
             holder.name.text = data.entity?.name
-            holder.value.text = when(data.entity?.type) {
-                EntityType.YesNo -> if ((data.entryValue?.value?.toInt() ?: 0) == 1) "True" else "False"
+
+            // Set value with unit
+            val value = when (data.entity?.type) {
+                EntityType.YesNo -> if ((data.entryValue?.value?.toInt()
+                        ?: 0) == 1
+                ) "True" else "False"
                 else -> data.entryValue?.value.toString()
             }
-            if (data.entity?.unit != null && data.entity.unit != Units.Other) {
-                holder.unit.visibility = View.VISIBLE
-                holder.unit.text = data.entity.unit.name
-            }
+            val unit =
+                if (data.entity?.unit != null && data.entity.unit != Units.Other) data.entity.unit.name else ""
+            holder.value.text =
+                holder.value.resources.getString(R.string.dashboard_item_placeholder, value, unit)
+
             if (!data.entryValue?.comments.isNullOrEmpty()) {
                 holder.comment.visibility = View.VISIBLE
                 holder.comment.text = data.entryValue?.comments ?: ""

@@ -8,11 +8,16 @@
     <string name="task_entry_fragment_label">Task value</string>
 
     <string name="add">Add</string>
+    <string name="cancel">Cancel</string>
+    <string name="ok">Ok</string>
+
+    <string name="dialog_color_pick_title">Pick legend color</string>
+    <string name="dialog_color_pick_random">Generate random</string>
 
     <string name="task_header_name">Name *</string>
     <string name="task_header_type">Type *</string>
     <string name="task_header_unit">Unit</string>
-    <string name="task_header_color">Color</string>
+    <string name="task_header_color">Legend Color</string>
 
     <string name="entry_number_title">Number</string>
     <string name="entry_yesno_title">Yes / No</string>

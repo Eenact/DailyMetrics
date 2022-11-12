@@ -1,4 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="device_theme_color">#ff1c1b1f</color>
+
+    <color name="button_text">#ffffff</color>
+    <color name="button_background">#fffffbfe</color>
+
+    <!-- Dashboard chart colors -->
+    <color name="chart_legend_text">#FFFFFFFF</color>
+    <color name="chart_xaxis_labels">#FFFFFFFF</color>
+    <color name="chart_yaxis_labels">#FFFFFFFF</color>
 </resources>

@@ -162,13 +162,13 @@ class TaskEntryDialogFragment : DialogFragment() {
                 binding.entryYesnoInputLayout.visibility = View.GONE
                 binding.entryToFromLayout.visibility = View.GONE
             }
-            EntityType.StartEndDate -> {
+            /*EntityType.StartEndDate -> {
                 binding.entryToFromLayout.visibility = View.VISIBLE
 
                 binding.entryDateLayout.visibility = View.GONE
                 binding.entryYesnoInputLayout.visibility = View.GONE
                 binding.entryNumberInputLayout.visibility = View.GONE
-            }
+            }*/
             else -> {
                 Snackbar.make(view, "Unknown type found.", Snackbar.LENGTH_SHORT)
                     .setAnchorView(binding.root)
@@ -236,9 +236,11 @@ class TaskEntryDialogFragment : DialogFragment() {
                 .setTitleText(R.string.entry_date_picker_dialog_title)
                 .setInputMode(MaterialDatePicker.INPUT_MODE_CALENDAR)
                 .setSelection(mTaskValuesModel.taskEntryDateTime.value)
-                .setCalendarConstraints(CalendarConstraints.Builder()
-                    .setValidator(DateValidatorPointBackward.now())
-                    .build())
+                .setCalendarConstraints(
+                    CalendarConstraints.Builder()
+                        .setValidator(DateValidatorPointBackward.now())
+                        .build()
+                )
                 .build()
             datePicker.addOnPositiveButtonClickListener {
 

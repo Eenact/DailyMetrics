@@ -4,9 +4,9 @@ enum class EntityType(private val entity: String) {
 
     YesNo("Yes/No"),
 
-    Number("Number"),
+    Number("Number")/*,
 
-    StartEndDate("Start - End Date");
+    StartEndDate("Start - End Date")*/;
 
     override fun toString(): String {
         return entity
@@ -16,8 +16,8 @@ enum class EntityType(private val entity: String) {
         fun fromString(entity: String): EntityType {
             return when (entity) {
                 YesNo.entity -> YesNo
-                Number.entity -> Number
-                else -> StartEndDate
+                else -> Number
+                /*else -> StartEndDate*/
             }
         }
     }

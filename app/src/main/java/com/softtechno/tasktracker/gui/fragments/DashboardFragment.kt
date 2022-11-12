@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -21,7 +22,6 @@ import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.ValueFormatter
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
-import com.github.mikephil.charting.utils.ColorTemplate
 import com.softtechno.tasktracker.R
 import com.softtechno.tasktracker.adapter.DashboardListAdapter
 import com.softtechno.tasktracker.adapter.DashboardListData
@@ -32,9 +32,6 @@ import com.softtechno.tasktracker.enums.AxisXTypes
 import com.softtechno.tasktracker.utils.AxisUtils
 import com.softtechno.tasktracker.viewmodels.TaskValueViewModel
 import com.softtechno.tasktracker.viewmodels.TaskViewViewModelFactory
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import java.util.*
 import kotlin.math.max
 
@@ -122,12 +119,7 @@ class DashboardFragment : Fragment() {
 
         mTaskValuesModel.allValues.observe(viewLifecycleOwner) { entries ->
             constructGraph(entries, mAxisXSelection, -1, true)
-            runBlocking {
-                launch(Dispatchers.Default) {
-
-                    updateListViewAsync(entries)
-                }
-            }
+            updateListViewAsync(entries)
         }
     }
 
@@ -138,30 +130,17 @@ class DashboardFragment : Fragment() {
 
     private fun updateListViewAsync(entries: Map<TaskEntity, TaskValue>) {
 
-        val dateValues = mutableMapOf<Long, MutableList<DashboardListData>>()
+        val dateValues = mutableListOf<DashboardListData>()
         for (entityKey in entries.keys) {
 
             val entityValue = entries[entityKey]
-            val calendar = Calendar.getInstance()
-            calendar.timeInMillis = entityValue?.time ?: continue
 
-            val date =
-                "${calendar[Calendar.YEAR]}.${calendar[Calendar.MONTH]+1}.${calendar[Calendar.DAY_OF_MONTH]}"
-            val time: Long =
-                ((calendar[Calendar.YEAR] * 100 + calendar[Calendar.MONTH]) * 100 + calendar[Calendar.DAY_OF_MONTH]).toLong()
-            if (dateValues[time] != null) {
-                dateValues[time]?.add(DashboardListData(false, null, entityValue, entityKey))
-            } else {
-                val entryList = mutableListOf<DashboardListData>()
-                entryList.add(DashboardListData(true, date, null, null))
-                entryList.add(DashboardListData(false, null, entityValue, entityKey))
-                dateValues[time] = entryList
-            }
+            dateValues.add(DashboardListData(false, null, entityValue, entityKey))
 
         }
 
-        mRecyclerListAdapter?.updateItems(dateValues.toSortedMap(compareByDescending { it }).values.flatten())
-        binding.dashboardRecyclerView.invalidate()
+        mRecyclerListAdapter?.updateItems(dateValues.sortedByDescending { it.entryValue?.time })
+        mRecyclerListAdapter?.notifyDataSetChanged()
     }
 
     private fun constructGraph(
@@ -299,7 +278,13 @@ class DashboardFragment : Fragment() {
         binding.chartView.isHighlightPerDragEnabled = true
 
         // set an alternative background color
-        binding.chartView.setBackgroundColor(resources.getColor(R.color.device_theme_color))
+        binding.chartView.setBackgroundColor(
+            ResourcesCompat.getColor(
+                resources,
+                R.color.device_theme_color,
+                null
+            )
+        )
 
         // get the legend (only possible after setting data)
         binding.chartView.legend.isEnabled = true
@@ -307,16 +292,15 @@ class DashboardFragment : Fragment() {
         val xAxis: XAxis = binding.chartView.xAxis
         xAxis.position = XAxis.XAxisPosition.BOTTOM
 //        xAxis.textSize = 10f
-        xAxis.textColor = Color.WHITE
         xAxis.setDrawAxisLine(false)
         xAxis.setDrawGridLines(true)
-        xAxis.textColor = Color.rgb(255, 192, 56)
+        xAxis.textColor = ResourcesCompat.getColor(resources, R.color.chart_xaxis_labels, null)
         xAxis.setCenterAxisLabels(false)
         xAxis.granularity = 1f // one hour
 
         val leftAxis: YAxis = binding.chartView.axisLeft
         leftAxis.setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART)
-        leftAxis.textColor = ColorTemplate.getHoloBlue()
+        leftAxis.textColor = ResourcesCompat.getColor(resources, R.color.chart_yaxis_labels, null)
         leftAxis.setDrawGridLines(true)
         leftAxis.isGranularityEnabled = true
         leftAxis.axisMinimum = -0.2f
@@ -329,6 +313,7 @@ class DashboardFragment : Fragment() {
         l.verticalAlignment = Legend.LegendVerticalAlignment.BOTTOM
         l.horizontalAlignment = Legend.LegendHorizontalAlignment.LEFT
         l.orientation = Legend.LegendOrientation.HORIZONTAL
+        l.textColor = ResourcesCompat.getColor(resources, R.color.chart_legend_text, null)
         l.setDrawInside(false)
         l.form = LegendForm.SQUARE
         l.formSize = 9f

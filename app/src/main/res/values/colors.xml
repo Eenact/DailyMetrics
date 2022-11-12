@@ -8,8 +8,18 @@
     <color name="colorPrimaryDark">#29434e</color>
     <color name="colorPrimaryText">#ffffff</color>
 
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="white">#FFFFFF</color>
+    <color name="theme_white">#fffffbfe</color>
 
     <color name="device_theme_color">#fffffbfe</color>
+
+    <color name="button_text">#000000</color>
+    <color name="button_background">#ff1c1b1f</color>
+
+    <!-- Dashboard chart colors -->
+    <color name="chart_legend_text">#000000</color>
+    <color name="chart_xaxis_labels">#000000</color>
+    <color name="chart_yaxis_labels">#000000</color>
+    <color name="list_datetime_text">#9e9e9e</color>
 </resources>
