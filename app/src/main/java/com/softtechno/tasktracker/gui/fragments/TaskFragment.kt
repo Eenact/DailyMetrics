@@ -92,7 +92,7 @@ class TaskFragment : Fragment() {
         // Observer of insert result
         mTaskEntityModel?.insertSuccessful?.observe(viewLifecycleOwner) { successful ->
             if (successful) {
-                findNavController().navigate(R.id.action_TaskFragment_to_DashboardFragment)
+                findNavController().navigate(R.id.action_TaskFragment_to_TaskManagerFragment)
             } else {
                 binding.taskNameInputLayout.error = getString(R.string.error_already_exists)
             }

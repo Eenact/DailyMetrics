@@ -12,8 +12,8 @@
         tools:layout="@layout/fragment_dashboard">
 
         <action
-            android:id="@+id/action_DashboardFragment_to_TaskFragment"
-            app:destination="@id/TaskFragment"
+            android:id="@+id/action_DashboardFragment_to_TaskManagerFragment"
+            app:destination="@id/TaskManagerFragment"
             app:popUpToSaveState="true"
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim"
@@ -30,15 +30,40 @@
             app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
     </fragment>
     <fragment
+        android:id="@+id/TaskManagerFragment"
+        android:name="com.softtechno.tasktracker.gui.fragments.TaskManagerFragment"
+        android:label="@string/task_manager_fragment_label"
+        tools:layout="@layout/fragment_task_manager">
+
+        <action
+            android:id="@+id/action_TaskManagerFragment_to_DashboardFragment"
+            app:destination="@id/DashboardFragment"
+            app:popUpTo="@+id/DashboardFragment"
+            app:popUpToInclusive="true"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
+
+        <action
+            android:id="@+id/action_TaskManagerFragment_to_TaskFragment"
+            app:destination="@id/TaskFragment"
+            app:popUpToSaveState="true"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
+    </fragment>
+    <fragment
         android:id="@+id/TaskFragment"
         android:name="com.softtechno.tasktracker.gui.fragments.TaskFragment"
         android:label="@string/task_fragment_label"
         tools:layout="@layout/fragment_task">
 
         <action
-            android:id="@+id/action_TaskFragment_to_DashboardFragment"
-            app:destination="@id/DashboardFragment"
-            app:popUpTo="@+id/DashboardFragment"
+            android:id="@+id/action_TaskFragment_to_TaskManagerFragment"
+            app:destination="@id/TaskManagerFragment"
+            app:popUpTo="@+id/TaskManagerFragment"
             app:popUpToInclusive="true"
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim"
