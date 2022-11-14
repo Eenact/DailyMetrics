@@ -19,8 +19,10 @@ import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
 import com.softtechno.tasktracker.R
 import com.softtechno.tasktracker.databinding.FragmentEntryBinding
+import com.softtechno.tasktracker.db.TaskEntity
 import com.softtechno.tasktracker.db.TaskValue
 import com.softtechno.tasktracker.enums.EntityType
+import com.softtechno.tasktracker.enums.Units
 import com.softtechno.tasktracker.viewmodels.TaskEntityViewModel
 import com.softtechno.tasktracker.viewmodels.TaskEntityViewModelFactory
 import com.softtechno.tasktracker.viewmodels.TaskValueViewModel
@@ -145,7 +147,7 @@ class TaskEntryDialogFragment : DialogFragment() {
         return false
     }
 
-    private fun showItems(view: View) {
+    private fun showItems(view: View, selectedTask: TaskEntity?) {
 
         when (mTaskEntityModel.selectedItem.value?.type) {
             EntityType.YesNo -> {
@@ -158,6 +160,10 @@ class TaskEntryDialogFragment : DialogFragment() {
             EntityType.Number -> {
                 binding.entryNumberInputLayout.visibility = View.VISIBLE
                 binding.entryDateLayout.visibility = View.VISIBLE
+                binding.entryNumberInputLayout.hint =
+                    if (selectedTask != null && selectedTask.unit != Units.Other) selectedTask.unit.toString() else getString(
+                        R.string.entry_number_title
+                    )
 
                 binding.entryYesnoInputLayout.visibility = View.GONE
                 binding.entryToFromLayout.visibility = View.GONE
@@ -184,8 +190,8 @@ class TaskEntryDialogFragment : DialogFragment() {
         // Name selection listener
         binding.entryNameEdittext.setOnItemClickListener { _, view, i, _ ->
 
-            mTaskEntityModel.setSelectedItem(i)
-            showItems(view)
+            val selectedTask = mTaskEntityModel.setSelectedItem(i)
+            showItems(view, selectedTask)
 
         }
 

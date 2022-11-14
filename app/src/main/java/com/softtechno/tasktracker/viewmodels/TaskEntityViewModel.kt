@@ -33,8 +33,9 @@ class TaskEntityViewModel(private val repository: TaskRepository): ViewModel() {
         repository.deleteTaskEntity(entity)
     }
 
-    fun setSelectedItem(itemIndex: Int) {
+    fun setSelectedItem(itemIndex: Int): TaskEntity? {
         selectedItem.value = allEntries.value?.get(itemIndex)
+        return selectedItem.value
     }
 }
 

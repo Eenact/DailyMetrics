@@ -13,6 +13,10 @@
     <string name="add">Add</string>
     <string name="cancel">Cancel</string>
     <string name="ok">Ok</string>
+    <string name="delete">Delete</string>
+
+    <string name="task_no_item">No Task found.\nYou can create by pressing +</string>
+    <string name="task_deleted">Deleted %1$s</string>
 
     <string name="dialog_color_pick_title">Pick legend color</string>
     <string name="dialog_color_pick_random">Generate random</string>

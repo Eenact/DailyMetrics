@@ -28,7 +28,7 @@ class TaskManagerAdapter() : RecyclerView.Adapter<TaskManagerAdapter.ViewHolder>
 
     }
 
-    private var contentList: List<TaskEntity> = mutableListOf()
+    private var contentList: MutableList<TaskEntity> = mutableListOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -39,10 +39,10 @@ class TaskManagerAdapter() : RecyclerView.Adapter<TaskManagerAdapter.ViewHolder>
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val taskItem = contentList[position]
         holder.itemName.text = taskItem.name
-        holder.itemType.text = taskItem.type.name
+        holder.itemType.text = taskItem.type.toString()
         if (taskItem.unit != Units.Other) {
             holder.itemUnit.visibility = View.VISIBLE
-            holder.itemUnit.text = taskItem.unit.name
+            holder.itemUnit.text = taskItem.unit.toString()
         }
         holder.itemColor.setBackgroundColor(taskItem.color)
     }
@@ -50,6 +50,13 @@ class TaskManagerAdapter() : RecyclerView.Adapter<TaskManagerAdapter.ViewHolder>
     override fun getItemCount() = contentList.size
 
     fun updateItems(items: List<TaskEntity>) {
-        contentList = items
+        contentList = items.toMutableList()
+        notifyDataSetChanged()
     }
+
+    fun addItem(position: Int, item: TaskEntity) {
+        contentList.add(position, item)
+        notifyItemChanged(position)
+    }
+
 }

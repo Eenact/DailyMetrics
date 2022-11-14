@@ -10,7 +10,7 @@ import androidx.room.PrimaryKey
         entity = TaskEntity::class,
         parentColumns = arrayOf("id"),
         childColumns = arrayOf("task_id"),
-        onDelete = ForeignKey.NO_ACTION
+        onDelete = ForeignKey.CASCADE
     )]
 )
 class TaskValue (
