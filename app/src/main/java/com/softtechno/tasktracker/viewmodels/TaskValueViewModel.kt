@@ -5,7 +5,6 @@ import androidx.lifecycle.*
 import com.softtechno.tasktracker.db.TaskEntity
 import com.softtechno.tasktracker.db.TaskRepository
 import com.softtechno.tasktracker.db.TaskValue
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
 class TaskValueViewModel(private val repository: TaskRepository): ViewModel() {
@@ -33,7 +32,7 @@ class TaskValueViewModel(private val repository: TaskRepository): ViewModel() {
     }
 }
 
-class TaskViewViewModelFactory(private val context: Context): ViewModelProvider.Factory {
+class TaskValueViewModelFactory(private val context: Context): ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         @Suppress("UNCHECKED_CAST")
         if (modelClass.isAssignableFrom(TaskValueViewModel::class.java)) {

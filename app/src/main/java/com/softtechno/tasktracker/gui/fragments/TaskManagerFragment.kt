@@ -12,6 +12,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.get
 import androidx.navigation.fragment.findNavController
@@ -35,7 +36,9 @@ class TaskManagerFragment : Fragment() {
     private var _binding: FragmentTaskManagerBinding? = null
     private val binding get() = _binding!!
 
-    private var mTaskEntityModel: TaskEntityViewModel? = null
+    private val mTaskEntityModel: TaskEntityViewModel by activityViewModels {
+        TaskEntityViewModelFactory(requireActivity())
+    }
     private var mTaskManagerAdapter: TaskManagerAdapter = TaskManagerAdapter()
 
     override fun onCreateView(
@@ -46,7 +49,7 @@ class TaskManagerFragment : Fragment() {
         _binding = FragmentTaskManagerBinding.inflate(inflater, container, false)
 
         val viewModelFactory = TaskEntityViewModelFactory(requireContext())
-        mTaskEntityModel = ViewModelProvider(this, viewModelFactory).get()
+//        mTaskEntityModel = ViewModelProvider(this, viewModelFactory).get()
 
         mTaskEntityModel!!.allEntries.observe(viewLifecycleOwner) {
             binding.taskManagerNoItemsTextview.visibility =

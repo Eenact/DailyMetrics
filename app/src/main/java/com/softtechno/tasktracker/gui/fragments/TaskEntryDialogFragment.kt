@@ -26,7 +26,7 @@ import com.softtechno.tasktracker.enums.Units
 import com.softtechno.tasktracker.viewmodels.TaskEntityViewModel
 import com.softtechno.tasktracker.viewmodels.TaskEntityViewModelFactory
 import com.softtechno.tasktracker.viewmodels.TaskValueViewModel
-import com.softtechno.tasktracker.viewmodels.TaskViewViewModelFactory
+import com.softtechno.tasktracker.viewmodels.TaskValueViewModelFactory
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -38,10 +38,10 @@ class TaskEntryDialogFragment : DialogFragment() {
 
     private var _binding: FragmentEntryBinding? = null
     private val mTaskValuesModel: TaskValueViewModel by activityViewModels {
-        TaskViewViewModelFactory(requireContext())
+        TaskValueViewModelFactory(requireActivity())
     }
     private val mTaskEntityModel: TaskEntityViewModel by activityViewModels {
-        TaskEntityViewModelFactory(requireContext())
+        TaskEntityViewModelFactory(requireActivity())
     }
 
     // This property is only valid between onCreateView and
