@@ -18,8 +18,8 @@ interface TaskEntitiesDao {
     @Insert(onConflict = OnConflictStrategy.ABORT)
     suspend fun insertEntity(entity: TaskEntity)
 
-    @Update(entity = TaskEntity::class)
-    suspend fun updateEntity(vararg entity: TaskEntity)
+    @Update(entity = TaskEntity::class, onConflict = OnConflictStrategy.REPLACE)
+    suspend fun updateEntity(vararg entity: TaskEntity): Int
 
     @Delete(entity = TaskEntity::class)
     suspend fun deleteEntity(vararg entity: TaskEntity)

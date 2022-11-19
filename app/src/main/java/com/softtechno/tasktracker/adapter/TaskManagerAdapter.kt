@@ -10,20 +10,34 @@ import com.softtechno.tasktracker.R
 import com.softtechno.tasktracker.db.TaskEntity
 import com.softtechno.tasktracker.enums.Units
 
-class TaskManagerAdapter() : RecyclerView.Adapter<TaskManagerAdapter.ViewHolder>() {
+class TaskManagerAdapter(private val onClickListener: OnClickListener) : RecyclerView.Adapter<TaskManagerAdapter.ViewHolder>() {
+
+    class OnClickListener(val clickListener: (taks: TaskEntity) -> Unit) {
+        fun onClick(task: TaskEntity) = clickListener(task)
+    }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
-        val itemName: TextView
-        val itemType: TextView
-        val itemUnit: TextView
-        val itemColor: ImageView
+        private val itemName: TextView
+        private val itemType: TextView
+        private val itemUnit: TextView
+        private val itemColor: ImageView
 
         init {
             itemName = view.findViewById(R.id.item_task_manager_name)
             itemType = view.findViewById(R.id.item_task_manager_type)
             itemUnit = view.findViewById(R.id.item_task_manager_unit)
             itemColor = view.findViewById(R.id.item_task_manager_color)
+        }
+
+        fun bind(task: TaskEntity) {
+            itemName.text = task.name
+            itemType.text = task.type.toString()
+            if (task.unit != Units.Other) {
+                itemUnit.visibility = View.VISIBLE
+                itemUnit.text = task.unit.toString()
+            }
+            itemColor.setBackgroundColor(task.color)
         }
 
     }
@@ -38,13 +52,9 @@ class TaskManagerAdapter() : RecyclerView.Adapter<TaskManagerAdapter.ViewHolder>
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val taskItem = contentList[position]
-        holder.itemName.text = taskItem.name
-        holder.itemType.text = taskItem.type.toString()
-        if (taskItem.unit != Units.Other) {
-            holder.itemUnit.visibility = View.VISIBLE
-            holder.itemUnit.text = taskItem.unit.toString()
-        }
-        holder.itemColor.setBackgroundColor(taskItem.color)
+
+        holder.bind(taskItem)
+        holder.itemView.setOnClickListener { onClickListener.onClick(taskItem) }
     }
 
     override fun getItemCount() = contentList.size

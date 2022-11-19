@@ -34,6 +34,9 @@ import java.util.*
  */
 class TaskFragment : Fragment() {
 
+    private var mSelectedTaskId: Long = -1
+    private var mSelectedTask: TaskEntity? = null
+
     private var _binding: FragmentTaskBinding? = null
     private var mTaskEntityModel: TaskEntityViewModel? = null
 
@@ -56,12 +59,23 @@ class TaskFragment : Fragment() {
         fillUnits()
         fillTypes()
 
+        mSelectedTaskId = arguments?.getLong("task_id", -1) ?: -1
+
         return binding.root
 
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        if (mSelectedTaskId != -1L) {
+            mTaskEntityModel?.allEntries?.observe(viewLifecycleOwner) { entries ->
+                val selectedItem = entries.firstOrNull { it.id == mSelectedTaskId }
+                if (selectedItem != null) {
+                    setUpdateItems(selectedItem)
+                }
+            }
+        }
 
         binding.taskNameEdittext.addTextChangedListener {
             binding.taskNameInputLayout.error = null
@@ -82,10 +96,16 @@ class TaskFragment : Fragment() {
                 return@setOnClickListener
             }
 
-            val task = TaskEntity(
-                name, type, unit, mSelectedColor
-            )
-            mTaskEntityModel?.insert(task)
+            if (mSelectedTask == null) {
+                val task = TaskEntity(
+                    name, type, unit, mSelectedColor
+                )
+                mTaskEntityModel?.insert(task)
+            } else {
+                val task =
+                    TaskEntity(name, mSelectedTask!!.type, unit, mSelectedColor, mSelectedTaskId)
+                mTaskEntityModel?.update(task, name != mSelectedTask!!.name)
+            }
 
         }
 
@@ -110,9 +130,9 @@ class TaskFragment : Fragment() {
                 R.style.ThemeOverlay_App_MaterialAlertDialog
             )
                 .setTitle(R.string.dialog_color_pick_title)
-                .setView(mColorPickerDialog).setNegativeButton(R.string.cancel) { _, _ ->
+                .setView(mColorPickerDialog).setNegativeButton(android.R.string.cancel) { _, _ ->
 
-                }.setPositiveButton(R.string.ok) { _, _ ->
+                }.setPositiveButton(android.R.string.ok) { _, _ ->
                     setSelectedIconColor()
                 }
                 .show()
@@ -172,5 +192,25 @@ class TaskFragment : Fragment() {
 
             previewView.setBackgroundColor(mSelectedColor)
         }
+    }
+
+    private fun setUpdateItems(selectedItem: TaskEntity) {
+        mSelectedTask = selectedItem
+        binding.taskNameEdittext.setText(selectedItem.name)
+        binding.taskTypeEdittext.setText(selectedItem.type.toString())
+        binding.taskTypeInputLayout.isEnabled = false
+        if (selectedItem.type == EntityType.Number) {
+            binding.taskUnitsInputLayout.isEnabled = true
+            (binding.taskUnitsEdittext as? MaterialAutoCompleteTextView)?.setText(
+                selectedItem.unit.toString(),
+                false
+            )
+        } else {
+            binding.taskUnitsInputLayout.isEnabled = false
+        }
+        mSelectedColor = selectedItem.color
+        (binding.taskColorInputButton as MaterialButton).iconTint =
+            ColorStateList.valueOf(selectedItem.color)
+        binding.buttonAdd.setText(R.string.update)
     }
 }

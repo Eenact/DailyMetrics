@@ -10,11 +10,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.get
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -39,7 +36,7 @@ class TaskManagerFragment : Fragment() {
     private val mTaskEntityModel: TaskEntityViewModel by activityViewModels {
         TaskEntityViewModelFactory(requireActivity())
     }
-    private var mTaskManagerAdapter: TaskManagerAdapter = TaskManagerAdapter()
+    private var mTaskManagerAdapter: TaskManagerAdapter? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -48,25 +45,21 @@ class TaskManagerFragment : Fragment() {
         // Inflate the layout for this fragment
         _binding = FragmentTaskManagerBinding.inflate(inflater, container, false)
 
-        val viewModelFactory = TaskEntityViewModelFactory(requireContext())
-//        mTaskEntityModel = ViewModelProvider(this, viewModelFactory).get()
-
-        mTaskEntityModel!!.allEntries.observe(viewLifecycleOwner) {
+        mTaskEntityModel.allEntries.observe(viewLifecycleOwner) {
             binding.taskManagerNoItemsTextview.visibility =
                 if (it.isNullOrEmpty()) View.VISIBLE else View.GONE
-            mTaskManagerAdapter.updateItems(it)
+            mTaskManagerAdapter?.updateItems(it)
         }
 
         binding.buttonInsertTask.setOnClickListener {
-//            val taskEntryDialogFragment = TaskEntryDialogFragment()
-//            if (isLargeDisplay) {
-//                taskEntryDialogFragment.show(supportFragmentManager, "TaskEntryDialog")
-//            }
             findNavController().navigate(R.id.action_TaskManagerFragment_to_TaskFragment)
-            activity?.actionBar?.setHomeAsUpIndicator(R.drawable.ic_close)
-            (activity as AppCompatActivity).supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_close)
         }
 
+        mTaskManagerAdapter = TaskManagerAdapter(TaskManagerAdapter.OnClickListener { task ->
+            val bundle = Bundle()
+            bundle.putLong("task_id", task.id)
+            findNavController().navigate(R.id.action_TaskManagerFragment_to_TaskFragment, bundle)
+        })
         val linearLayoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         binding.recyclerListTasks.layoutManager = linearLayoutManager
@@ -151,7 +144,7 @@ class TaskManagerFragment : Fragment() {
                 )
                 val numOfChars =
                     paint?.breakText(deleteText.toString(), true, textBox.width().toFloat(), null)
-                val start = (deleteText.toString().length - numOfChars!!) / 2;
+                val start = (deleteText.toString().length - numOfChars!!) / 2
                 val bounds = Rect()
                 paint?.getTextBounds(deleteText.toString(), 0, deleteText.toString().length, bounds)
                 val y: Float =
@@ -181,16 +174,16 @@ class TaskManagerFragment : Fragment() {
                 // this method is called when we swipe our item to right direction.
                 // on below line we are getting the item at a particular position.
                 val deletedTask: TaskEntity =
-                    mTaskEntityModel?.allEntries?.value?.get(viewHolder.adapterPosition) ?: return
+                    mTaskEntityModel.allEntries.value?.get(viewHolder.adapterPosition) ?: return
 
                 // below line is to get the position
                 // of the item at that position.
                 val position = viewHolder.adapterPosition
 
                 // below line is to notify our item is removed from adapter.
-                mTaskManagerAdapter.notifyItemRemoved(position)
+                mTaskManagerAdapter?.notifyItemRemoved(position)
 
-                mTaskEntityModel?.delete(deletedTask) ?: return
+                mTaskEntityModel.delete(deletedTask)
 
                 // below line is to display our snackbar
                 Snackbar.make(

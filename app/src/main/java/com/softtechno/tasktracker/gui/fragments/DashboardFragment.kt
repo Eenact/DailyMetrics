@@ -135,7 +135,7 @@ class DashboardFragment : Fragment() {
                 ) { _, which, isChecked ->
                     checked[which] = isChecked
                 }
-                .setNegativeButton(R.string.cancel) { _, _ ->
+                .setNegativeButton(android.R.string.cancel) { _, _ ->
 
                 }
                 .setPositiveButton(R.string.apply) { _, _ ->

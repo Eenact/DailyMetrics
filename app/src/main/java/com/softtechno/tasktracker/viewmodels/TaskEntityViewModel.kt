@@ -6,7 +6,7 @@ import com.softtechno.tasktracker.db.TaskEntity
 import com.softtechno.tasktracker.db.TaskRepository
 import kotlinx.coroutines.launch
 
-class TaskEntityViewModel(private val repository: TaskRepository): ViewModel() {
+class TaskEntityViewModel(private val repository: TaskRepository) : ViewModel() {
 
     var insertSuccessful = MutableLiveData<Boolean>()
     val selectedItem = MutableLiveData<TaskEntity>()
@@ -18,15 +18,19 @@ class TaskEntityViewModel(private val repository: TaskRepository): ViewModel() {
     fun insert(entity: TaskEntity) = viewModelScope.launch {
         if (repository.containTask(entity.name)) {
             insertSuccessful.value = false
-        }
-        else {
+        } else {
             repository.insertTaskEntity(entity)
             insertSuccessful.value = true
         }
     }
 
-    fun update(entity: TaskEntity) = viewModelScope.launch {
-        repository.updateTaskEntity(entity)
+    fun update(entity: TaskEntity, checkName: Boolean) = viewModelScope.launch {
+        if (checkName && repository.containTask(entity.name)) {
+            insertSuccessful.value = false
+        } else {
+            val update = repository.updateTaskEntity(entity)
+            insertSuccessful.value = update == 1
+        }
     }
 
     fun delete(entity: TaskEntity) = viewModelScope.launch {
@@ -39,7 +43,7 @@ class TaskEntityViewModel(private val repository: TaskRepository): ViewModel() {
     }
 }
 
-class TaskEntityViewModelFactory(private val context: Context): ViewModelProvider.Factory {
+class TaskEntityViewModelFactory(private val context: Context) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         @Suppress("UNCHECKED_CAST")
         if (modelClass.isAssignableFrom(TaskEntityViewModel::class.java)) {
