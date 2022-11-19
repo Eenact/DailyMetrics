@@ -1,12 +1,12 @@
 <resources>
     <string name="app_name">TaskTracker</string>
-    <string name="action_manage_tasks">Manage Tasks</string>
     <string name="action_save">Save</string>
     <!-- Strings used for fragments for navigation -->
     <string name="dashboard_fragment_label">Dashboard</string>
     <string name="task_fragment_label">Task</string>
     <string name="task_entry_fragment_label">Task value</string>
-    <string name="task_manager_fragment_label">Manager Tasks</string>
+    <string name="task_manager_fragment_label">Manage Tasks</string>
+    <string name="legal_fragment_label">Legal Terms</string>
 
     <string name="content_desc_insert_task_btn">Insert Task</string>
     <string name="content_desc_insert_value_btn">Insert Value</string>

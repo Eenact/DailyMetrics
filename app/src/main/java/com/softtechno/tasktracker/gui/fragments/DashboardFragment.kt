@@ -2,13 +2,14 @@ package com.softtechno.tasktracker.gui.fragments
 
 import android.graphics.Color
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.view.MenuHost
+import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -73,6 +74,7 @@ class DashboardFragment : Fragment() {
     ): View {
 
         _binding = FragmentDashboardBinding.inflate(inflater, container, false)
+        setupMenu()
 
         initChartView()
 
@@ -193,6 +195,38 @@ class DashboardFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun setupMenu() {
+        // The usage of an interface lets you inject your own implementation
+        val menuHost: MenuHost = requireActivity()
+
+        // Add menu items without using the Fragment Menu APIs
+        // Note how we can tie the MenuProvider to the viewLifecycleOwner
+        // and an optional Lifecycle.State (here, RESUMED) to indicate when
+        // the menu should be visible
+        menuHost.addMenuProvider(object : MenuProvider {
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                // Add menu items here
+                menuInflater.inflate(R.menu.menu_main, menu)
+            }
+
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                // Handle action bar item clicks here. The action bar will
+                // automatically handle clicks on the Home/Up button.
+                return when (menuItem.itemId) {
+                    R.id.action_manager_tasks -> {
+                        findNavController().navigate(R.id.action_DashboardFragment_to_TaskManagerFragment)
+                        true
+                    }
+                    R.id.action_legal_terms -> {
+                        findNavController().navigate(R.id.action_DashboardFragment_to_LegalTermsFragment)
+                        true
+                    }
+                    else -> false
+                }
+            }
+        }, viewLifecycleOwner, Lifecycle.State.RESUMED)
     }
 
     private fun noTaskSnack(view: View) {
