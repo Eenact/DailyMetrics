@@ -5,6 +5,8 @@
     <color name="button_text">#ffffff</color>
     <color name="button_background">#fffffbfe</color>
 
+    <color name="text_color">@color/theme_white</color>
+
     <!-- Dashboard chart colors -->
     <color name="chart_legend_text">#FFFFFFFF</color>
     <color name="chart_xaxis_labels">#FFFFFFFF</color>

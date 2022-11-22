@@ -1,5 +1,6 @@
 package com.softtechno.tasktracker.gui
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
@@ -9,6 +10,8 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.softtechno.tasktracker.R
 import com.softtechno.tasktracker.databinding.ActivityMainBinding
+import com.softtechno.tasktracker.managers.AppSettingsManager
+import com.softtechno.tasktracker.managers.AppSettingsManager.isAppOnboarded
 
 class MainActivity : AppCompatActivity() {
 
@@ -16,6 +19,13 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        if (!AppSettingsManager.instance(this).isAppOnboarded) {
+            val intent = Intent(this, OnBoardingActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(intent)
+            finish()
+        }
+
         WindowCompat.setDecorFitsSystemWindows(window, false)
         super.onCreate(savedInstanceState)
 

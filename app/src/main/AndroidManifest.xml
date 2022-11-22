@@ -16,7 +16,6 @@
         <activity
             android:name=".gui.MainActivity"
             android:exported="true"
-            android:label="@string/app_name"
             android:theme="@style/Theme.TaskTracker">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,6 +23,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".gui.OnBoardingActivity"
+            android:exported="true"
+            android:theme="@style/Theme.TaskTracker"/>
+
     </application>
 
 </manifest>

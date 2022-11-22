@@ -16,6 +16,12 @@
     <string name="delete">Delete</string>
     <string name="update">Update</string>
 
+    <string name="onboarding_screen1_title">Track you day-to-day activities</string>
+    <string name="onboarding_screen1_msg">Improve yourself by tracking your activities that you think might need improvement</string>
+    <string name="onboarding_screen2_title">Analyze your activities</string>
+    <string name="onboarding_screen2_msg">Help yourself to improve by analyzing your activities and advance your life goals\n\nLet\'s start by clicking below</string>
+    <string name="onboarding_get_start">Get Started</string>
+
     <string name="dashboard_filter_dialog_title">Filters</string>
 
     <string name="dashboard_no_task">No Task found. Create in \'Manage Tasks\'</string>
@@ -54,6 +60,4 @@
         <item>Yes</item>
         <item>No</item>
     </array>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
