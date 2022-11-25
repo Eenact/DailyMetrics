@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">TaskTracker</string>
+    <string name="app_name">Task Tracker</string>
     <string name="action_save">Save</string>
     <!-- Strings used for fragments for navigation -->
     <string name="dashboard_fragment_label">Dashboard</string>
@@ -16,17 +16,17 @@
     <string name="delete">Delete</string>
     <string name="update">Update</string>
 
-    <string name="onboarding_screen1_title">Track you day-to-day activities</string>
+    <string name="onboarding_screen1_title">Track your day-to-day activities</string>
     <string name="onboarding_screen1_msg">Improve yourself by tracking your activities that you think might need improvement</string>
     <string name="onboarding_screen2_title">Analyze your activities</string>
-    <string name="onboarding_screen2_msg">Help yourself to improve by analyzing your activities and advance your life goals\n\nLet\'s start by clicking below</string>
+    <string name="onboarding_screen2_msg">Help yourself improve by analyzing your activities and advance your life goals\n\nLet\'s start</string>
     <string name="onboarding_get_start">Get Started</string>
 
     <string name="dashboard_filter_dialog_title">Filters</string>
 
-    <string name="dashboard_no_task">No Task found. Create in \'Manage Tasks\'</string>
+    <string name="dashboard_no_task">Lets create our first Task:</string>
     <string name="dashboard_no_entry">No value found. Create by pressing +</string>
-    <string name="task_no_item">No Task found.\nYou can create by pressing +</string>
+    <string name="task_no_item">Create a Task by pressing +</string>
     <string name="task_deleted">Deleted %1$s</string>
 
     <string name="dialog_color_pick_title">Pick legend color</string>

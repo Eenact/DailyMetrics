@@ -38,7 +38,6 @@ import com.softtechno.tasktracker.viewmodels.TaskEntityViewModelFactory
 import com.softtechno.tasktracker.viewmodels.TaskValueViewModel
 import com.softtechno.tasktracker.viewmodels.TaskValueViewModelFactory
 import java.util.*
-import java.util.concurrent.atomic.AtomicBoolean
 import kotlin.math.max
 
 
@@ -51,8 +50,6 @@ class DashboardFragment : Fragment() {
     private var mFilteredTaskIds: MutableMap<Long, Boolean>? = null
     private var mAxisXSelection: AxisXTypes = AxisXTypes.Week
     private var mDashboardCalendar: Calendar = Calendar.getInstance()
-
-    private var mUpdatingGraphs: AtomicBoolean = AtomicBoolean(false)
 
     private var mRecyclerListAdapter: DashboardListAdapter? = null
 
@@ -181,9 +178,14 @@ class DashboardFragment : Fragment() {
             if (mFilteredTaskIds == null) {
                 mFilteredTaskIds = mutableMapOf()
             }
-            entries.forEach {
-                if (mFilteredTaskIds!![it.id] == null) {
-                    mFilteredTaskIds!![it.id] = true
+            if (entries.isNullOrEmpty()) {
+                noTaskSnack(binding.root)
+            }
+            else {
+                entries.forEach {
+                    if (mFilteredTaskIds!![it.id] == null) {
+                        mFilteredTaskIds!![it.id] = true
+                    }
                 }
             }
         }
@@ -230,7 +232,7 @@ class DashboardFragment : Fragment() {
     }
 
     private fun noTaskSnack(view: View) {
-        Snackbar.make(view, R.string.dashboard_no_task, Snackbar.LENGTH_LONG)
+        Snackbar.make(view, R.string.dashboard_no_task, Snackbar.LENGTH_INDEFINITE)
             .setAction(R.string.task_manager_fragment_label) {
                 findNavController().navigate(R.id.action_DashboardFragment_to_TaskManagerFragment)
             }
