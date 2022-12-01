@@ -2,8 +2,7 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.TaskTracker" parent="Theme.Material3.Light.NoActionBar">
         <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorPrimaryDark">@color/device_theme_color</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorOnPrimary">@color/white</item>
@@ -11,19 +10,18 @@
         <item name="colorOnPrimaryContainer">@color/white</item>
         <item name="colorSecondaryContainer">@color/colorPrimaryLight</item>
         <item name="colorOnSecondaryContainer">@color/white</item>
-        <!--<item name="colorSurface">@color/colorPrimary</item>-->
         <item name="colorSurfaceVariant">@color/colorSecondaryLight</item>
     </style>
 
     <style name="Theme.TaskTracker" parent="Base.Theme.TaskTracker" />
 
-    <style name="AppTheme.FullScreenDialog" parent="Theme.MaterialComponents.Light.Dialog">
-
+    <style name="AppTheme.FullScreenDialog" parent="Theme.Material3.Light.Dialog">
+        <item name="colorPrimaryDark">@color/device_theme_color</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
         <item name="android:windowIsFloating">false</item>
-        <!--<item name="android:windowBackground">@color/full_screen_dialog_background</item>-->
-        <item name="android:windowNoTitle">false</item>
-        <item name="android:windowFullscreen">false</item>
-        <!--<item name="actionMenuTextColor">@color/colorAccent</item>-->
+        <item name="android:windowBackground">@android:color/white</item>
+        <item name="actionMenuTextColor">@color/colorAccent</item>
     </style>
 
     <style name="Widget.App.Button.OutlinedButton.IconOnly" parent="Widget.Material3.Button.OutlinedButton">

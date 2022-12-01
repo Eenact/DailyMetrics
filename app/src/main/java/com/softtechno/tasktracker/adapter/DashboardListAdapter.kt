@@ -12,8 +12,7 @@ import com.softtechno.tasktracker.db.TaskEntity
 import com.softtechno.tasktracker.db.TaskValue
 import com.softtechno.tasktracker.enums.EntityType
 import com.softtechno.tasktracker.enums.Units
-import java.text.DateFormat
-import java.text.SimpleDateFormat
+import com.softtechno.tasktracker.utils.DateTimeUtils
 
 data class DashboardListData(
     val isHeader: Boolean,
@@ -24,9 +23,6 @@ data class DashboardListData(
 
 class DashboardListAdapter(private var dataSet: MutableList<DashboardListData>) :
     RecyclerView.Adapter<DashboardListAdapter.ViewHolder>() {
-
-    private val dateFormatter: DateFormat = SimpleDateFormat.getDateInstance()
-    private val timeFormatter: DateFormat = SimpleDateFormat.getTimeInstance()
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
@@ -62,8 +58,8 @@ class DashboardListAdapter(private var dataSet: MutableList<DashboardListData>) 
         } else {
 
             // Set date time
-            val date = dateFormatter.format(data.entryValue?.time)
-            val time = timeFormatter.format(data.entryValue?.time)
+            val date = DateTimeUtils.DateFormatter.format(data.entryValue?.time)
+            val time = DateTimeUtils.TimeFormatter.format(data.entryValue?.time)
             holder.time.text =
                 holder.time.resources.getString(R.string.dashboard_item_placeholder, date, time)
             holder.name.text = data.entity?.name

@@ -3,9 +3,10 @@ package com.softtechno.tasktracker.gui.fragments
 import android.os.Bundle
 import android.text.format.DateFormat
 import android.util.Log
-import android.view.*
-import androidx.core.view.MenuHost
-import androidx.core.view.MenuProvider
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -23,11 +24,11 @@ import com.softtechno.tasktracker.db.TaskEntity
 import com.softtechno.tasktracker.db.TaskValue
 import com.softtechno.tasktracker.enums.EntityType
 import com.softtechno.tasktracker.enums.Units
+import com.softtechno.tasktracker.utils.DateTimeUtils
 import com.softtechno.tasktracker.viewmodels.TaskEntityViewModel
 import com.softtechno.tasktracker.viewmodels.TaskEntityViewModelFactory
 import com.softtechno.tasktracker.viewmodels.TaskValueViewModel
 import com.softtechno.tasktracker.viewmodels.TaskValueViewModelFactory
-import java.text.SimpleDateFormat
 import java.util.*
 
 
@@ -74,13 +75,22 @@ class TaskEntryDialogFragment : DialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val menuHost: MenuHost = requireActivity()
+        binding.run {
 
-        initViews()
+            initViews()
 
-        menuHost.addMenuProvider(object : MenuProvider {
-            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-                return when (menuItem.itemId) {
+            binding.toolbar.setBackgroundColor(
+                ResourcesCompat.getColor(
+                    resources,
+                    R.color.device_theme_color,
+                    null
+                )
+            )
+            binding.toolbar.setNavigationIcon(R.drawable.ic_close)
+            binding.toolbar.setNavigationOnClickListener { dismiss() }
+            binding.toolbar.inflateMenu(R.menu.menu_task_entry)
+            binding.toolbar.setOnMenuItemClickListener { menuItem ->
+                return@setOnMenuItemClickListener when (menuItem.itemId) {
                     R.id.action_save -> {
                         val value: Long? =
                             if (mTaskEntityModel.selectedItem.value?.type == EntityType.Number) {
@@ -98,18 +108,21 @@ class TaskEntryDialogFragment : DialogFragment() {
 
                         mTaskValuesModel.insert(
                             TaskValue(
-                                mTaskValuesModel.taskEntryDateTime.value ?: return invalidValue(
-                                    binding.entryEventTitleTextview,
-                                    R.string.error_invalid_date_time
-                                ),
-                                mTaskEntityModel.selectedItem.value?.id ?: return invalidValue(
-                                    binding.entryNameEdittext,
-                                    R.string.error_invalid_field_name
-                                ),
-                                value ?: return when (mTaskEntityModel.selectedItem.value?.type) {
-                                    EntityType.Number -> invalidValue(binding.entryNumberInputLayout)
-                                    else -> invalidValue(binding.entryYesnoInputLayout)
-                                },
+                                mTaskValuesModel.taskEntryDateTime.value
+                                    ?: return@setOnMenuItemClickListener invalidValue(
+                                        binding.entryEventTitleTextview,
+                                        R.string.error_invalid_date_time
+                                    ),
+                                mTaskEntityModel.selectedItem.value?.id
+                                    ?: return@setOnMenuItemClickListener invalidValue(
+                                        binding.entryNameEdittext,
+                                        R.string.error_invalid_field_name
+                                    ),
+                                value
+                                    ?: return@setOnMenuItemClickListener when (mTaskEntityModel.selectedItem.value?.type) {
+                                        EntityType.Number -> invalidValue(binding.entryNumberInputLayout)
+                                        else -> invalidValue(binding.entryYesnoInputLayout)
+                                    },
                                 binding.entryCommentEdittext.text.toString()
                             )
                         )
@@ -121,13 +134,7 @@ class TaskEntryDialogFragment : DialogFragment() {
                     else -> false
                 }
             }
-
-            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                menu.clear()
-                menuInflater.inflate(R.menu.menu_task_entry, menu)
-            }
-        }, viewLifecycleOwner)
-
+        }
     }
 
     override fun onDestroyView() {
@@ -214,12 +221,8 @@ class TaskEntryDialogFragment : DialogFragment() {
         }
 
         val calendar = Calendar.getInstance()
-
-        val dateFormatter = SimpleDateFormat.getDateInstance()
-        val currentDate = dateFormatter.format(calendar.time)
-
-        val timeFormatter = SimpleDateFormat.getTimeInstance()
-        val currentTime = timeFormatter.format(calendar.time)
+        val currentDate = DateTimeUtils.DateFormatter.format(calendar.time)
+        val currentTime = DateTimeUtils.TimeFormatter.format(calendar.time)
 
         mTaskValuesModel.taskEntryDateTime.value = calendar.timeInMillis
 
@@ -262,7 +265,7 @@ class TaskEntryDialogFragment : DialogFragment() {
 
                 mTaskValuesModel.taskEntryDateTime.value = dateNow.timeInMillis
 
-                binding.entryEventDateEdittext.setText(dateFormatter.format(dateNow.time))
+                binding.entryEventDateEdittext.setText(DateTimeUtils.DateFormatter.format(dateNow.time))
 
                 if (DEBUG) {
                     Log.d(TAG, "Picked Date: $it")
@@ -300,7 +303,7 @@ class TaskEntryDialogFragment : DialogFragment() {
                 timeNow.set(Calendar.MILLISECOND, 0)
 
                 mTaskValuesModel.taskEntryDateTime.value = timeNow.timeInMillis
-                binding.entryEventTimeEdittext.setText(timeFormatter.format(timeNow.time))
+                binding.entryEventTimeEdittext.setText(DateTimeUtils.TimeFormatter.format(timeNow.time))
 
                 if (DEBUG) {
                     Log.d(

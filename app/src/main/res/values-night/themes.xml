@@ -5,9 +5,21 @@
         <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
         <item name="colorPrimaryDark">@color/device_theme_color</item>
         <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorOnPrimary">@color/theme_white</item>
         <item name="colorSecondaryContainer">@color/colorPrimary</item>
         <item name="colorPrimaryContainer">@color/colorPrimary</item>
         <item name="android:navigationBarColor">@color/device_theme_color</item>
     </style>
+
+    <style name="AppTheme.FullScreenDialog" parent="Theme.Material3.DayNight.Dialog">
+        <item name="colorPrimaryDark">@color/device_theme_color</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowBackground">@color/theme_black</item>
+        <item name="actionMenuTextColor">@color/theme_white</item>
+        <item name="android:navigationBarColor">@color/device_theme_color</item>
+    </style>
+
 </resources>

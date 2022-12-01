@@ -3,7 +3,6 @@ package com.softtechno.tasktracker.gui.fragments
 import android.graphics.Color
 import android.os.Bundle
 import android.view.*
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
@@ -91,14 +90,12 @@ class DashboardFragment : Fragment() {
         }
 
         binding.buttonInsertEntry.setOnClickListener {
+            if (!mTaskEntityModel.allEntries.value.isNullOrEmpty()) {
 //            val taskEntryDialogFragment = TaskEntryDialogFragment()
 //            if (isLargeDisplay) {
 //                taskEntryDialogFragment.show(supportFragmentManager, "TaskEntryDialog")
 //            }
-            if (!mTaskEntityModel.allEntries.value.isNullOrEmpty()) {
                 findNavController().navigate(R.id.action_DashboardFragment_to_TaskEntryFragment)
-                activity?.actionBar?.setHomeAsUpIndicator(R.drawable.ic_close)
-                (activity as AppCompatActivity).supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_close)
             } else {
                 noTaskSnack(it)
             }
@@ -180,8 +177,7 @@ class DashboardFragment : Fragment() {
             }
             if (entries.isNullOrEmpty()) {
                 noTaskSnack(binding.root)
-            }
-            else {
+            } else {
                 entries.forEach {
                     if (mFilteredTaskIds!![it.id] == null) {
                         mFilteredTaskIds!![it.id] = true

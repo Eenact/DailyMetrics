@@ -80,7 +80,7 @@
             app:popUpToInclusive="true" />
     </fragment>
 
-    <fragment
+    <dialog
         android:id="@+id/TaskEntryFragment"
         android:name="com.softtechno.tasktracker.gui.fragments.TaskEntryDialogFragment"
         android:label="@string/task_entry_fragment_label"
@@ -96,7 +96,7 @@
             app:popUpTo="@+id/DashboardFragment"
             app:popUpToInclusive="true" />
 
-    </fragment>
+    </dialog>
 
     <fragment
         android:id="@+id/LegalFragment"

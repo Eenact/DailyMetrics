@@ -2,11 +2,16 @@ package com.softtechno.tasktracker.utils
 
 import android.content.Context
 import com.softtechno.tasktracker.R
+import java.text.DateFormat
+import java.text.SimpleDateFormat
 import java.util.*
 
 class DateTimeUtils {
 
     companion object {
+
+        val DateFormatter: DateFormat = SimpleDateFormat.getDateInstance()
+        val TimeFormatter: DateFormat = SimpleDateFormat("hh:mm aaa", Locale.ENGLISH)
 
         fun resetTime(calendar: Calendar) {
 
@@ -22,7 +27,7 @@ class DateTimeUtils {
         }
 
         fun axisLabelDate(day: Int, month: Int): String {
-            return "$day/${month+1}"
+            return "$day/${month + 1}"
         }
 
         fun axisLabelWeek(day: Int, context: Context): String {
