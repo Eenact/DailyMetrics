@@ -391,6 +391,7 @@ class DashboardFragment : Fragment() {
 
         binding.chartView.dragDecelerationFrictionCoef = 0.9f
 
+        binding.chartView.setNoDataText(getString(R.string.dashboard_no_chart_data))
         // enable scaling and dragging
         binding.chartView.isDragEnabled = true
         binding.chartView.setScaleEnabled(true)

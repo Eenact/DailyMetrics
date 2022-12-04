@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string name="dashboard_no_chart_data">Add chart data by pressing +</string>
     <string name="dashboard_item_placeholder">%1$s %2$s</string>
 
     <string name="toggle_day_button">1D</string>

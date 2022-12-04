@@ -15,13 +15,24 @@
         android:layout_weight="1"
         android:orientation="horizontal" />
 
-    <Button
-        android:id="@+id/onboarding_get_start_btn"
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/onboarding_next_btn"
+        style="?attr/materialIconButtonFilledStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
+        android:layout_gravity="center"
         android:layout_marginBottom="24dp"
-        android:text="@string/onboarding_get_start" />
+        app:icon="@drawable/ic_right_arrow"
+        app:iconSize="25dp" />
+
+    <com.google.android.material.progressindicator.CircularProgressIndicator
+        android:id="@+id/onboarding_progress_indicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="24dp"
+        android:indeterminate="true"
+        android:visibility="gone" />
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/onboarding_tab_layout_view"
