@@ -2,7 +2,7 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.TaskTracker" parent="Theme.Material3.Light.NoActionBar">
         <!-- Customize your light theme here. -->
-        <item name="colorPrimaryDark">@color/device_theme_color</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorOnPrimary">@color/white</item>
@@ -16,7 +16,7 @@
     <style name="Theme.TaskTracker" parent="Base.Theme.TaskTracker" />
 
     <style name="AppTheme.FullScreenDialog" parent="Theme.Material3.Light.Dialog">
-        <item name="colorPrimaryDark">@color/device_theme_color</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="android:windowIsFloating">false</item>

@@ -3,7 +3,7 @@
     <style name="Base.Theme.TaskTracker" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your dark theme here. -->
         <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
-        <item name="colorPrimaryDark">@color/device_theme_color</item>
+        <item name="colorPrimaryDark">@color/theme_black</item>
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorOnPrimary">@color/theme_white</item>
         <item name="colorSecondaryContainer">@color/colorPrimary</item>
@@ -12,7 +12,7 @@
     </style>
 
     <style name="AppTheme.FullScreenDialog" parent="Theme.Material3.DayNight.Dialog">
-        <item name="colorPrimaryDark">@color/device_theme_color</item>
+        <item name="colorPrimaryDark">@color/theme_black</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorOnPrimary">@color/white</item>

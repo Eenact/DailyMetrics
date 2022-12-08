@@ -7,8 +7,8 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.widget.NestedScrollView
 import androidx.recyclerview.widget.RecyclerView
 import com.airbnb.lottie.LottieAnimationView
 import com.google.android.material.button.MaterialButton
@@ -32,7 +32,7 @@ class OnBoardingAdapter() : RecyclerView.Adapter<OnBoardingAdapter.ViewHolder>()
             view.findViewById(R.id.onboarding_screen_animation)
 
         private val mMainLayout: LinearLayout = view.findViewById(R.id.onboarding_main_layout)
-        private val mTaskEntryLayout: ConstraintLayout =
+        private val mTaskEntryLayout: NestedScrollView =
             view.findViewById(R.id.onboarding_task_layout)
 
         // Task items

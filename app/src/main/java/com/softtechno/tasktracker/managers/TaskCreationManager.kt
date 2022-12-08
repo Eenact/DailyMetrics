@@ -48,10 +48,12 @@ class TaskCreationManager {
             val randomColor = dialogView.findViewById<Button>(R.id.color_pick_random_btn)
             val previewView = dialogView.findViewById<ImageView>(R.id.color_pick_preview_view)
 
+            previewView.setBackgroundColor(selectedColor)
+
             val arrayList: List<Int> = context.resources.getIntArray(R.array.legend_colors).toList()
             gridView.adapter = ColorPickerAdapter(arrayList, context)
 
-            gridView.setOnItemClickListener { adapterView, view, i, l ->
+            gridView.setOnItemClickListener { _, _, i, _ ->
                 selectedColor = arrayList[i]
 
                 previewView.setBackgroundColor(selectedColor)

@@ -5,11 +5,8 @@ import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.content.res.AppCompatResources
 import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
-import com.google.android.material.button.MaterialButton
 import com.google.android.material.tabs.TabLayoutMediator
-import com.softtechno.tasktracker.R
 import com.softtechno.tasktracker.adapter.OnBoardingAdapter
 import com.softtechno.tasktracker.databinding.ActivityOnboardingBinding
 import com.softtechno.tasktracker.managers.AppSettingsManager
@@ -35,28 +32,25 @@ class OnBoardingActivity : AppCompatActivity() {
         mViewPagerAdapter = OnBoardingAdapter()
         binding.onboardingViewpager.isUserInputEnabled = false
         binding.onboardingViewpager.adapter = mViewPagerAdapter
+
+        TabLayoutMediator(binding.onboardingTabLayoutView, binding.onboardingViewpager) { _, _ ->
+        }.attach()
+
+
         binding.onboardingViewpager.registerOnPageChangeCallback(object : OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 when (position) {
                     0 -> {
-                        (binding.onboardingNextBtn as MaterialButton).icon =
-                            AppCompatResources.getDrawable(
-                                applicationContext,
-                                R.drawable.ic_right_arrow
-                            )
-                        binding.onboardingNextBtn.text = ""
+                        binding.onboardingNextBtn.visibility = View.VISIBLE
+                        binding.onboardingFinishBtn.visibility = View.GONE
                     }
                     1 -> {
-                        (binding.onboardingNextBtn as MaterialButton).icon =
-                            AppCompatResources.getDrawable(
-                                applicationContext,
-                                R.drawable.ic_right_arrow
-                            )
-                        binding.onboardingNextBtn.text = ""
+                        binding.onboardingNextBtn.visibility = View.VISIBLE
+                        binding.onboardingFinishBtn.visibility = View.GONE
                     }
                     2 -> {
-                        binding.onboardingNextBtn.icon = null
-                        binding.onboardingNextBtn.text = getText(R.string.onboarding_get_start)
+                        binding.onboardingNextBtn.visibility = View.GONE
+                        binding.onboardingFinishBtn.visibility = View.VISIBLE
                     }
                 }
             }
@@ -70,22 +64,18 @@ class OnBoardingActivity : AppCompatActivity() {
                 1 -> {
                     binding.onboardingViewpager.currentItem = 2
                 }
-                2 -> {
-
-                    val taskInserted = mViewPagerAdapter.performTaskInsert(mTaskEntityModel)
-
-                    // Task was correct and successfully inserted
-                    if (taskInserted) {
-
-                        binding.onboardingNextBtn.visibility = View.GONE
-                        binding.onboardingProgressIndicator.visibility = View.VISIBLE
-                    }
-                }
             }
         }
+        binding.onboardingFinishBtn.setOnClickListener {
+            val taskInsertStarted = mViewPagerAdapter.performTaskInsert(mTaskEntityModel)
 
-        TabLayoutMediator(binding.onboardingTabLayoutView, binding.onboardingViewpager) { _, _ ->
-        }.attach()
+            // Task was correct and successfully inserted
+            if (taskInsertStarted) {
+
+                binding.onboardingFinishBtn.visibility = View.GONE
+                binding.onboardingProgressIndicator.visibility = View.VISIBLE
+            }
+        }
 
         mTaskEntityModel.insertSuccessful.observe(this) {
             AppSettingsManager.instance(baseContext).isAppOnboarded = true

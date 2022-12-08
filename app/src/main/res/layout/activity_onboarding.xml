@@ -25,6 +25,18 @@
         app:icon="@drawable/ic_right_arrow"
         app:iconSize="25dp" />
 
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/onboarding_finish_btn"
+        style="?attr/materialIconButtonFilledStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="24dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:text="@string/onboarding_get_start"
+        android:visibility="gone" />
+
     <com.google.android.material.progressindicator.CircularProgressIndicator
         android:id="@+id/onboarding_progress_indicator"
         android:layout_width="wrap_content"

@@ -34,9 +34,8 @@
         android:textColor="@color/theme_white"
         app:backgroundTint="@color/colorPrimary"
         app:layout_constraintBottom_toBottomOf="@+id/color_pick_grid_view"
-        app:layout_constraintEnd_toStartOf="@+id/color_pick_preview_view"
-        app:layout_constraintStart_toEndOf="@+id/color_pick_grid_view"
-        app:layout_constraintTop_toTopOf="@+id/color_pick_grid_view" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/color_pick_grid_view" />
 
     <ImageView
         android:id="@+id/color_pick_preview_view"
@@ -44,9 +43,9 @@
         android:layout_height="35dp"
         android:background="@color/legend_red"
         android:contentDescription="@string/dialog_color_pick_title"
-        app:layout_constraintBottom_toBottomOf="@+id/color_pick_random_btn"
+        app:layout_constraintBottom_toTopOf="@+id/color_pick_random_btn"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/color_pick_random_btn"
-        app:layout_constraintTop_toTopOf="@+id/color_pick_random_btn" />
+        app:layout_constraintStart_toEndOf="@+id/color_pick_grid_view"
+        app:layout_constraintTop_toTopOf="@+id/color_pick_grid_view" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
