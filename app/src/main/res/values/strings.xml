@@ -21,7 +21,7 @@
     <string name="dashboard_no_task">Lets create our first Task:</string>
     <string name="dashboard_no_entry">No value found. Create by pressing +</string>
     <string name="task_no_item">Create a Task by pressing +</string>
-    <string name="task_deleted">Deleted %1$s</string>
+    <string name="item_deleted">%1$s deleted</string>
 
     <string name="dialog_color_pick_title">Pick legend color</string>
     <string name="dialog_color_pick_random">Generate random</string>

@@ -17,265 +17,270 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="24dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <!-- Task Title -->
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/entry_name_input_layout"
-            style="@style/Widget.Material3.TextInputLayout.FilledBox.ExposedDropdownMenu"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/task_header_name"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:layout_height="match_parent"
+            android:padding="24dp">
 
-            <AutoCompleteTextView
-                android:id="@+id/entry_name_edittext"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="none"
-                android:textColorHint="#616161" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <!-- Yes/No & Number layout -->
-        <LinearLayout
-            android:id="@+id/entries_without_date_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:orientation="vertical"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/entry_name_input_layout">
-            <!-- Yes / No task value -->
+            <!-- Task Title -->
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/entry_yesno_input_layout"
-                style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                android:id="@+id/entry_name_input_layout"
+                style="@style/Widget.Material3.TextInputLayout.FilledBox.ExposedDropdownMenu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/entry_yesno_title"
-                android:visibility="gone">
+                android:hint="@string/task_header_name"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
                 <AutoCompleteTextView
-                    android:id="@+id/entry_yesno_edittext"
+                    android:id="@+id/entry_name_edittext"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="none"
-                    app:simpleItems="@array/yes_no_array" />
+                    android:textColorHint="#616161" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
-            <!-- Number task value -->
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/entry_number_input_layout"
+            <!-- Yes/No & Number layout -->
+            <LinearLayout
+                android:id="@+id/entries_without_date_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/entry_number_title"
+                android:layout_marginTop="24dp"
+                android:orientation="vertical"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/entry_name_input_layout">
+                <!-- Yes / No task value -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/entry_yesno_input_layout"
+                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/entry_yesno_title"
+                    android:visibility="gone">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/entry_yesno_edittext"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="none"
+                        app:simpleItems="@array/yes_no_array" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- Number task value -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/entry_number_input_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/entry_number_title"
+                    android:visibility="gone"
+                    app:errorEnabled="true">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/entry_number_edittext"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="number" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
+
+            <!-- From / To Date task value -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/entry_to_from_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
                 android:visibility="gone"
-                app:errorEnabled="true">
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/entry_name_input_layout">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/entry_from_title_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/entry_start_date_title"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/entry_from_date_input_layout"
+                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:hint="@string/entry_date_title"
+                    app:layout_constraintEnd_toStartOf="@+id/entry_from_time_input_layout"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/entry_from_title_textview">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/entry_from_date_edittext"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="none" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/entry_from_time_input_layout"
+                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:hint="@string/entry_time_title"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/entry_from_date_input_layout"
+                    app:layout_constraintTop_toBottomOf="@+id/entry_from_title_textview">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/entry_from_time_edittext"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="none" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!--To -->
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/entry_to_title_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/entry_end_date_title"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/entry_from_date_input_layout" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/entry_to_date_input_layout"
+                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:hint="@string/entry_date_title"
+                    app:layout_constraintEnd_toStartOf="@+id/entry_to_time_input_layout"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/entry_to_title_textview">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/entry_to_date_edittext"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="none" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/entry_to_time_input_layout"
+                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:hint="@string/entry_time_title"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/entry_to_date_input_layout"
+                    app:layout_constraintTop_toBottomOf="@+id/entry_to_title_textview">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/entry_to_time_edittext"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="none" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <!-- Event date -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/entry_date_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:visibility="gone"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/entries_without_date_layout">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/entry_event_title_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/entry_event_date_time_title"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/entry_event_date_input_layout"
+                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:hint="@string/entry_date_title"
+                    app:layout_constraintEnd_toStartOf="@+id/entry_event_time_input_layout"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/entry_event_title_textview">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/entry_event_date_edittext"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="none" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/entry_event_time_input_layout"
+                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:hint="@string/entry_time_title"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/entry_event_date_input_layout"
+                    app:layout_constraintTop_toBottomOf="@+id/entry_event_title_textview">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/entry_event_time_edittext"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="none" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            <!-- comments -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/entry_comment_input_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:hint="@string/entry_comment_title"
+                android:visibility="gone"
+                app:errorEnabled="true"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/entry_date_layout">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/entry_number_edittext"
+                    android:id="@+id/entry_comment_edittext"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="number" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-        </LinearLayout>
-
-        <!-- From / To Date task value -->
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/entry_to_from_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:visibility="gone"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/entry_name_input_layout">
-
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/entry_from_title_textview"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/entry_start_date_title"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/entry_from_date_input_layout"
-                style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:hint="@string/entry_date_title"
-                app:layout_constraintEnd_toStartOf="@+id/entry_from_time_input_layout"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/entry_from_title_textview">
-
-                <AutoCompleteTextView
-                    android:id="@+id/entry_from_date_edittext"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="none" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/entry_from_time_input_layout"
-                style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:hint="@string/entry_time_title"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/entry_from_date_input_layout"
-                app:layout_constraintTop_toBottomOf="@+id/entry_from_title_textview">
-
-                <AutoCompleteTextView
-                    android:id="@+id/entry_from_time_edittext"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="none" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <!--To -->
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/entry_to_title_textview"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="@string/entry_end_date_title"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/entry_from_date_input_layout" />
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/entry_to_date_input_layout"
-                style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:hint="@string/entry_date_title"
-                app:layout_constraintEnd_toStartOf="@+id/entry_to_time_input_layout"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/entry_to_title_textview">
-
-                <AutoCompleteTextView
-                    android:id="@+id/entry_to_date_edittext"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="none" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/entry_to_time_input_layout"
-                style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:hint="@string/entry_time_title"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/entry_to_date_input_layout"
-                app:layout_constraintTop_toBottomOf="@+id/entry_to_title_textview">
-
-                <AutoCompleteTextView
-                    android:id="@+id/entry_to_time_edittext"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="none" />
+                    android:ems="2"
+                    android:inputType="textMultiLine|textCapSentences" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <!-- Event date -->
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/entry_date_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:visibility="gone"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/entries_without_date_layout">
-
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/entry_event_title_textview"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="@string/entry_event_date_time_title"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/entry_event_date_input_layout"
-                style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:hint="@string/entry_date_title"
-                app:layout_constraintEnd_toStartOf="@+id/entry_event_time_input_layout"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/entry_event_title_textview">
-
-                <AutoCompleteTextView
-                    android:id="@+id/entry_event_date_edittext"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="none" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/entry_event_time_input_layout"
-                style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:hint="@string/entry_time_title"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/entry_event_date_input_layout"
-                app:layout_constraintTop_toBottomOf="@+id/entry_event_title_textview">
-
-                <AutoCompleteTextView
-                    android:id="@+id/entry_event_time_edittext"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="none" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-        <!-- comments -->
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/entry_comment_input_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:hint="@string/entry_comment_title"
-            android:visibility="gone"
-            app:errorEnabled="true"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/entry_date_layout">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/entry_comment_edittext"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="2"
-                android:inputType="textMultiLine" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

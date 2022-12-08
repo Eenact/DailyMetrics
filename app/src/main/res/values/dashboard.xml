@@ -3,6 +3,7 @@
 
     <string name="dashboard_no_chart_data">Add chart data by pressing +</string>
     <string name="dashboard_item_placeholder">%1$s %2$s</string>
+    <string name="deleted_value">Value</string>
 
     <string name="toggle_day_button">1D</string>
     <string name="toggle_7_days_button">1W</string>

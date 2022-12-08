@@ -32,6 +32,7 @@ import com.softtechno.tasktracker.db.TaskEntity
 import com.softtechno.tasktracker.db.TaskValue
 import com.softtechno.tasktracker.enums.AxisXTypes
 import com.softtechno.tasktracker.utils.AxisUtils
+import com.softtechno.tasktracker.utils.RecyclerViewUtils
 import com.softtechno.tasktracker.viewmodels.TaskEntityViewModel
 import com.softtechno.tasktracker.viewmodels.TaskEntityViewModelFactory
 import com.softtechno.tasktracker.viewmodels.TaskValueViewModel
@@ -50,7 +51,7 @@ class DashboardFragment : Fragment() {
     private var mAxisXSelection: AxisXTypes = AxisXTypes.Week
     private var mDashboardCalendar: Calendar = Calendar.getInstance()
 
-    private var mRecyclerListAdapter: DashboardListAdapter? = null
+    private lateinit var mRecyclerListAdapter: DashboardListAdapter
 
     private var _binding: FragmentDashboardBinding? = null
     private val mTaskValuesModel: TaskValueViewModel by activityViewModels {
@@ -73,6 +74,7 @@ class DashboardFragment : Fragment() {
         setupMenu()
 
         initChartView()
+        setListGestures()
 
         binding.toggleButtons.check(binding.weekToggleButton.id)
         binding.toggleButtons.addOnButtonCheckedListener { _, checkedId, isChecked ->
@@ -227,6 +229,32 @@ class DashboardFragment : Fragment() {
         }, viewLifecycleOwner, Lifecycle.State.RESUMED)
     }
 
+    private fun setListGestures() {
+        val itemTouch = RecyclerViewUtils.swipeToDelete(resources) { viewHolder ->
+
+            // below line is to get the position
+            // of the item at that position.
+            val position = viewHolder.adapterPosition
+
+            val deleteValue: TaskValue =
+                mRecyclerListAdapter.getItem(position).entryValue
+                    ?: return@swipeToDelete
+
+            // below line is to notify and delete in db.
+            mRecyclerListAdapter.notifyItemRemoved(position)
+            mTaskValuesModel.delete(deleteValue)
+
+            // below line is to display our snackbar
+            Snackbar.make(
+                binding.dashboardRecyclerView,
+                getString(R.string.item_deleted, getString(R.string.deleted_value)),
+                Snackbar.LENGTH_LONG
+            )
+                .show()
+        }
+        itemTouch.attachToRecyclerView(binding.dashboardRecyclerView)
+    }
+
     private fun noTaskSnack(view: View) {
         Snackbar.make(view, R.string.dashboard_no_task, Snackbar.LENGTH_INDEFINITE)
             .setAction(R.string.task_manager_fragment_label) {
@@ -260,8 +288,8 @@ class DashboardFragment : Fragment() {
             }
         }
 
-        mRecyclerListAdapter?.updateItems(dateValues.sortedByDescending { it.entryValue?.time })
-        mRecyclerListAdapter?.notifyDataSetChanged()
+        mRecyclerListAdapter.updateItems(dateValues.sortedByDescending { it.entryValue?.time })
+        mRecyclerListAdapter.notifyDataSetChanged()
     }
 
     private fun constructGraph(

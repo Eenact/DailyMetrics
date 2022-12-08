@@ -86,6 +86,10 @@ class DashboardListAdapter(private var dataSet: MutableList<DashboardListData>) 
 
     override fun getItemCount() = dataSet.size
 
+    fun getItem(position: Int): DashboardListData {
+        return dataSet[position]
+    }
+
     fun updateItems(dataItems: List<DashboardListData>) {
         dataSet.clear()
         dataSet.addAll(dataItems)
