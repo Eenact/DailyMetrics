@@ -26,8 +26,8 @@
     <string name="dialog_color_pick_title">Pick legend color</string>
     <string name="dialog_color_pick_random">Generate random</string>
 
-    <string name="task_header_name">Name *</string>
-    <string name="task_header_type">Value type *</string>
+    <string name="task_header_name">Enter task name *</string>
+    <string name="task_header_type">Select task value type *</string>
     <string name="task_header_unit">Unit</string>
     <string name="task_header_color">Legend Color</string>
 
