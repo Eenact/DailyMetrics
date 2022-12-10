@@ -14,6 +14,7 @@ import com.softtechno.tasktracker.R
 import com.softtechno.tasktracker.adapter.TaskManagerAdapter
 import com.softtechno.tasktracker.databinding.FragmentTaskManagerBinding
 import com.softtechno.tasktracker.db.TaskEntity
+import com.softtechno.tasktracker.gui.MainActivity
 import com.softtechno.tasktracker.utils.RecyclerViewUtils
 import com.softtechno.tasktracker.viewmodels.TaskEntityViewModel
 import com.softtechno.tasktracker.viewmodels.TaskEntityViewModelFactory
@@ -44,10 +45,6 @@ class TaskManagerFragment : Fragment() {
             mTaskManagerAdapter?.updateItems(it)
         }
 
-        binding.buttonInsertTask.setOnClickListener {
-            findNavController().navigate(R.id.action_TaskManagerFragment_to_TaskFragment)
-        }
-
         mTaskManagerAdapter = TaskManagerAdapter(TaskManagerAdapter.OnClickListener { task ->
             val bundle = Bundle()
             bundle.putLong("task_id", task.id)
@@ -66,6 +63,24 @@ class TaskManagerFragment : Fragment() {
         setListGestures()
 
         return binding.root
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        (activity as? MainActivity).let {
+            it?.didClickAddButton = {
+                findNavController().navigate(R.id.action_TaskManagerFragment_to_TaskFragment)
+            }
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+
+        (activity as? MainActivity).let {
+            it?.didClickAddButton = null
+        }
     }
 
     private fun setListGestures() {

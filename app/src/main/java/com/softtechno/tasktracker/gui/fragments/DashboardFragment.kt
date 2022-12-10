@@ -31,6 +31,7 @@ import com.softtechno.tasktracker.databinding.FragmentDashboardBinding
 import com.softtechno.tasktracker.db.TaskEntity
 import com.softtechno.tasktracker.db.TaskValue
 import com.softtechno.tasktracker.enums.AxisXTypes
+import com.softtechno.tasktracker.gui.MainActivity
 import com.softtechno.tasktracker.utils.AxisUtils
 import com.softtechno.tasktracker.utils.RecyclerViewUtils
 import com.softtechno.tasktracker.viewmodels.TaskEntityViewModel
@@ -89,18 +90,6 @@ class DashboardFragment : Fragment() {
                 else -> AxisXTypes.SixMonths
             }
             mTaskValuesModel.allValues.value?.let { constructGraph(it, mAxisXSelection, -1, true) }
-        }
-
-        binding.buttonInsertEntry.setOnClickListener {
-            if (!mTaskEntityModel.allEntries.value.isNullOrEmpty()) {
-//            val taskEntryDialogFragment = TaskEntryDialogFragment()
-//            if (isLargeDisplay) {
-//                taskEntryDialogFragment.show(supportFragmentManager, "TaskEntryDialog")
-//            }
-                findNavController().navigate(R.id.action_DashboardFragment_to_TaskEntryFragment)
-            } else {
-                noTaskSnack(it)
-            }
         }
 
         binding.leftArrowButton.setOnClickListener {
@@ -190,6 +179,29 @@ class DashboardFragment : Fragment() {
 
         return binding.root
 
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        (activity as? MainActivity).let {
+            it?.didClickAddButton = {
+                if (!mTaskEntityModel.allEntries.value.isNullOrEmpty()) {
+                    findNavController().navigate(R.id.action_DashboardFragment_to_TaskEntryFragment)
+                } else {
+                    noTaskSnack(it)
+                }
+            }
+        }
+
+    }
+
+    override fun onPause() {
+        super.onPause()
+
+        (activity as? MainActivity).let {
+            it?.didClickAddButton = null
+        }
     }
 
     override fun onDestroyView() {

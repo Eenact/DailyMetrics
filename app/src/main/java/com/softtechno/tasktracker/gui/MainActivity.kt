@@ -2,6 +2,7 @@ package com.softtechno.tasktracker.gui
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
 import androidx.navigation.findNavController
@@ -12,8 +13,13 @@ import com.softtechno.tasktracker.R
 import com.softtechno.tasktracker.databinding.ActivityMainBinding
 import com.softtechno.tasktracker.managers.AppSettingsManager
 import com.softtechno.tasktracker.managers.AppSettingsManager.isAppOnboarded
+import kotlin.properties.Delegates
 
 class MainActivity : AppCompatActivity() {
+
+    var didClickAddButton: ((View) -> Unit)? by Delegates.observable(null) { _, _, newValue ->
+        binding.addButton.visibility = if (newValue == null) View.GONE else View.VISIBLE
+    }
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
@@ -37,6 +43,10 @@ class MainActivity : AppCompatActivity() {
         val navController = findNavController(R.id.nav_host_fragment_content_main)
         appBarConfiguration = AppBarConfiguration(navController.graph)
         setupActionBarWithNavController(navController, appBarConfiguration)
+
+        binding.addButton.setOnClickListener {
+            didClickAddButton?.invoke(it)
+        }
 
     }
 
