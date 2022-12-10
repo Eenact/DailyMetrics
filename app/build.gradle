@@ -11,8 +11,8 @@ android {
         applicationId "com.softtechno.tasktracker"
         minSdk 21
         targetSdk 33
-        versionCode 202211271
-        versionName "1.1.1"
+        versionCode 202212101
+        versionName "1.1.2"
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         setProperty("archivesBaseName", "TaskTracker-$versionCode")
@@ -25,6 +25,7 @@ android {
         }
         release {
             minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
