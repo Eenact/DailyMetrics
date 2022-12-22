@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="export_dialog_title">Export data</string>
+    <string name="export_dialog_message">Do you want to export all the data or only the filtered data?</string>
+    <string name="export_all">Export all</string>
+    <string name="export_filtered">Filtered</string>
+
+    <string name="export_header_date">Date</string>
+    <string name="export_header_name">Task</string>
+    <string name="export_header_unit">Unit</string>
+    <string name="export_header_value">Value</string>
+    <string name="export_header_comments">Comments</string>
+
+    <string name="export_value">%1$s,%2$s,%3$s,%4$s,%5$s</string>
+    <string name="export_datetime_value_format">yyyy.MM.dd HH:mm</string>
+
+    <string name="export_share_title">Export data …</string>
+    <string name="export_filtered_file_name">TaskAnalyzer_filtered_%s.csv</string>
+    <string name="export_all_file_name">TaskAnalyzer_all_%s.csv</string>
+    <string name="export_share_file_datetime">yyyyMMddHHmmss</string>
+
+    <string name="export_email_subject">#%s: exported data</string>
+    <string name="export_email_message">My task records collected from #%s.</string>
+
+</resources>

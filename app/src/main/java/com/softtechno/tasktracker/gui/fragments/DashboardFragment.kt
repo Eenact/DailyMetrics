@@ -32,6 +32,7 @@ import com.softtechno.tasktracker.db.TaskEntity
 import com.softtechno.tasktracker.db.TaskValue
 import com.softtechno.tasktracker.enums.AxisXTypes
 import com.softtechno.tasktracker.gui.MainActivity
+import com.softtechno.tasktracker.managers.DataExportManager
 import com.softtechno.tasktracker.utils.AxisUtils
 import com.softtechno.tasktracker.utils.RecyclerViewUtils
 import com.softtechno.tasktracker.viewmodels.TaskEntityViewModel
@@ -52,6 +53,7 @@ class DashboardFragment : Fragment() {
     private var mAxisXSelection: AxisXTypes = AxisXTypes.Week
     private var mDashboardCalendar: Calendar = Calendar.getInstance()
 
+    private lateinit var mDataExportManager: DataExportManager
     private lateinit var mRecyclerListAdapter: DashboardListAdapter
 
     private var _binding: FragmentDashboardBinding? = null
@@ -67,8 +69,7 @@ class DashboardFragment : Fragment() {
     private val binding get() = _binding!!
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
 
         _binding = FragmentDashboardBinding.inflate(inflater, container, false)
@@ -76,6 +77,9 @@ class DashboardFragment : Fragment() {
 
         initChartView()
         setListGestures()
+
+        mDataExportManager = DataExportManager(requireActivity().activityResultRegistry)
+        lifecycle.addObserver(mDataExportManager)
 
         binding.toggleButtons.check(binding.weekToggleButton.id)
         binding.toggleButtons.addOnButtonCheckedListener { _, checkedId, isChecked ->
@@ -114,18 +118,14 @@ class DashboardFragment : Fragment() {
             val checked: BooleanArray =
                 mFilteredTaskIds?.values?.toBooleanArray() ?: booleanArrayOf()
 
-            MaterialAlertDialogBuilder(requireContext())
-                .setTitle(R.string.dashboard_filter_dialog_title)
+            MaterialAlertDialogBuilder(requireContext()).setTitle(R.string.dashboard_filter_dialog_title)
                 .setMultiChoiceItems(
-                    itemNames,
-                    checked
+                    itemNames, checked
                 ) { _, which, isChecked ->
                     checked[which] = isChecked
-                }
-                .setNegativeButton(android.R.string.cancel) { _, _ ->
+                }.setNegativeButton(android.R.string.cancel) { _, _ ->
 
-                }
-                .setPositiveButton(R.string.apply) { _, _ ->
+                }.setPositiveButton(R.string.apply) { _, _ ->
                     for (i in checked.indices) {
                         val name = itemNames[i]
                         val isCheck = checked[i]
@@ -135,8 +135,7 @@ class DashboardFragment : Fragment() {
                         }
                     }
                     mTaskValuesModel.allValues.value?.let { updateUIItems(it) }
-                }
-                .show()
+                }.show()
 
         }
 
@@ -147,8 +146,7 @@ class DashboardFragment : Fragment() {
         binding.dashboardRecyclerView.layoutManager = linearLayoutManager
         binding.dashboardRecyclerView.addItemDecoration(
             DividerItemDecoration(
-                requireContext(),
-                linearLayoutManager.orientation
+                requireContext(), linearLayoutManager.orientation
             )
         )
 
@@ -235,6 +233,18 @@ class DashboardFragment : Fragment() {
                         findNavController().navigate(R.id.action_DashboardFragment_to_LegalTermsFragment)
                         true
                     }
+                    R.id.action_export_data -> {
+                        val allContent = mTaskValuesModel.allValues.value
+                        val filters = mFilteredTaskIds
+                        if (allContent.isNullOrEmpty() || filters.isNullOrEmpty()) {
+                            noEntryValueSnack(binding.root)
+                        } else {
+                            mDataExportManager.showExportDialog(
+                                requireContext(), allContent, filters
+                            )
+                        }
+                        true
+                    }
                     else -> false
                 }
             }
@@ -249,8 +259,7 @@ class DashboardFragment : Fragment() {
             val position = viewHolder.adapterPosition
 
             val deleteValue: TaskValue =
-                mRecyclerListAdapter.getItem(position).entryValue
-                    ?: return@swipeToDelete
+                mRecyclerListAdapter.getItem(position).entryValue ?: return@swipeToDelete
 
             // below line is to notify and delete in db.
             mRecyclerListAdapter.notifyItemRemoved(position)
@@ -261,8 +270,7 @@ class DashboardFragment : Fragment() {
                 binding.dashboardRecyclerView,
                 getString(R.string.item_deleted, getString(R.string.deleted_value)),
                 Snackbar.LENGTH_LONG
-            )
-                .show()
+            ).show()
         }
         itemTouch.attachToRecyclerView(binding.dashboardRecyclerView)
     }
@@ -271,16 +279,14 @@ class DashboardFragment : Fragment() {
         Snackbar.make(view, R.string.dashboard_no_task, Snackbar.LENGTH_INDEFINITE)
             .setAction(R.string.task_manager_fragment_label) {
                 findNavController().navigate(R.id.action_DashboardFragment_to_TaskManagerFragment)
-            }
-            .show()
+            }.show()
     }
 
     private fun noEntryValueSnack(view: View) {
         Snackbar.make(view, R.string.dashboard_no_entry, Snackbar.LENGTH_LONG)
             .setAction(R.string.content_desc_insert_value_btn) {
                 findNavController().navigate(R.id.action_DashboardFragment_to_TaskEntryFragment)
-            }
-            .show()
+            }.show()
     }
 
     private fun updateUIItems(entries: Map<TaskEntity, TaskValue>) {
@@ -319,8 +325,7 @@ class DashboardFragment : Fragment() {
         setTimeAxisLabels(mDashboardCalendar.clone() as Calendar, selection)
 
         mDashboardCalendar.add(
-            Calendar.DAY_OF_YEAR,
-            (when (selection) {
+            Calendar.DAY_OF_YEAR, (when (selection) {
                 AxisXTypes.Day -> 0
                 AxisXTypes.Week -> 7
                 AxisXTypes.Month -> 30
@@ -333,8 +338,7 @@ class DashboardFragment : Fragment() {
             mDashboardCalendar.set(Calendar.HOUR_OF_DAY, 0)
         } else {
             mDashboardCalendar.set(
-                Calendar.HOUR_OF_DAY,
-                Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
+                Calendar.HOUR_OF_DAY, Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
             )
         }
 
@@ -442,9 +446,7 @@ class DashboardFragment : Fragment() {
         // set an alternative background color
         binding.chartView.setBackgroundColor(
             ResourcesCompat.getColor(
-                resources,
-                R.color.device_theme_color,
-                null
+                resources, R.color.device_theme_color, null
             )
         )
 

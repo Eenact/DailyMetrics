@@ -7,6 +7,7 @@
     <string name="task_entry_fragment_label">Task value</string>
     <string name="task_manager_fragment_label">Manage Tasks</string>
     <string name="legal_fragment_label">Legal Terms</string>
+    <string name="export_data_label">Export data</string>
 
     <string name="content_desc_insert_task_btn">Insert Task</string>
     <string name="content_desc_insert_value_btn">Insert Value</string>
@@ -26,12 +27,12 @@
     <string name="dialog_color_pick_title">Pick legend color</string>
     <string name="dialog_color_pick_random">Generate random</string>
 
-    <string name="task_header_name">Enter name *</string>
-    <string name="task_header_type">Select type *</string>
-    <string name="task_details_type">Define the value that can be inserted for this task.</string>
+    <string name="task_header_name">Task name *</string>
+    <string name="task_header_type">Entry type *</string>
+    <string name="task_details_type">Define the type of value that can be inserted for this task.</string>
     <string name="task_header_unit">Unit</string>
     <string name="task_details_unit">A unit to measure the task value.</string>
-    <string name="task_header_color">Legend Color</string>
+    <string name="task_header_color">Legend color</string>
     <string name="task_details_color">This color will be used to draw on Charts.</string>
 
     <string name="entry_number_title">Number</string>
