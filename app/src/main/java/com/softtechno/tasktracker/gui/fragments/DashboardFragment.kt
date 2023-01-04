@@ -22,7 +22,6 @@ import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.ValueFormatter
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.softtechno.tasktracker.R
 import com.softtechno.tasktracker.adapter.DashboardListAdapter
@@ -35,10 +34,7 @@ import com.softtechno.tasktracker.gui.MainActivity
 import com.softtechno.tasktracker.managers.DataExportManager
 import com.softtechno.tasktracker.utils.AxisUtils
 import com.softtechno.tasktracker.utils.RecyclerViewUtils
-import com.softtechno.tasktracker.viewmodels.TaskEntityViewModel
-import com.softtechno.tasktracker.viewmodels.TaskEntityViewModelFactory
-import com.softtechno.tasktracker.viewmodels.TaskValueViewModel
-import com.softtechno.tasktracker.viewmodels.TaskValueViewModelFactory
+import com.softtechno.tasktracker.viewmodels.*
 import java.util.*
 import kotlin.math.max
 
@@ -49,7 +45,6 @@ import kotlin.math.max
 class DashboardFragment : Fragment() {
 
     private var mAxisXLabels: Map<Int, String> = mapOf()
-    private var mFilteredTaskIds: MutableMap<Long, Boolean>? = null
     private var mAxisXSelection: AxisXTypes = AxisXTypes.Week
     private var mDashboardCalendar: Calendar = Calendar.getInstance()
 
@@ -57,6 +52,9 @@ class DashboardFragment : Fragment() {
     private lateinit var mRecyclerListAdapter: DashboardListAdapter
 
     private var _binding: FragmentDashboardBinding? = null
+
+    // View models
+    private val mFilteredTaskIds: FilterViewModel by activityViewModels()
     private val mTaskValuesModel: TaskValueViewModel by activityViewModels {
         TaskValueViewModelFactory(requireActivity())
     }
@@ -81,6 +79,7 @@ class DashboardFragment : Fragment() {
         mDataExportManager = DataExportManager(requireActivity().activityResultRegistry)
         lifecycle.addObserver(mDataExportManager)
 
+        // Chart view Days month toggle buttons
         binding.toggleButtons.check(binding.weekToggleButton.id)
         binding.toggleButtons.addOnButtonCheckedListener { _, checkedId, isChecked ->
             if (!isChecked) {
@@ -96,6 +95,7 @@ class DashboardFragment : Fragment() {
             mTaskValuesModel.allValues.value?.let { constructGraph(it, mAxisXSelection, -1, true) }
         }
 
+        // Chart view navigational view buttons
         binding.leftArrowButton.setOnClickListener {
             mTaskValuesModel.allValues.value?.let { constructGraph(it, mAxisXSelection, -1, false) }
         }
@@ -103,42 +103,22 @@ class DashboardFragment : Fragment() {
             mTaskValuesModel.allValues.value?.let { constructGraph(it, mAxisXSelection, 1, false) }
         }
 
+        // Filter view buttons
         binding.dashboardFilterBtn.setOnClickListener { view ->
 
             val items = mTaskEntityModel.allEntries.value
             if (items.isNullOrEmpty()) {
                 noTaskSnack(view)
-                return@setOnClickListener
+            } else {
+                (activity as MainActivity).getBottomSheet(
+                    R.layout.dialog_filter_bottom_sheet,
+                    items.toTypedArray()
+                )
+                    .show(requireActivity().supportFragmentManager, MainBottomSheetFragment.TAG)
             }
-
-            val itemsMap = items.associate { it.id to it.name }
-            val namesMap = items.associate { it.name to it.id }
-            val itemNames: Array<String?> =
-                mFilteredTaskIds?.keys?.map { itemsMap[it] }?.toTypedArray() ?: arrayOf()
-            val checked: BooleanArray =
-                mFilteredTaskIds?.values?.toBooleanArray() ?: booleanArrayOf()
-
-            MaterialAlertDialogBuilder(requireContext()).setTitle(R.string.dashboard_filter_dialog_title)
-                .setMultiChoiceItems(
-                    itemNames, checked
-                ) { _, which, isChecked ->
-                    checked[which] = isChecked
-                }.setNegativeButton(android.R.string.cancel) { _, _ ->
-
-                }.setPositiveButton(R.string.apply) { _, _ ->
-                    for (i in checked.indices) {
-                        val name = itemNames[i]
-                        val isCheck = checked[i]
-                        val itemId: Long = namesMap[name] ?: -1
-                        if (itemId != -1L) {
-                            mFilteredTaskIds?.set(itemId, isCheck)
-                        }
-                    }
-                    mTaskValuesModel.allValues.value?.let { updateUIItems(it) }
-                }.show()
-
         }
 
+        // Setting up recycler view
         val linearLayoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         mRecyclerListAdapter = DashboardListAdapter(mutableListOf())
@@ -150,28 +130,32 @@ class DashboardFragment : Fragment() {
             )
         )
 
+        // Adding all the viewmodel observers
         mTaskValuesModel.allValues.observe(viewLifecycleOwner) { entries ->
             if (entries.isNullOrEmpty()) {
                 return@observe
             }
-            if (mFilteredTaskIds == null) {
-                mFilteredTaskIds = entries.keys.associate { it.id to true }.toMutableMap()
+            if (mFilteredTaskIds.filteredTasks.value.isNullOrEmpty()) {
+                mFilteredTaskIds.setFilteredTasks(entries.keys.associate { it.id to true }
+                    .toMutableMap())
             }
 
             updateUIItems(entries)
         }
         mTaskEntityModel.allEntries.observe(viewLifecycleOwner) { entries ->
-            if (mFilteredTaskIds == null) {
-                mFilteredTaskIds = mutableMapOf()
-            }
             if (entries.isNullOrEmpty()) {
                 noTaskSnack(binding.root)
-            } else {
+            } else if (mFilteredTaskIds.filteredTasks.value.isNullOrEmpty()) {
                 entries.forEach {
-                    if (mFilteredTaskIds!![it.id] == null) {
-                        mFilteredTaskIds!![it.id] = true
+                    if (mFilteredTaskIds.filteredTasks.value?.get(it.id) == null) {
+                        mFilteredTaskIds.filteredTasks.value?.put(it.id, true)
                     }
                 }
+            }
+        }
+        mFilteredTaskIds.filterUpdated.observe(viewLifecycleOwner) {
+            if (it && mTaskValuesModel.allValues.value.isNullOrEmpty() == false) {
+                updateUIItems(mTaskValuesModel.allValues.value!!)
             }
         }
 
@@ -183,11 +167,11 @@ class DashboardFragment : Fragment() {
         super.onResume()
 
         (activity as? MainActivity).let {
-            it?.didClickAddButton = {
+            it?.addButtonClickListener = { button ->
                 if (!mTaskEntityModel.allEntries.value.isNullOrEmpty()) {
                     findNavController().navigate(R.id.action_DashboardFragment_to_TaskEntryFragment)
                 } else {
-                    noTaskSnack(it)
+                    noTaskSnack(button)
                 }
             }
         }
@@ -198,7 +182,7 @@ class DashboardFragment : Fragment() {
         super.onPause()
 
         (activity as? MainActivity).let {
-            it?.didClickAddButton = null
+            it?.addButtonClickListener = null
         }
     }
 
@@ -235,7 +219,7 @@ class DashboardFragment : Fragment() {
                     }
                     R.id.action_export_data -> {
                         val allContent = mTaskValuesModel.allValues.value
-                        val filters = mFilteredTaskIds
+                        val filters = mFilteredTaskIds.filteredTasks.value
                         if (allContent.isNullOrEmpty() || filters.isNullOrEmpty()) {
                             noEntryValueSnack(binding.root)
                         } else {
@@ -300,7 +284,7 @@ class DashboardFragment : Fragment() {
         val dateValues = mutableListOf<DashboardListData>()
         for (entityKey in entries.keys) {
 
-            if (mFilteredTaskIds?.get(entityKey.id) == true) {
+            if (mFilteredTaskIds.filteredTasks.value?.get(entityKey.id) == true) {
                 val entityValue = entries[entityKey]
                 dateValues.add(DashboardListData(false, null, entityValue, entityKey))
             }
@@ -350,7 +334,7 @@ class DashboardFragment : Fragment() {
         val graphLineDataSet: MutableList<ILineDataSet> = mutableListOf()
         for (entityKey in entries.keys) {
 
-            if (mFilteredTaskIds?.get(entityKey.id) == true) {
+            if (mFilteredTaskIds.filteredTasks.value?.get(entityKey.id) == true) {
                 if (entityKey.id != (taskId?.id ?: -1)) {
 
                     if (entryList.isNotEmpty() && taskId != null) {

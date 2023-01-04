@@ -18,6 +18,7 @@
     <string name="update">Update</string>
 
     <string name="dashboard_filter_dialog_title">Filters</string>
+    <string name="dashboard_filter_select_all">Select All</string>
 
     <string name="dashboard_no_task">Lets create our first Task:</string>
     <string name="dashboard_no_entry">No value found. Create by pressing +</string>
