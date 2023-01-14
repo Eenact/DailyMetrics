@@ -3,7 +3,7 @@
 
     <string name="export_data_title">Export data</string>
 
-    <string name="export_share_list">Share</string>
+    <string name="export_share_list">Share file</string>
     <string name="export_data_list">Save file</string>
 
     <dimen name="export_list_text_size">17sp</dimen>
@@ -21,7 +21,7 @@
     <string name="export_header_value">Value</string>
     <string name="export_header_comments">Comments</string>
 
-    <string name="export_value">%1$s,%2$s,%3$s,%4$s,%5$s</string>
+    <string name="export_value">%1$s,%2$s,%3$s,%4$s,\"%5$s\"</string>
     <string name="export_datetime_value_format">yyyy.MM.dd HH:mm</string>
 
     <string name="export_share_title">Share file …</string>
