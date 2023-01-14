@@ -12,6 +12,7 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import com.softtechno.tasktracker.R
 import com.softtechno.tasktracker.databinding.ActivityMainBinding
 import com.softtechno.tasktracker.db.TaskEntity
+import com.softtechno.tasktracker.db.TaskValue
 import com.softtechno.tasktracker.gui.fragments.MainBottomSheetFragment
 import com.softtechno.tasktracker.managers.AppSettingsManager
 import com.softtechno.tasktracker.managers.AppSettingsManager.isAppOnboarded
@@ -59,8 +60,12 @@ class MainActivity : AppCompatActivity() {
                 || super.onSupportNavigateUp()
     }
 
-    fun getBottomSheet(layout: Int, entries: Array<TaskEntity>): MainBottomSheetFragment {
-        mBottomSheetDialog = MainBottomSheetFragment(layout, entries)
+    fun getBottomSheet(
+        layout: Int,
+        entries: Array<TaskEntity>?,
+        entriesValues: Map<TaskEntity, TaskValue>?
+    ): MainBottomSheetFragment {
+        mBottomSheetDialog = MainBottomSheetFragment(layout, entries, entriesValues)
         return mBottomSheetDialog
     }
 }

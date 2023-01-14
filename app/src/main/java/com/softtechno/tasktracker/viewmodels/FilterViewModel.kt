@@ -19,4 +19,8 @@ class FilterViewModel() : ViewModel() {
         mFilteredTaskIds.value = taskIds
     }
 
+    fun insertTask(taskId: Long) {
+        mFilteredTaskIds.value?.put(taskId, true)
+    }
+
 }

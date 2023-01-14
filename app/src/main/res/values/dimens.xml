@@ -1,7 +1,8 @@
 <resources>
     <dimen name="fab_margin">16dp</dimen>
 
-    <dimen name="filter_checkbox_text">14sp</dimen>
+    <dimen name="filter_checkbox_text">16sp</dimen>
+    <dimen name="filter_checkbox_margin">8dp</dimen>
 
     <dimen name="task_manager_name">16sp</dimen>
     <dimen name="task_manager_type">16sp</dimen>

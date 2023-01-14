@@ -4,7 +4,7 @@
     <!-- Strings used for fragments for navigation -->
     <string name="dashboard_fragment_label">Dashboard</string>
     <string name="task_fragment_label">Task</string>
-    <string name="task_entry_fragment_label">Task value</string>
+    <string name="task_entry_fragment_label">Enter task progress</string>
     <string name="task_manager_fragment_label">Manage Tasks</string>
     <string name="legal_fragment_label">Legal Terms</string>
     <string name="export_data_label">Export data</string>

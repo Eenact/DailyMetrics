@@ -31,7 +31,6 @@ import com.softtechno.tasktracker.db.TaskEntity
 import com.softtechno.tasktracker.db.TaskValue
 import com.softtechno.tasktracker.enums.AxisXTypes
 import com.softtechno.tasktracker.gui.MainActivity
-import com.softtechno.tasktracker.managers.DataExportManager
 import com.softtechno.tasktracker.utils.AxisUtils
 import com.softtechno.tasktracker.utils.RecyclerViewUtils
 import com.softtechno.tasktracker.viewmodels.*
@@ -48,7 +47,6 @@ class DashboardFragment : Fragment() {
     private var mAxisXSelection: AxisXTypes = AxisXTypes.Week
     private var mDashboardCalendar: Calendar = Calendar.getInstance()
 
-    private lateinit var mDataExportManager: DataExportManager
     private lateinit var mRecyclerListAdapter: DashboardListAdapter
 
     private var _binding: FragmentDashboardBinding? = null
@@ -75,9 +73,6 @@ class DashboardFragment : Fragment() {
 
         initChartView()
         setListGestures()
-
-        mDataExportManager = DataExportManager(requireActivity().activityResultRegistry)
-        lifecycle.addObserver(mDataExportManager)
 
         // Chart view Days month toggle buttons
         binding.toggleButtons.check(binding.weekToggleButton.id)
@@ -111,10 +106,8 @@ class DashboardFragment : Fragment() {
                 noTaskSnack(view)
             } else {
                 (activity as MainActivity).getBottomSheet(
-                    R.layout.dialog_filter_bottom_sheet,
-                    items.toTypedArray()
-                )
-                    .show(requireActivity().supportFragmentManager, MainBottomSheetFragment.TAG)
+                    R.layout.dialog_filter_bottom_sheet, items.toTypedArray(), null
+                ).show(requireActivity().supportFragmentManager, MainBottomSheetFragment.TAG)
             }
         }
 
@@ -145,10 +138,10 @@ class DashboardFragment : Fragment() {
         mTaskEntityModel.allEntries.observe(viewLifecycleOwner) { entries ->
             if (entries.isNullOrEmpty()) {
                 noTaskSnack(binding.root)
-            } else if (mFilteredTaskIds.filteredTasks.value.isNullOrEmpty()) {
+            } else {
                 entries.forEach {
                     if (mFilteredTaskIds.filteredTasks.value?.get(it.id) == null) {
-                        mFilteredTaskIds.filteredTasks.value?.put(it.id, true)
+                        mFilteredTaskIds.insertTask(it.id)
                     }
                 }
             }
@@ -219,12 +212,14 @@ class DashboardFragment : Fragment() {
                     }
                     R.id.action_export_data -> {
                         val allContent = mTaskValuesModel.allValues.value
-                        val filters = mFilteredTaskIds.filteredTasks.value
-                        if (allContent.isNullOrEmpty() || filters.isNullOrEmpty()) {
+                        if (allContent.isNullOrEmpty()) {
                             noEntryValueSnack(binding.root)
                         } else {
-                            mDataExportManager.showExportDialog(
-                                requireContext(), allContent, filters
+                            (activity as MainActivity).getBottomSheet(
+                                R.layout.dialog_export_bottom_sheet, null, allContent
+                            ).show(
+                                requireActivity().supportFragmentManager,
+                                MainBottomSheetFragment.TAG
                             )
                         }
                         true

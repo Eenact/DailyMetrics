@@ -9,10 +9,8 @@ import com.softtechno.tasktracker.R
 import com.softtechno.tasktracker.db.TaskEntity
 
 class FilterSelectionAdapter(
-    private val entities: Array<TaskEntity>,
-    private val filtered: Map<Long, Boolean>
-) :
-    RecyclerView.Adapter<FilterSelectionAdapter.ViewHolder>() {
+    private val entities: Array<TaskEntity>, private val filtered: Map<Long, Boolean>
+) : RecyclerView.Adapter<FilterSelectionAdapter.ViewHolder>() {
 
     private val mViewHolders = mutableListOf<ViewHolder>()
 
@@ -27,6 +25,8 @@ class FilterSelectionAdapter(
                 TypedValue.COMPLEX_UNIT_PX,
                 view.context.resources.getDimension(R.dimen.filter_checkbox_text)
             )
+            val margin = view.context.resources.getDimension(R.dimen.filter_checkbox_text).toInt()
+            mCheckBox.setPadding(margin, margin, margin, margin)
         }
 
         fun setText(entity: TaskEntity, isChecked: Boolean) {

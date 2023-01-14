@@ -34,8 +34,10 @@ import java.util.*
 
 class TaskEntryDialogFragment : DialogFragment() {
 
-    private val DEBUG: Boolean = false
-    private val TAG: String = TaskEntryDialogFragment::class.java.name
+    companion object {
+        private const val DEBUG: Boolean = false
+        private const val TAG: String = "TaskEntryDialogFragment"
+    }
 
     private var _binding: FragmentEntryBinding? = null
     private val mTaskValuesModel: TaskValueViewModel by activityViewModels {
@@ -75,21 +77,22 @@ class TaskEntryDialogFragment : DialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.run {
+        binding.apply {
 
             initViews()
 
-            binding.toolbar.setBackgroundColor(
+            toolbar.setTitle(R.string.task_entry_fragment_label)
+            toolbar.setBackgroundColor(
                 ResourcesCompat.getColor(
                     resources,
                     R.color.device_theme_color,
                     null
                 )
             )
-            binding.toolbar.setNavigationIcon(R.drawable.ic_close)
-            binding.toolbar.setNavigationOnClickListener { dismiss() }
-            binding.toolbar.inflateMenu(R.menu.menu_task_entry)
-            binding.toolbar.setOnMenuItemClickListener { menuItem ->
+            toolbar.setNavigationIcon(R.drawable.ic_close)
+            toolbar.setNavigationOnClickListener { dismiss() }
+            toolbar.inflateMenu(R.menu.menu_task_entry)
+            toolbar.setOnMenuItemClickListener { menuItem ->
                 return@setOnMenuItemClickListener when (menuItem.itemId) {
                     R.id.action_save -> {
                         val value: Long? =
@@ -156,39 +159,33 @@ class TaskEntryDialogFragment : DialogFragment() {
 
     private fun showItems(view: View, selectedTask: TaskEntity?) {
 
+        binding.entryEventDateInputLayout.isEnabled = true
+        binding.entryEventTimeInputLayout.isEnabled = true
+        binding.entryCommentInputLayout.isEnabled = true
+        binding.entryToFromLayout.visibility = View.GONE
+        binding.entryYesnoInputLayout.isEnabled = true
+
         when (mTaskEntityModel.selectedItem.value?.type) {
             EntityType.YesNo -> {
                 binding.entryYesnoInputLayout.visibility = View.VISIBLE
-                binding.entryDateLayout.visibility = View.VISIBLE
 
                 binding.entryNumberInputLayout.visibility = View.GONE
-                binding.entryToFromLayout.visibility = View.GONE
             }
             EntityType.Number -> {
                 binding.entryNumberInputLayout.visibility = View.VISIBLE
-                binding.entryDateLayout.visibility = View.VISIBLE
                 binding.entryNumberInputLayout.hint =
                     if (selectedTask != null && selectedTask.unit != Units.Other) selectedTask.unit.toString() else getString(
                         R.string.entry_number_title
                     )
 
                 binding.entryYesnoInputLayout.visibility = View.GONE
-                binding.entryToFromLayout.visibility = View.GONE
             }
-            /*EntityType.StartEndDate -> {
-                binding.entryToFromLayout.visibility = View.VISIBLE
-
-                binding.entryDateLayout.visibility = View.GONE
-                binding.entryYesnoInputLayout.visibility = View.GONE
-                binding.entryNumberInputLayout.visibility = View.GONE
-            }*/
             else -> {
                 Snackbar.make(view, "Unknown type found.", Snackbar.LENGTH_SHORT)
                     .setAnchorView(binding.root)
                     .show()
             }
         }
-        binding.entryCommentInputLayout.visibility = View.VISIBLE
 
     }
 

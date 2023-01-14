@@ -1,9 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="export_dialog_title">Export data</string>
-    <string name="export_dialog_message">Do you want to export all the data or only the filtered data?</string>
-    <string name="export_all">Export all</string>
+    <string name="export_data_title">Export data</string>
+
+    <string name="export_share_list">Share</string>
+    <string name="export_data_list">Save file</string>
+
+    <dimen name="export_list_text_size">17sp</dimen>
+    <dimen name="export_list_image_size">28dp</dimen>
+
+    <string name="export_progress_dialog_title">Saving file …</string>
+    <string name="export_progress_completed">Saving completed</string>
+    <dimen name="export_progress_text_size">20sp</dimen>
+
     <string name="export_filtered">Filtered</string>
 
     <string name="export_header_date">Date</string>
@@ -15,12 +24,14 @@
     <string name="export_value">%1$s,%2$s,%3$s,%4$s,%5$s</string>
     <string name="export_datetime_value_format">yyyy.MM.dd HH:mm</string>
 
-    <string name="export_share_title">Export data …</string>
+    <string name="export_share_title">Share file …</string>
+    <string name="export_save_title">Save file …</string>
     <string name="export_filtered_file_name">TaskAnalyzer_filtered_%s.csv</string>
     <string name="export_all_file_name">TaskAnalyzer_all_%s.csv</string>
-    <string name="export_share_file_datetime">yyyyMMddHHmmss</string>
+    <string name="export_share_file_datetime">yyyy_MM_dd-HH_mm_ss</string>
 
     <string name="export_email_subject">#%s: exported data</string>
     <string name="export_email_message">My task records collected from #%s.</string>
 
+    <string name="export_list_image_view_desc">ImageView</string>
 </resources>
