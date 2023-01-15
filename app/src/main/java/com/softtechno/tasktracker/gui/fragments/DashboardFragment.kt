@@ -1,5 +1,6 @@
 package com.softtechno.tasktracker.gui.fragments
 
+import android.annotation.SuppressLint
 import android.graphics.Color
 import android.os.Bundle
 import android.view.*
@@ -44,7 +45,7 @@ import kotlin.math.max
 class DashboardFragment : Fragment() {
 
     private var mAxisXLabels: Map<Int, String> = mapOf()
-    private var mAxisXSelection: AxisXTypes = AxisXTypes.Week
+    private var mAxisXSelection: AxisXTypes = AxisXTypes.ThreeDays
     private var mDashboardCalendar: Calendar = Calendar.getInstance()
 
     private lateinit var mRecyclerListAdapter: DashboardListAdapter
@@ -75,19 +76,20 @@ class DashboardFragment : Fragment() {
         setListGestures()
 
         // Chart view Days month toggle buttons
-        binding.toggleButtons.check(binding.weekToggleButton.id)
+        binding.toggleButtons.check(binding.days3ToggleButton.id)
         binding.toggleButtons.addOnButtonCheckedListener { _, checkedId, isChecked ->
             if (!isChecked) {
                 return@addOnButtonCheckedListener
             }
             mAxisXSelection = when (checkedId) {
                 R.id.dayToggleButton -> AxisXTypes.Day
+                R.id.days3ToggleButton -> AxisXTypes.ThreeDays
                 R.id.weekToggleButton -> AxisXTypes.Week
                 R.id.monthToggleButton -> AxisXTypes.Month
                 R.id.days90ToggleButton -> AxisXTypes.ThreeMonths
                 else -> AxisXTypes.SixMonths
             }
-            mTaskValuesModel.allValues.value?.let { constructGraph(it, mAxisXSelection, -1, true) }
+            mTaskValuesModel.allValues.value?.let { updateUIItems(it) }
         }
 
         // Chart view navigational view buttons
@@ -274,14 +276,18 @@ class DashboardFragment : Fragment() {
         updateListViewAsync(entries)
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private fun updateListViewAsync(entries: Map<TaskEntity, TaskValue>) {
 
+        val endTime = mDashboardCalendar.timeInMillis
         val dateValues = mutableListOf<DashboardListData>()
         for (entityKey in entries.keys) {
 
             if (mFilteredTaskIds.filteredTasks.value?.get(entityKey.id) == true) {
                 val entityValue = entries[entityKey]
-                dateValues.add(DashboardListData(false, null, entityValue, entityKey))
+                if (endTime <= (entityValue?.time ?: -1)) {
+                    dateValues.add(DashboardListData(false, null, entityValue, entityKey))
+                }
             }
         }
 
@@ -289,6 +295,7 @@ class DashboardFragment : Fragment() {
         mRecyclerListAdapter.notifyDataSetChanged()
     }
 
+    @Suppress("KotlinConstantConditions")
     private fun constructGraph(
         entries: Map<TaskEntity, TaskValue>,
         selection: AxisXTypes,
@@ -306,6 +313,7 @@ class DashboardFragment : Fragment() {
         mDashboardCalendar.add(
             Calendar.DAY_OF_YEAR, (when (selection) {
                 AxisXTypes.Day -> 0
+                AxisXTypes.ThreeDays -> 3
                 AxisXTypes.Week -> 7
                 AxisXTypes.Month -> 30
                 AxisXTypes.ThreeMonths -> 90
@@ -342,7 +350,7 @@ class DashboardFragment : Fragment() {
                     entryList = mutableListOf()
                     taskId = entityKey
                 }
-                if (entries[entityKey] != null && endTime <= entries[entityKey]!!.time) {
+                if (endTime <= (entries[entityKey]?.time ?: -1)) {
                     maxYAxis = max(maxYAxis, entries[entityKey]!!.value)
                     entryList.add(
                         Entry(
@@ -389,11 +397,18 @@ class DashboardFragment : Fragment() {
 
     private fun setTimeAxisLabels(selectedCalendar: Calendar, selection: AxisXTypes) {
 
-        mAxisXLabels = AxisUtils.getTimeAxisLabels(selectedCalendar, selection, requireContext())
+        mAxisXLabels = AxisUtils.getTimeAxisLabels(selectedCalendar, selection)
 
         val xAxis = binding.chartView.xAxis
         xAxis.valueFormatter = object : ValueFormatter() {
             override fun getFormattedValue(value: Float): String {
+                val sortedLabelKeys = mAxisXLabels.keys.sortedDescending()
+                for (key in sortedLabelKeys) {
+                    if (value.toInt() >= key) {
+                        return mAxisXLabels[key] ?: ""
+                    }
+                }
+
                 return mAxisXLabels[value.toInt()]
                     ?: mAxisXLabels.values.toList()[value.toInt() % mAxisXLabels.size]
             }
