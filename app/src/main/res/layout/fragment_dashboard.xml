@@ -23,6 +23,7 @@
             app:layout_constraintEnd_toStartOf="@+id/dashboard_filter_btn"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/dashboard_filter_btn"
+            app:selectionRequired="true"
             app:singleSelection="true">
 
             <Button
@@ -32,6 +33,14 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/toggle_day_button" />
+
+            <Button
+                android:id="@+id/days3ToggleButton"
+                style="@style/Widget.App.Button.OutlinedButton.IconOnly"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/toggle_3_days_button" />
 
             <Button
                 android:id="@+id/weekToggleButton"
@@ -63,7 +72,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/toggle_180_days_button" />
+                android:text="@string/toggle_180_days_button"
+                android:visibility="gone" />
         </com.google.android.material.button.MaterialButtonToggleGroup>
 
         <!-- Filter button -->

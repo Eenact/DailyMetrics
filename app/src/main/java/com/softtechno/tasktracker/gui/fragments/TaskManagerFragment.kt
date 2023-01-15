@@ -69,7 +69,7 @@ class TaskManagerFragment : Fragment() {
         super.onResume()
 
         (activity as? MainActivity).let {
-            it?.didClickAddButton = {
+            it?.addButtonClickListener = {
                 findNavController().navigate(R.id.action_TaskManagerFragment_to_TaskFragment)
             }
         }
@@ -79,7 +79,7 @@ class TaskManagerFragment : Fragment() {
         super.onPause()
 
         (activity as? MainActivity).let {
-            it?.didClickAddButton = null
+            it?.addButtonClickListener = null
         }
     }
 

@@ -8,8 +8,13 @@
         android:title="@string/task_manager_fragment_label"
         app:showAsAction="never" />
     <item
+        android:id="@+id/action_export_data"
+        android:orderInCategory="101"
+        android:title="@string/export_data_label"
+        app:showAsAction="never" />
+    <item
         android:id="@+id/action_legal_terms"
-        android:orderInCategory="100"
+        android:orderInCategory="102"
         android:title="@string/legal_fragment_label"
         app:showAsAction="never" />
 </menu>

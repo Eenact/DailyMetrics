@@ -10,9 +10,10 @@ import com.softtechno.tasktracker.R
 import com.softtechno.tasktracker.db.TaskEntity
 import com.softtechno.tasktracker.enums.Units
 
-class TaskManagerAdapter(private val onClickListener: OnClickListener) : RecyclerView.Adapter<TaskManagerAdapter.ViewHolder>() {
+class TaskManagerAdapter(private val onClickListener: OnClickListener) :
+    RecyclerView.Adapter<TaskManagerAdapter.ViewHolder>() {
 
-    class OnClickListener(val clickListener: (taks: TaskEntity) -> Unit) {
+    class OnClickListener(val clickListener: (task: TaskEntity) -> Unit) {
         fun onClick(task: TaskEntity) = clickListener(task)
     }
 
