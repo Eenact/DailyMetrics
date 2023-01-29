@@ -257,7 +257,7 @@ class DashboardFragment : Fragment() {
     }
 
     private fun noTaskSnack(view: View) {
-        Snackbar.make(view, R.string.dashboard_no_task, Snackbar.LENGTH_INDEFINITE)
+        Snackbar.make(view, R.string.dashboard_no_task, Snackbar.LENGTH_LONG)
             .setAction(R.string.task_manager_fragment_label) {
                 findNavController().navigate(R.id.action_DashboardFragment_to_TaskManagerFragment)
             }.show()
