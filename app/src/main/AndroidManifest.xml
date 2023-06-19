@@ -13,7 +13,7 @@
         android:theme="@style/Theme.TaskTracker"
         tools:targetApi="31">
         <activity
-            android:name="com.softtechno.tasktracker.gui.MainActivity"
+            android:name="com.eenact.dailymetrics.gui.MainActivity"
             android:exported="true"
             android:theme="@style/Theme.TaskTracker">
             <intent-filter>
@@ -24,7 +24,7 @@
         </activity>
 
         <activity
-            android:name="com.softtechno.tasktracker.gui.OnBoardingActivity"
+            android:name="com.eenact.dailymetrics.gui.OnBoardingActivity"
             android:exported="true"
             android:theme="@style/Theme.TaskTracker" />
 

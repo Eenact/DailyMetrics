@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/DashboardFragment"
-        android:name="com.softtechno.tasktracker.gui.fragments.DashboardFragment"
+        android:name="com.eenact.dailymetrics.gui.fragments.DashboardFragment"
         android:label="@string/dashboard_fragment_label"
         tools:layout="@layout/fragment_dashboard">
 
@@ -40,7 +40,7 @@
     </fragment>
     <fragment
         android:id="@+id/TaskManagerFragment"
-        android:name="com.softtechno.tasktracker.gui.fragments.TaskManagerFragment"
+        android:name="com.eenact.dailymetrics.gui.fragments.TaskManagerFragment"
         android:label="@string/task_manager_fragment_label"
         tools:layout="@layout/fragment_task_manager">
 
@@ -65,7 +65,7 @@
     </fragment>
     <fragment
         android:id="@+id/TaskFragment"
-        android:name="com.softtechno.tasktracker.gui.fragments.TaskFragment"
+        android:name="com.eenact.dailymetrics.gui.fragments.TaskFragment"
         android:label="@string/task_fragment_label"
         tools:layout="@layout/fragment_task">
 
@@ -82,7 +82,7 @@
 
     <dialog
         android:id="@+id/TaskEntryFragment"
-        android:name="com.softtechno.tasktracker.gui.fragments.TaskEntryDialogFragment"
+        android:name="com.eenact.dailymetrics.gui.fragments.TaskEntryDialogFragment"
         android:label="@string/task_entry_fragment_label"
         tools:layout="@layout/fragment_entry">
 
@@ -100,7 +100,7 @@
 
     <fragment
         android:id="@+id/LegalFragment"
-        android:name="com.softtechno.tasktracker.gui.fragments.LegalTermsFragment"
+        android:name="com.eenact.dailymetrics.gui.fragments.LegalTermsFragment"
         android:label="@string/legal_fragment_label"
         tools:layout="@layout/fragment_legal_terms">
 

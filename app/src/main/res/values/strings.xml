@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Task Tracker</string>
+    <string name="app_name">Daily Metrics</string>
     <string name="action_save">Save</string>
     <!-- Strings used for fragments for navigation -->
     <string name="dashboard_fragment_label">Dashboard</string>

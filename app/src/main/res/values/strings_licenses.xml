@@ -3,7 +3,7 @@
 
     <string name="copy_app">
     <![CDATA[
-        <b>{APP_NAME}</b> {VERSION} (Build {BUILD})<br />&#169; 2022 Softtechno Limited
+        <b>{APP_NAME}</b> {VERSION} (Build {BUILD})<br />&#169; 2023 Eenact
     ]]>
     </string>
 

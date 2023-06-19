@@ -26,8 +26,8 @@
 
     <string name="export_share_title">Share file …</string>
     <string name="export_save_title">Save file …</string>
-    <string name="export_filtered_file_name">TaskAnalyzer_filtered_%s.csv</string>
-    <string name="export_all_file_name">TaskAnalyzer_all_%s.csv</string>
+    <string name="export_filtered_file_name">DailyMetrics_filtered_%s.csv</string>
+    <string name="export_all_file_name">DailyMetrics_all_%s.csv</string>
     <string name="export_share_file_datetime">yyyy_MM_dd-HH_mm_ss</string>
 
     <string name="export_email_subject">#%s: exported data</string>
