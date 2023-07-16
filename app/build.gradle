@@ -11,7 +11,7 @@ android {
         applicationId "com.eenact.dailymetrics"
         minSdk 21
         targetSdk 33
-        versionCode 202306201
+        versionCode 202306231
         versionName "1.0.0"
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
