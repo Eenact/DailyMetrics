@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="com.softtechno.tasktracker">
+    xmlns:tools="http://schemas.android.com/tools">
 
     <application
         android:allowBackup="true"
@@ -14,7 +13,7 @@
         android:theme="@style/Theme.TaskTracker"
         tools:targetApi="31">
         <activity
-            android:name="com.softtechno.tasktracker.gui.MainActivity"
+            android:name="com.eenact.dailymetrics.gui.MainActivity"
             android:exported="true"
             android:theme="@style/Theme.TaskTracker">
             <intent-filter>
@@ -24,9 +23,20 @@
             </intent-filter>
         </activity>
 
-        <activity android:name="com.softtechno.tasktracker.gui.OnBoardingActivity"
+        <activity
+            android:name="com.eenact.dailymetrics.gui.OnBoardingActivity"
             android:exported="true"
-            android:theme="@style/Theme.TaskTracker"/>
+            android:theme="@style/Theme.TaskTracker" />
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_path" />
+        </provider>
 
     </application>
 

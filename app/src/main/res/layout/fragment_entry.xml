@@ -61,8 +61,8 @@
                     style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/entry_yesno_title"
-                    android:visibility="gone">
+                    android:enabled="false"
+                    android:hint="@string/entry_yesno_title">
 
                     <AutoCompleteTextView
                         android:id="@+id/entry_yesno_edittext"
@@ -205,7 +205,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
-                android:visibility="gone"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/entries_without_date_layout">
 
@@ -224,6 +223,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
+                    android:enabled="false"
                     android:hint="@string/entry_date_title"
                     app:layout_constraintEnd_toStartOf="@+id/entry_event_time_input_layout"
                     app:layout_constraintStart_toStartOf="parent"
@@ -244,6 +244,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="16dp"
+                    android:enabled="false"
                     android:hint="@string/entry_time_title"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/entry_event_date_input_layout"
@@ -267,7 +268,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
                 android:hint="@string/entry_comment_title"
-                android:visibility="gone"
+                android:enabled="false"
                 app:errorEnabled="true"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/entry_date_layout">

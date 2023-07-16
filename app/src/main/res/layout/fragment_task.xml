@@ -27,6 +27,7 @@
                 android:id="@+id/task_name_edittext"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:imeOptions="actionDone"
                 android:inputType="textCapSentences" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -89,10 +90,10 @@
             android:text="@string/task_header_color"
             android:textAppearance="?attr/textAppearanceBodyLarge"
             android:textColor="?attr/colorOnSurfaceVariant"
+            app:helperText="@string/task_details_color"
             app:icon="@color/legend_red"
             app:iconGravity="end"
             app:iconSize="20dp"
-            app:helperText="@string/task_details_color"
             app:iconTint="@color/legend_red"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -105,12 +106,12 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:paddingLeft="16dp"
-            android:textColor="?attr/colorOnSurfaceVariant"
-            android:textAppearance="?attr/textAppearanceBodySmall"
             android:text="@string/task_details_color"
-            app:layout_constraintTop_toBottomOf="@+id/task_color_input_button"
+            android:textAppearance="?attr/textAppearanceBodySmall"
+            android:textColor="?attr/colorOnSurfaceVariant"
+            app:layout_constraintEnd_toEndOf="@+id/task_color_input_button"
             app:layout_constraintStart_toStartOf="@+id/task_color_input_button"
-            app:layout_constraintEnd_toEndOf="@+id/task_color_input_button"/>
+            app:layout_constraintTop_toBottomOf="@+id/task_color_input_button" />
 
         <Button
             android:id="@+id/button_add"

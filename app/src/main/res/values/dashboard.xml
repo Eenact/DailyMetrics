@@ -6,6 +6,7 @@
     <string name="deleted_value">Value</string>
 
     <string name="toggle_day_button">1D</string>
+    <string name="toggle_3_days_button">3D</string>
     <string name="toggle_7_days_button">1W</string>
     <string name="toggle_30_days_button">1M</string>
     <string name="toggle_90_days_button">3M</string>
