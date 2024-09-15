@@ -345,7 +345,7 @@ class DashboardFragment : Fragment() {
 
         val endTime = mDashboardCalendar.timeInMillis
 
-        var maxYAxis: Long = -1
+        var maxYAxis: Float = -1.0f
         var taskId: TaskEntity? = null
         var entryList: MutableList<Entry> = mutableListOf()
         val graphLineDataSet: MutableList<ILineDataSet> = mutableListOf()
@@ -365,11 +365,11 @@ class DashboardFragment : Fragment() {
                     taskId = entityKey
                 }
                 if (endTime <= (entries[entityKey]?.time ?: -1)) {
-                    maxYAxis = max(maxYAxis, entries[entityKey]!!.value)
+                    maxYAxis = max(maxYAxis, entries[entityKey]!!.task_value.toFloat())
                     entryList.add(
                         Entry(
                             AxisUtils.getTimeAxisValue(entries[entityKey]!!.time, selection),
-                            entries[entityKey]!!.value.toFloat()
+                            entries[entityKey]!!.task_value.toFloat()
                         )
                     )
                 }

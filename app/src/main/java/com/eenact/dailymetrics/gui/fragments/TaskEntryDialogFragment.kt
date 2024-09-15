@@ -121,7 +121,7 @@ class TaskEntryDialogFragment : DialogFragment() {
                                         binding.entryNameEdittext,
                                         R.string.error_invalid_field_name
                                     ),
-                                value
+                                value?.toString()
                                     ?: return@setOnMenuItemClickListener when (mTaskEntityModel.selectedItem.value?.type) {
                                         EntityType.Number -> invalidValue(binding.entryNumberInputLayout)
                                         else -> invalidValue(binding.entryYesnoInputLayout)

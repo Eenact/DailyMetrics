@@ -66,10 +66,10 @@ class DashboardListAdapter(private var dataSet: MutableList<DashboardListData>) 
 
             // Set value with unit
             val value = when (data.entity?.type) {
-                EntityType.YesNo -> if ((data.entryValue?.value?.toInt()
+                EntityType.YesNo -> if ((data.entryValue?.task_value?.toInt()
                         ?: 0) == 1
                 ) "True" else "False"
-                else -> data.entryValue?.value.toString()
+                else -> data.entryValue?.task_value.toString()
             }
             val unit =
                 if (data.entity?.unit != null && data.entity.unit != Units.Other) data.entity.unit.name else ""

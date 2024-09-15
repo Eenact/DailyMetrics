@@ -5,8 +5,10 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import androidx.room.migration.Migration
+import androidx.sqlite.db.SupportSQLiteDatabase
 
-@Database(entities = [TaskEntity::class, TaskValue::class], exportSchema = false, version = 1)
+@Database(entities = [TaskEntity::class, TaskValue::class], exportSchema = false, version = 2)
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
 
@@ -19,16 +21,27 @@ abstract class AppDatabase : RoomDatabase() {
 
         fun getDatabase(context: Context): AppDatabase {
             return INSTANCE ?: synchronized(this) {
-                val instance = Room.databaseBuilder(
-                    context.applicationContext,
-                    AppDatabase::class.java,
-                    "task_database"
-                )
+                val instance = Room
+                    .databaseBuilder(
+                        context.applicationContext,
+                        AppDatabase::class.java,
+                        "task_database"
+                    )
+                    .addMigrations(MIGRATION_1_2)
                     .build()
                 INSTANCE = instance
                 return instance
             }
         }
 
+        private val MIGRATION_1_2 = object : Migration(1, 2) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                database.execSQL("CREATE TABLE temp_view as SELECT value FROM TaskValue")
+                database.execSQL("ALTER TABLE TaskValue DROP COLUMN value")
+                database.execSQL("ALTER TABLE TaskValue ADD COLUMN task_value TEXT")
+                database.execSQL("UPDATE TaskValue SET task_value = temp_view.value")
+                database.execSQL("DROP TABLE temp_view")
+            }
+        }
     }
 }
