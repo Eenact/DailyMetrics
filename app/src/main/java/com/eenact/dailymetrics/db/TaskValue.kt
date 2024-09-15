@@ -21,6 +21,8 @@ class TaskValue (
 
     @ColumnInfo(name = "task_value") val task_value: String,
 
-    @ColumnInfo(name = "comments") val comments: String = ""
+    @ColumnInfo(name = "comments") val comments: String = "",
+
+    @ColumnInfo(name = "value") val value: Long = -1,
 
 )

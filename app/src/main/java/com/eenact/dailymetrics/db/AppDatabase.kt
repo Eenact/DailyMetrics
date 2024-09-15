@@ -36,11 +36,11 @@ abstract class AppDatabase : RoomDatabase() {
 
         private val MIGRATION_1_2 = object : Migration(1, 2) {
             override fun migrate(database: SupportSQLiteDatabase) {
-                database.execSQL("CREATE TABLE temp_view as SELECT value FROM TaskValue")
-                database.execSQL("ALTER TABLE TaskValue DROP COLUMN value")
-                database.execSQL("ALTER TABLE TaskValue ADD COLUMN task_value TEXT")
-                database.execSQL("UPDATE TaskValue SET task_value = temp_view.value")
-                database.execSQL("DROP TABLE temp_view")
+                database.execSQL("CREATE TABLE temp_view as SELECT value FROM TaskValue;")
+                database.execSQL("ALTER TABLE TaskValue DROP COLUMN value;")
+                database.execSQL("ALTER TABLE TaskValue ADD COLUMN task_value TEXT;")
+                database.execSQL("UPDATE TaskValue SET task_value = temp_view.value;")
+                database.execSQL("DROP TABLE temp_view;")
             }
         }
     }
