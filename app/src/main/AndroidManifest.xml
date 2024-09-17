@@ -11,7 +11,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.TaskTracker"
-        tools:targetApi="31">
+        android:allowCrossUidActivitySwitchFromBelow="false"
+        tools:targetApi="35">
         <activity
             android:name="com.eenact.dailymetrics.gui.MainActivity"
             android:exported="true"
