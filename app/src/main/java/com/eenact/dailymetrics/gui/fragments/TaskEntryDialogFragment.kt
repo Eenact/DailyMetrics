@@ -95,14 +95,12 @@ class TaskEntryDialogFragment : DialogFragment() {
             toolbar.setOnMenuItemClickListener { menuItem ->
                 return@setOnMenuItemClickListener when (menuItem.itemId) {
                     R.id.action_save -> {
-                        val value: String? =
-                            if (mTaskEntityModel.selectedItem.value?.type == EntityType.Number) {
-                                binding.entryNumberEdittext.text.toString()
-                            } else if (mTaskEntityModel.selectedItem.value?.type == EntityType.YesNo) {
-                                mTaskValuesModel.taskEnteredValue.value.toString()
-                            } else {
-                                null
+                        val value: String? = mTaskEntityModel.selectedItem.value?.type?.let { type ->
+                            when (type) {
+                                EntityType.Number -> binding.entryNumberEdittext.text.toString().toFloatOrNull()?.toString()
+                                EntityType.YesNo -> mTaskValuesModel.taskEnteredValue.value?.toString()
                             }
+                        }
 
                         if (DEBUG) {
                             Log.d(
