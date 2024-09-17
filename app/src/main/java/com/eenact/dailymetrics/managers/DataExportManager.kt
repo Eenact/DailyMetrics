@@ -93,7 +93,7 @@ class DataExportManager(private val activity: FragmentActivity) : DefaultLifecyc
                         datetimeFormatter.format(Date(it.value.time)),
                         it.key.name,
                         if (it.key.type == EntityType.YesNo) EntityType.YesNo.toString() else it.key.unit.toString(),
-                        it.value.task_value.toString(),
+                        it.value.task_value,
                         it.value.comments
                     )
                 }.joinToString(LINE_BREAK)

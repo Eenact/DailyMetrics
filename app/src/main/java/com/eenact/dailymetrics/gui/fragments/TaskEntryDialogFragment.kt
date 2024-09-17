@@ -95,11 +95,13 @@ class TaskEntryDialogFragment : DialogFragment() {
             toolbar.setOnMenuItemClickListener { menuItem ->
                 return@setOnMenuItemClickListener when (menuItem.itemId) {
                     R.id.action_save -> {
-                        val value: Long? =
+                        val value: String? =
                             if (mTaskEntityModel.selectedItem.value?.type == EntityType.Number) {
-                                binding.entryNumberEdittext.text.toString().toLongOrNull()
+                                binding.entryNumberEdittext.text.toString()
+                            } else if (mTaskEntityModel.selectedItem.value?.type == EntityType.YesNo) {
+                                mTaskValuesModel.taskEnteredValue.value.toString()
                             } else {
-                                mTaskValuesModel.taskEnteredValue.value
+                                null
                             }
 
                         if (DEBUG) {
@@ -121,7 +123,7 @@ class TaskEntryDialogFragment : DialogFragment() {
                                         binding.entryNameEdittext,
                                         R.string.error_invalid_field_name
                                     ),
-                                value?.toString()
+                                value
                                     ?: return@setOnMenuItemClickListener when (mTaskEntityModel.selectedItem.value?.type) {
                                         EntityType.Number -> invalidValue(binding.entryNumberInputLayout)
                                         else -> invalidValue(binding.entryYesnoInputLayout)
