@@ -9,6 +9,9 @@ interface TaskEntitiesDao {
     @Query("SELECT * FROM TaskEntity")
     fun getAll(): Flow<List<TaskEntity>>
 
+    @Query("SELECT * FROM TaskEntity")
+    suspend fun getAllTasksSync(): List<TaskEntity>
+
     @Query("SELECT * FROM TaskEntity WHERE id = :taskId")
     suspend fun get(taskId: Int): TaskEntity
 

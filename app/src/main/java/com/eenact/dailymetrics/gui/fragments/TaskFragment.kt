@@ -1,5 +1,6 @@
 package com.eenact.dailymetrics.gui.fragments
 
+import android.app.TimePickerDialog
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
@@ -13,15 +14,19 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.get
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.chip.Chip
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import com.eenact.dailymetrics.R
 import com.eenact.dailymetrics.databinding.FragmentTaskBinding
 import com.eenact.dailymetrics.db.TaskEntity
 import com.eenact.dailymetrics.enums.EntityType
 import com.eenact.dailymetrics.enums.Units
+import com.eenact.dailymetrics.gui.MainActivity
 import com.eenact.dailymetrics.managers.TaskCreationManager
+import com.eenact.dailymetrics.utils.NotificationScheduler
 import com.eenact.dailymetrics.viewmodels.TaskEntityViewModel
 import com.eenact.dailymetrics.viewmodels.TaskEntityViewModelFactory
+import java.util.*
 
 /**
  * A simple [Fragment] subclass as the second destination in the navigation.
@@ -36,6 +41,7 @@ class TaskFragment : Fragment() {
 
     private var mColorPickerDialog: View? = null
     private var mSelectedColor: Int = Color.RED
+    private var mSelectedTime: String? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -62,6 +68,12 @@ class TaskFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        (activity as? MainActivity)?.permissionResultListener = { isGranted ->
+            if (!isGranted) {
+                binding.notificationSwitch.isChecked = false
+            }
+        }
+
         if (mSelectedTaskId != -1L) {
             mTaskEntityModel?.allEntries?.observe(viewLifecycleOwner) { entries ->
                 val selectedItem = entries.firstOrNull { it.id == mSelectedTaskId }
@@ -79,28 +91,63 @@ class TaskFragment : Fragment() {
             binding.taskUnitsInputLayout.isEnabled = (i != 0)
         }
 
+        binding.notificationSwitch.setOnCheckedChangeListener { _, isChecked ->
+            binding.notificationSettingsContainer.visibility = if (isChecked) View.VISIBLE else View.GONE
+            if (isChecked) {
+                (activity as MainActivity).askNotificationPermission()
+            }
+            else if (mSelectedTaskId != -1L) {
+                NotificationScheduler.cancelNotification(requireContext(), mSelectedTaskId)
+            }
+        }
+
+        binding.notificationTimeButton.setOnClickListener {
+            val calendar = Calendar.getInstance()
+            val hour = calendar.get(Calendar.HOUR_OF_DAY)
+            val minute = calendar.get(Calendar.MINUTE)
+
+            TimePickerDialog(requireContext(), { _, h, m ->
+                mSelectedTime = String.format("%02d:%02d", h, m)
+                binding.notificationTimeButton.text = "Time: $mSelectedTime"
+            }, hour, minute, true).show()
+        }
+
         // Add button clicked
         binding.buttonAdd.setOnClickListener {
             val name: String = binding.taskNameEdittext.editableText.toString()
             val type: EntityType = EntityType.fromString(binding.taskTypeEdittext.text.toString())
             val unit: Units = Units.fromString(binding.taskUnitsEdittext.text.toString())
+            val isNotifEnabled = binding.notificationSwitch.isChecked
+            val notifDays = getSelectedDays()
 
             if (name.trim().isEmpty()) {
                 binding.taskNameInputLayout.error = getString(R.string.error_field_required)
                 return@setOnClickListener
             }
 
-            if (mSelectedTask == null) {
-                val task = TaskEntity(
-                    name, type, unit, mSelectedColor
+            if (isNotifEnabled && mSelectedTime == null) {
+                // Show error or pick default
+                mSelectedTime = "09:00"
+            }
+
+            val task = if (mSelectedTask == null) {
+                TaskEntity(
+                    name, type, unit, mSelectedColor, isNotifEnabled, mSelectedTime, notifDays
                 )
+            } else {
+                TaskEntity(
+                    name, mSelectedTask!!.type, unit, mSelectedColor, isNotifEnabled, mSelectedTime, notifDays, mSelectedTaskId
+                )
+            }
+
+            if (mSelectedTask == null) {
                 mTaskEntityModel?.insert(task)
             } else {
-                val task =
-                    TaskEntity(name, mSelectedTask!!.type, unit, mSelectedColor, mSelectedTaskId)
                 mTaskEntityModel?.update(task, name != mSelectedTask!!.name)
             }
 
+            // Schedule notification
+            NotificationScheduler.scheduleNotification(requireContext(), task)
         }
 
         // Observer of insert result
@@ -128,8 +175,21 @@ class TaskFragment : Fragment() {
         setSelectedIconColor()
     }
 
+    private fun getSelectedDays(): String {
+        val days = mutableListOf<Int>()
+        if (binding.chipMon.isChecked) days.add(Calendar.MONDAY)
+        if (binding.chipTue.isChecked) days.add(Calendar.TUESDAY)
+        if (binding.chipWed.isChecked) days.add(Calendar.WEDNESDAY)
+        if (binding.chipThu.isChecked) days.add(Calendar.THURSDAY)
+        if (binding.chipFri.isChecked) days.add(Calendar.FRIDAY)
+        if (binding.chipSat.isChecked) days.add(Calendar.SATURDAY)
+        if (binding.chipSun.isChecked) days.add(Calendar.SUNDAY)
+        return days.joinToString(",")
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
+        (activity as? MainActivity)?.permissionResultListener = null
         _binding = null
     }
 
@@ -155,6 +215,25 @@ class TaskFragment : Fragment() {
         mSelectedColor = selectedItem.color
         (binding.taskColorInputButton as MaterialButton).iconTint =
             ColorStateList.valueOf(selectedItem.color)
+        
+        binding.notificationSwitch.isChecked = selectedItem.isNotificationEnabled
+        mSelectedTime = selectedItem.notificationTime
+        if (mSelectedTime != null) {
+            binding.notificationTimeButton.text = "Time: $mSelectedTime"
+        }
+        
+        selectedItem.notificationDays?.split(",")?.forEach {
+            when (it.toIntOrNull()) {
+                Calendar.MONDAY -> binding.chipMon.isChecked = true
+                Calendar.TUESDAY -> binding.chipTue.isChecked = true
+                Calendar.WEDNESDAY -> binding.chipWed.isChecked = true
+                Calendar.THURSDAY -> binding.chipThu.isChecked = true
+                Calendar.FRIDAY -> binding.chipFri.isChecked = true
+                Calendar.SATURDAY -> binding.chipSat.isChecked = true
+                Calendar.SUNDAY -> binding.chipSun.isChecked = true
+            }
+        }
+
         binding.buttonAdd.setText(R.string.update)
     }
 }

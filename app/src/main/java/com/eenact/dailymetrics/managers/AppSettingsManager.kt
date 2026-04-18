@@ -2,6 +2,7 @@ package com.eenact.dailymetrics.managers
 
 import android.content.Context
 import android.content.SharedPreferences
+import androidx.core.content.edit
 
 object AppSettingsManager {
 
@@ -12,9 +13,9 @@ object AppSettingsManager {
         context.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE)
 
     inline fun SharedPreferences.editStsId(operation: (SharedPreferences.Editor) -> Unit) {
-        val editStsId = edit()
-        operation(editStsId)
-        editStsId.apply()
+        edit {
+            operation(this)
+        }
     }
 
     var SharedPreferences.isAppOnboarded

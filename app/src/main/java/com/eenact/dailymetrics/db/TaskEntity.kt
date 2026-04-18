@@ -17,6 +17,12 @@ class TaskEntity (
 
     @ColumnInfo(name = "color") val color: Int,
 
+    @ColumnInfo(name = "is_notification_enabled") val isNotificationEnabled: Boolean = false,
+
+    @ColumnInfo(name = "notification_time") val notificationTime: String? = null,
+
+    @ColumnInfo(name = "notification_days") val notificationDays: String? = null,
+
     @PrimaryKey(autoGenerate = true) val id: Long = 0
 
 )
