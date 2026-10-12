@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Daily Metrics</string>
+
+    <!-- Screen titles -->
+    <string name="dashboard_title">Dashboard</string>
+    <string name="task_title">Task</string>
+    <string name="task_entry_title">Enter task progress</string>
+    <string name="task_manager_title">Manage Tasks</string>
+    <string name="legal_title">Legal Terms</string>
+    <string name="export_data_title">Export data</string>
+
+    <!-- Common actions -->
+    <string name="add">Add</string>
+    <string name="apply">Apply</string>
+    <string name="cancel">Cancel</string>
+    <string name="ok">OK</string>
+    <string name="delete">Delete</string>
+    <string name="update">Update</string>
+    <string name="save">SAVE</string>
+    <string name="back">Back</string>
+    <string name="close">Close</string>
+    <string name="more_options">More options</string>
+
+    <!-- Content descriptions -->
+    <string name="content_desc_insert_task_btn">Insert Task</string>
+    <string name="content_desc_insert_value_btn">Insert Value</string>
+    <string name="content_desc_filter_btn">Filter tasks</string>
+    <string name="content_desc_next">Next</string>
+
+    <!-- Dashboard -->
+    <string name="dashboard_no_task">Lets create our first Task:</string>
+    <string name="dashboard_no_entry">No value found. Create by pressing +</string>
+    <string name="dashboard_no_chart_data">Add chart data by pressing +</string>
+    <string name="dashboard_filter_title">Filters</string>
+    <string name="dashboard_filter_select_all">Select All</string>
+    <string name="item_deleted">%1$s deleted</string>
+    <string name="deleted_value">Value</string>
+    <string name="insights_title">AI Suggestions</string>
+    <string name="insights_collecting">Collecting data for insights...</string>
+    <string name="insights_button">Get Insights</string>
+
+    <!-- Task (create / edit) -->
+    <string name="task_no_item">Create a Task by pressing +</string>
+    <string name="task_header_name">Task name *</string>
+    <string name="task_header_type">Entry type *</string>
+    <string name="task_details_type">Define the type of value that can be inserted for this task.</string>
+    <string name="task_header_unit">Unit</string>
+    <string name="task_details_unit">A unit to measure the task value.</string>
+    <string name="task_header_color">Legend color</string>
+    <string name="task_details_color">This color will be used to draw on Charts.</string>
+    <string name="task_notification_enable">Enable Notification</string>
+    <string name="task_notification_set_time">Set Notification Time</string>
+    <string name="task_notification_time">Time: %1$s</string>
+    <string name="task_notification_days">Repeat on days:</string>
+    <string name="task_notification_permission_denied">Notifications are disabled for Daily Metrics.</string>
+    <string name="dialog_color_pick_title">Pick legend color</string>
+    <string name="dialog_color_pick_random">Generate random</string>
+
+    <!-- Task entry -->
+    <string name="entry_number_title">Number</string>
+    <string name="entry_yesno_title">Yes / No</string>
+    <string name="entry_yes">Yes</string>
+    <string name="entry_no">No</string>
+    <string name="entry_comment_title">Comment</string>
+    <string name="entry_date_title">Date</string>
+    <string name="entry_time_title">Time</string>
+    <string name="entry_event_date_time_title">Event date time</string>
+    <string name="entry_date_picker_dialog_title">Select date</string>
+    <string name="entry_time_picker_dialog_title">Select time</string>
+    <string name="entry_duplicate_time">A value already exists at this date and time.</string>
+
+    <!-- Errors -->
+    <string name="error_field_required">Required field *</string>
+    <string name="error_invalid_date_time">Invalid date/time found</string>
+    <string name="error_invalid_field_name">Invalid field name detected</string>
+    <string name="error_already_exists">Task already exists.</string>
+
+    <!-- Export -->
+    <string name="export_share_list">Share file</string>
+    <string name="export_data_list">Save file</string>
+    <string name="export_filtered">Filtered</string>
+    <string name="export_progress_completed">Saving completed</string>
+
+    <!-- Onboarding -->
+    <string name="onboarding_get_start">Let's start</string>
+    <string name="onboarding_screen1_title">Track your day-to-day activities</string>
+    <string name="onboarding_screen1_msg">Improve yourself by tracking your activities that you think might need improvement</string>
+    <string name="onboarding_screen2_title">Analyze your activities</string>
+    <string name="onboarding_screen2_msg">Help yourself improve by analyzing your activities and advance your life goals</string>
+    <string name="onboarding_screen3_title">Let's create our first task to analyze</string>
+    <string name="onboarding_screen3_msg">It can be something you want to quit or something you want to improve, like Exercising, Charity work, etc.</string>
+
+    <!-- Notifications -->
+    <string name="notification_channel_name">Task Reminders</string>
+    <string name="notification_channel_description">Notifications to remind you to log your task progress.</string>
+    <string name="notification_title">Task Reminder</string>
+    <string name="notification_text">Don't forget to log: %1$s</string>
+
+    <!-- Legal -->
+    <string name="legal_app">&lt;b&gt;%1$s&lt;/b&gt; %2$s (Build %3$s)&lt;br&gt;© 2023 Eenact</string>
+    <string name="legal_libraries">&lt;b&gt;Compose Multiplatform, AndroidX (Room, Lifecycle, Navigation 3), Kotlin and kotlinx libraries&lt;/b&gt;&lt;br&gt;Licensed under the Apache License, Version 2.0.&lt;br&gt;&lt;br&gt;&lt;b&gt;Compottie&lt;/b&gt;&lt;br&gt;Licensed under the MIT License.&lt;br&gt;&lt;br&gt;&lt;b&gt;The Android™ Open Source Project&lt;/b&gt;&lt;br&gt;Copyright © 2005 - 2008, The Android Open Source Project&lt;br&gt;Licensed under the Apache License, Version 2.0.</string>
+</resources>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Only shown while the activity starts; the UI itself is themed in Compose. -->
+    <style name="Theme.DailyMetrics" parent="android:Theme.Material.Light.NoActionBar">
+        <item name="android:windowBackground">#FFFFFBFE</item>
+    </style>
+</resources>

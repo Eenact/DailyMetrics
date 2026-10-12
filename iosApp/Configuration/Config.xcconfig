@@ -1,0 +1,8 @@
+// Set TEAM_ID to your Apple developer team to run on a device.
+TEAM_ID=
+
+PRODUCT_NAME=DailyMetrics
+PRODUCT_BUNDLE_IDENTIFIER=com.eenact.dailymetrics
+// Keep in sync with app-versionName / app-versionCode in gradle/libs.versions.toml.
+MARKETING_VERSION=2.0.0
+CURRENT_PROJECT_VERSION=202610031

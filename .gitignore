@@ -84,3 +84,15 @@ lint/outputs/
 lint/tmp/
 # lint/reports/
 .idea/
+
+# Kotlin Multiplatform
+.kotlin/
+shared/build/
+androidApp/build/
+
+# Xcode
+iosApp/**/xcuserdata/
+iosApp/**/*.xcworkspace/xcuserdata/
+iosApp/build/
+DerivedData/
+*.xcuserstate
